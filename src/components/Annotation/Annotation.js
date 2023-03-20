@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton, Menu, Popover, ListItemText, ListItemIcon, Typography } from '@mui/material';
+import { Chip,IconButton, Menu, Popover, ListItemText, ListItemIcon, Typography } from '@mui/material';
 import { StyledListItem, ListItemIconWrapper, AnnotationText, StyledMenuItem } from '../StyledComponents';
 import { InfoRounded, MoreVertRounded, DeleteRounded } from '../IconImports';
 import './Annotation.styles.css';
@@ -97,9 +97,7 @@ export const Annotation = ({ text, timestamp, start, end, onDelete }) => {
           }}
         >
           <Typography sx={{ p: 2 }}>
-            <b>Start:</b> {start}
-            <br />
-            <b>End:</b> {end}
+            <b>Offsets:</b> {start} - {end}
             <br />
             <b>Created:</b> {timestamp.toLocaleString()}
           </Typography>

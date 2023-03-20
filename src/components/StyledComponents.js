@@ -13,8 +13,9 @@ export const StyledMenuItem = styled(MenuItem)`
 `
 
 export const StyledListItem = styled(ListItem)`
-  padding-left: 0;
-  padding-right: 8px;
+  padding-left: 5;
+  padding-right: 0;
+  border-left: 6px solid #09ADA4;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
