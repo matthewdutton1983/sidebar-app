@@ -98,6 +98,7 @@ export const Annotation = ({ text, timestamp, start, end, onDelete }) => {
         >
           <Typography sx={{ p: 2 }}>
             <b>Start:</b> {start}
+            <br />
             <b>End:</b> {end}
             <br />
             <b>Created:</b> {timestamp.toLocaleString()}

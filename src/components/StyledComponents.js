@@ -11,6 +11,7 @@ export const StyledMenuItem = styled(MenuItem)`
     background-color: rgba(0, 0, 0, 0.04);
 }
 `
+
 export const StyledListItem = styled(ListItem)`
   padding-left: 0;
   padding-right: 8px;

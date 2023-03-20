@@ -1,25 +1,23 @@
 import { 
     EditRounded, 
-    BrushRounded, 
-    HighlightOffRounded, 
-    FormatColorFillRounded, 
-    UndoRounded, 
+    FormatListBulletedRounded,
     CommentRounded, 
-    SaveRounded, 
+    LocationOnRounded,
+    MapRounded,
+    SellRounded,
     ZoomInRounded 
 } from '../components/IconImports';
 
 
 export const leftTools = [
-    { id: 1, name: 'Annotate', icon: <EditRounded /> },
-    { id: 2, name: 'Brush', icon: <BrushRounded /> },
-    { id: 3, name: 'Eraser', icon: <HighlightOffRounded /> },
-    { id: 4, name: 'Fill', icon: <FormatColorFillRounded /> },
+  { id: 1, name: 'Sections', icon: <FormatListBulletedRounded /> },
+  { id: 2, name: 'Entities', icon: <LocationOnRounded /> },
+  { id: 3, name: 'Minimap', icon: <MapRounded /> },
 ];
-  
+
 export const rightTools = [
-    { id: 1, name: 'Undo', icon: <UndoRounded /> },
-    { id: 2, name: 'Comments', icon: <CommentRounded /> },
-    { id: 3, name: 'Save', icon: <SaveRounded /> },
-    { id: 4, name: 'Fill', icon: <ZoomInRounded /> },
+  { id: 1, name: 'Annotate', icon: <EditRounded /> },
+  { id: 2, name: 'Tags', icon: <SellRounded /> },
+  { id: 3, name: 'Comments', icon: <CommentRounded /> },
+  { id: 4, name: 'Fill', icon: <ZoomInRounded /> },
 ];
