@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { Card, CardContent } from '@mui/material';
-import { ContextMenu } from './ContextMenu/ContextMenu';
-import './Document.css';
+import { ContextMenu } from '../ContextMenu/ContextMenu';
+import './Document.styles.css';
 
 export const Document = ({ onAnnotate }) => {
     const [selectedText, setSelectedText] = useState('');
     const [contextMenuActive, setContextMenuActive] = useState(false);
-    const [contextMenuPosition, setContextMenuPosition] = useState({ 
-        x: 0, 
-        y: 0
-    });
+    const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
     const handleMouseUp = () => {
         const selectedText = window.getSelection().toString().trim();

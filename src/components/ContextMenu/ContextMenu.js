@@ -1,7 +1,7 @@
 import { Popover, ListItemIcon, ListItemText } from '@mui/material';
 import { StyledMenuItem, ContextMenuWrapper } from '../StyledComponents';
 import { EditRounded, SearchRounded } from '../IconImports';
-import './ContextMenu.css';
+import './ContextMenu.styles.css';
 
 export const ContextMenu = ({ active, position, onAnnotate, onSearch }) => {
     return(
