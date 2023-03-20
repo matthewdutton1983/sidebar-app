@@ -8,6 +8,5 @@ export {
     MapRounded,
     MoreVertRounded, 
     SearchRounded, 
-    SellRounded,
-    ZoomInRounded 
+    SellRounded, 
 } from '@mui/icons-material';

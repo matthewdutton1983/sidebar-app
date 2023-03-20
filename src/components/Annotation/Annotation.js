@@ -4,7 +4,7 @@ import { StyledListItem, ListItemIconWrapper, AnnotationText, StyledMenuItem } f
 import { InfoRounded, MoreVertRounded, DeleteRounded } from '../IconImports';
 import './Annotation.styles.css';
 
-export const Annotation = ({ text, timestamp, start, end, onDelete }) => {
+export const Annotation = ({ text, timestamp, start, end, onDelete }) => { 
   const [infoAnchorEl, setInfoAnchorEl] = useState(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 

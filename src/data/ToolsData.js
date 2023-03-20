@@ -4,8 +4,8 @@ import {
     CommentRounded, 
     LocationOnRounded,
     MapRounded,
+    SearchRounded,
     SellRounded,
-    ZoomInRounded 
 } from '../components/IconImports';
 
 
@@ -19,5 +19,5 @@ export const rightTools = [
   { id: 1, name: 'Annotate', icon: <EditRounded /> },
   { id: 2, name: 'Tags', icon: <SellRounded /> },
   { id: 3, name: 'Comments', icon: <CommentRounded /> },
-  { id: 4, name: 'Fill', icon: <ZoomInRounded /> },
+  { id: 4, name: 'Search', icon: <SearchRounded /> },
 ];
