@@ -34,7 +34,7 @@ export const AnnotationText = styled(Typography)`
   font-size: 0.875rem;
 `;
 
-export const NoAnnotationsMessage = styled(Typography)`
+export const NoDataMessage = styled(Typography)`
   text-align: left;
   font-size: 0.875rem;
   color: rgba(0, 0, 0, 0.6);

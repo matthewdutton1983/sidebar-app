@@ -1,5 +1,5 @@
 import { Annotation } from '../Annotation/Annotation';
-import { NoAnnotationsMessage } from '../StyledComponents';
+import { NoDataMessage } from '../StyledComponents';
 import { Typography } from '@mui/material';
 import './Toolbar.css';
 
@@ -25,9 +25,9 @@ export const Toolbar = ({
                         Annotations
                     </Typography>
                     {annotations.length === 0 ? (
-                    <NoAnnotationsMessage>
+                    <NoDataMessage>
                         There are currently no annotations for this document.
-                    </NoAnnotationsMessage>
+                    </NoDataMessage>
                     ) : (
                         annotations.map((annotation, index) => (
                         <Annotation
