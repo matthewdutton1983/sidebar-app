@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Annotation } from '../Annotation/Annotation';
+import { CommentCard } from '../Comment/Comment';
 import { NoDataMessage } from '../StyledComponents';
 import { TextField, Typography } from '@mui/material';
 import './Toolbar.styles.css';
@@ -11,9 +12,14 @@ export const Toolbar = ({
   onDeleteAnnotation,
 }) => {
   const [activeTool, setActiveTool] = useState(null);
+  const [comments, setComments] = useState([]);
 
   const handleToolClick = (tool) => {
     setActiveTool(activeTool === tool ? null : tool);
+  };
+
+  const handleAddComment = (comment) => {
+    setComments([...comments, comment]);
   };
 
   const renderPanelContent = () => {
@@ -23,7 +29,7 @@ export const Toolbar = ({
       return (
         <div className='annotations'>
           <Typography variant='h6' gutterBottom>
-            Annotations
+            Annotate Text
           </Typography>
           {annotations.length === 0 ? (
             <NoDataMessage>
@@ -49,19 +55,42 @@ export const Toolbar = ({
       return (
         <div className='tags'>
           <Typography variant='h6' gutterBottom>
-            Classify Document
+            Categorize Document
           </Typography>
           <TextField 
             placeholder='Add a new tag and press Enter'
-            variant='standard'
-            size='small'
             fullWidth
             multiline
           />
         </div>
       );
-    }
+    };
 
+    if (activeTool.name ==='Comments') {
+      return (
+        <div className='comments'>
+          <Typography variant='h6' gutterBottom>
+            Comments
+          </Typography>
+          <TextField 
+            placeholder='Penny for your thoughts ...'
+            fullWidth
+            multiline
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                handleAddComment(e.target.value.trim());
+                e.target.value = '';
+                e.preventDefault();
+              }
+            }}
+          />
+          {comments.map((comment, index) => (
+            <CommentCard key={index} comment={comment} />
+          ))}
+        </div>
+      );
+    };
+   
     return activeTool.panel;
   };
 
