@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Annotation } from '../Annotation/Annotation';
-import { CommentCard } from '../Comment/Comment';
+import { Comment } from '../Comment/Comment';
 import { NoDataMessage } from '../StyledComponents';
 import { TextField, Typography } from '@mui/material';
 import './Toolbar.styles.css';
@@ -12,14 +12,9 @@ export const Toolbar = ({
   onDeleteAnnotation,
 }) => {
   const [activeTool, setActiveTool] = useState(null);
-  const [comments, setComments] = useState([]);
 
   const handleToolClick = (tool) => {
     setActiveTool(activeTool === tool ? null : tool);
-  };
-
-  const handleAddComment = (comment) => {
-    setComments([...comments, comment]);
   };
 
   const renderPanelContent = () => {
@@ -67,28 +62,7 @@ export const Toolbar = ({
     };
 
     if (activeTool.name ==='Comments') {
-      return (
-        <div className='comments'>
-          <Typography variant='h6' gutterBottom>
-            Comments
-          </Typography>
-          <TextField 
-            placeholder='Penny for your thoughts ...'
-            fullWidth
-            multiline
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && e.target.value.trim() !== '') {
-                handleAddComment(e.target.value.trim());
-                e.target.value = '';
-                e.preventDefault();
-              }
-            }}
-          />
-          {comments.map((comment, index) => (
-            <CommentCard key={index} comment={comment} />
-          ))}
-        </div>
-      );
+      return <Comment />
     };
    
     return activeTool.panel;
