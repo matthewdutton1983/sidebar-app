@@ -1,12 +1,8 @@
-import { useState } from "react";
+import { useComments } from "./useComments";
 import { Card, TextField, Typography } from "@mui/material"
 
 export const Comment = () => {
-  const [comments, setComments] = useState([]);
-
-  const handleAddComment = (comment) => {
-    setComments([...comments, comment]);
-  };
+  const { comments, handleAddComment } = useComments();
 
   return (
     <div className='comments'>

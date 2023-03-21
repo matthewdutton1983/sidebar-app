@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Annotation } from '../Annotation/Annotation';
-import { Comment } from '../Comment/Comment';
-import { NoDataMessage } from '../StyledComponents';
+import { AnnotationPanel } from '../Annotation/Annotation';
+import { Comment } from '../Comments/Comments';
 import { TextField, Typography } from '@mui/material';
 import './Toolbar.styles.css';
 
@@ -10,6 +9,7 @@ export const Toolbar = ({
   position, 
   annotations, 
   onDeleteAnnotation,
+  comments,
 }) => {
   const [activeTool, setActiveTool] = useState(null);
 
@@ -21,29 +21,7 @@ export const Toolbar = ({
     if (!activeTool) return null;
 
     if (activeTool.name === 'Annotate') {
-      return (
-        <div className='annotations'>
-          <Typography variant='h6' gutterBottom>
-            Annotate Text
-          </Typography>
-          {annotations.length === 0 ? (
-            <NoDataMessage>
-              There are currently no annotations for this document.
-            </NoDataMessage>
-          ) : (
-            annotations.map((annotation, index) => (
-              <Annotation
-                key={index}
-                text={annotation.text}
-                timestamp={annotation.timestamp}
-                start={annotation.start}
-                end={annotation.end}
-                onDelete={() => onDeleteAnnotation(index)}
-              />
-            ))
-          )}
-        </div>
-      );
+      return <AnnotationPanel annotations={annotations} onDeleteAnnotation={onDeleteAnnotation}/>
     };
     
     if (activeTool.name ==='Tags') {
@@ -62,7 +40,7 @@ export const Toolbar = ({
     };
 
     if (activeTool.name ==='Comments') {
-      return <Comment />
+      return <Comment comments={comments}/>
     };
    
     return activeTool.panel;

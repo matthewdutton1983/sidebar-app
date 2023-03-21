@@ -45,7 +45,7 @@ export const Document = ({ onAnnotate }) => {
   const endOffset = range.endOffset;
 
   const span = document.createElement("span");
-  span.style.backgroundColor = "yellow";
+  span.style.backgroundColor = "#09A1AD";
   span.dataset.startOffset = startOffset;
   span.dataset.endOffset = endOffset;
   range.surroundContents(span);
@@ -64,7 +64,7 @@ export const Document = ({ onAnnotate }) => {
   };
 
   return (
-      <div 
+    <div 
       className='document'
       onMouseUp={handleMouseUp}
       >

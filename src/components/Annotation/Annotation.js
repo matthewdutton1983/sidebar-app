@@ -1,8 +1,34 @@
 import { useState } from 'react';
 import { IconButton, Menu, Popover, ListItemText, ListItemIcon, Typography } from '@mui/material';
-import { StyledListItem, ListItemIconWrapper, AnnotationText, StyledMenuItem } from '../StyledComponents';
+import { StyledListItem, ListItemIconWrapper, NoDataMessage, AnnotationText, StyledMenuItem } from '../StyledComponents';
 import { InfoRounded, MoreVertRounded, DeleteRounded } from '../IconImports';
 import './Annotation.styles.css';
+
+export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
+  return (
+    <div className='annotations'>
+      <Typography variant='h6' gutterBottom>
+        Annotate Text
+      </Typography>
+      {annotations.length === 0 ? (
+        <NoDataMessage>
+          There are currently no annotations for this document.
+        </NoDataMessage>
+      ) : (
+        annotations.map((annotation, index) => (
+          <Annotation
+            key={index}
+            text={annotation.text}
+            timestamp={annotation.timestamp}
+            start={annotation.start}
+            end={annotation.end}
+            onDelete={() => onDeleteAnnotation(index)}
+          />
+        ))
+      )}
+    </div>
+  );
+};
 
 export const Annotation = ({ text, timestamp, start, end, onDelete }) => { 
   const [infoAnchorEl, setInfoAnchorEl] = useState(null);
@@ -97,9 +123,7 @@ export const Annotation = ({ text, timestamp, start, end, onDelete }) => {
           }}
         >
           <Typography sx={{ p: 2 }}>
-            <b>Start:</b> {start}
-            <br />
-            <b>End:</b> {end}
+            <b>Offsets:</b> {start} - {end}
             <br />
             <b>Created:</b> {timestamp.toLocaleString()}
           </Typography>

@@ -1,38 +1,13 @@
-import { useState } from 'react';
 import { leftTools, rightTools } from './data/ToolsData';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import { Document } from './components/Document/Document';
+import { useAnnotations } from './components/Annotation/useAnnotations';
+import { useComments } from './components/Comments/useComments';
 import './App.css';
 
 function App() {
-  const [annotations, setAnnotations] = useState([]);
-  
-  const handleAddAnnotation = (annotation) => {
-    setAnnotations((prevAnnotations) => [...prevAnnotations, annotation]);
-  };
-
-  const handleDeleteAnnotation = (index) => {
-    const annotationToDelete = annotations[index];
-    const spanElements = document.getElementsByTagName("span");
-    
-    for (let span of spanElements) {
-      const startOffset = parseInt(span.dataset.startOffset, 10);
-      const endOffset = parseInt(span.dataset.endOffset, 10);
-      
-      if (
-        startOffset === annotationToDelete.start &&
-        endOffset === annotationToDelete.end
-      ) {
-        const parent = span.parentNode;
-        const textNode = document.createTextNode(span.textContent);
-        parent.replaceChild(textNode, span);
-        break;
-      }
-    }
-    
-    setAnnotations((prevAnnotations) => prevAnnotations.filter((_, i) => i !== index)
-    );
-  };
+  const { annotations, handleAddAnnotation, handleDeleteAnnotation } = useAnnotations();
+  const { comments } = useComments();
 
   return (
     <div className='container'>
@@ -45,7 +20,8 @@ function App() {
         tools={rightTools} 
         position='right'
         annotations={annotations} 
-        onDeleteAnnotation={handleDeleteAnnotation} 
+        onDeleteAnnotation={handleDeleteAnnotation}
+        comments={comments}
       />
     </div>
   );
