@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Button, Card, Grid, TextField, Typography } from "@mui/material"
+import { Button, Card, Grid, TextField, Typography } from "@mui/material";
+import { ReplyRounded } from "@mui/icons-material";
 import { NoDataMessage } from "../StyledComponents";
 import { useComments } from "./useComments";
 
@@ -14,10 +15,6 @@ export const Comment = () => {
     }
   };
 
-  const handleCancel = () => {
-    setCommentText('');
-  };
-
   return (
     <div className='comments'>
       <Typography variant='h6' gutterBottom>
@@ -26,23 +23,13 @@ export const Comment = () => {
       <TextField 
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
-        placeholder='Add your comment ...'
+        placeholder='Add a comment ...'
         fullWidth
         multiline
-        // onKeyDown={(e) => {
-        //   if (e.key === 'Enter' && e.target.value.trim() !== '') {
-        //     handleAddComment(e.target.value.trim());
-        //     e.target.value = '';
-        //     e.preventDefault();
-        //   }
-        // }}
       />
       <Grid container justifyContent='flex-end' style={{ marginTop: 8 }}>
-        <Button color='primary' onClick={handleCancel}>
-          Cancel
-        </Button>
         <Button color='primary' onClick={handleSubmit} style={{ marginLeft: 8 }}>
-          Submit
+          Send
         </Button>
       </Grid>
       {comments.length === 0 ? (
@@ -55,8 +42,9 @@ export const Comment = () => {
             <Typography variant='subtitle2'>{comment.author} wrote:</Typography>
             <Typography variant='body1' style={{ marginTop: 8}}>{comment.text}</Typography>
             <Typography variant='caption' style={{ marginTop: 8}}>{comment.timestamp}</Typography>
-            <Button size='small' style={{ marginLeft: 8}}>Reply</Button>
-            {/* <Typography variant='body1'>{comment}</Typography> */}
+            <Button>
+              <ReplyRounded /> Reply
+            </Button> 
           </Card>
         ))
       )}
