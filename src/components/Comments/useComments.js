@@ -12,5 +12,8 @@ export const useComments = () => {
     setComments((prevComments) => [...prevComments, newComment]);
   };
 
-  return { comments, handleAddComment };
+  return { 
+    comments, 
+    handleAddComment 
+  };
 };

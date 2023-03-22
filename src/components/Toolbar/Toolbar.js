@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { AnnotationPanel } from '../Annotation/Annotation';
 import { Comment } from '../Comments/Comments';
-import { TextField, Typography } from '@mui/material';
 import './Toolbar.styles.css';
 
 export const Toolbar = ({ 
@@ -12,35 +11,29 @@ export const Toolbar = ({
   comments,
 }) => {
   const [activeTool, setActiveTool] = useState(null);
+  const [tags, setTags] = useState([]);
 
-  const handleToolClick = (tool) => {
+    const handleToolClick = (tool) => {
     setActiveTool(activeTool === tool ? null : tool);
+  };
+  
+  const handleAddTag = (tag) => {
+    setTags([...tags, tag]);
+  };
+
+  const handleDeleteTag = (tagToDelete) => {
+    setTags(tags.filter((tag) => tag !== tagToDelete));
   };
 
   const renderPanelContent = () => {
     if (!activeTool) return null;
 
     if (activeTool.name === 'Annotate') {
-      return <AnnotationPanel annotations={annotations} onDeleteAnnotation={onDeleteAnnotation}/>
-    };
-    
-    if (activeTool.name ==='Tags') {
-      return (
-        <div className='tags'>
-          <Typography variant='h6' gutterBottom>
-            Categorize Document
-          </Typography>
-          <TextField 
-            placeholder='Add a new tag and press Enter'
-            fullWidth
-            multiline
-          />
-        </div>
-      );
+      return (<AnnotationPanel annotations={annotations} onDeleteAnnotation={onDeleteAnnotation}/>);
     };
 
     if (activeTool.name ==='Comments') {
-      return <Comment comments={comments}/>
+      return (<Comment comments={comments}/>);
     };
    
     return activeTool.panel;

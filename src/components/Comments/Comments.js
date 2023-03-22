@@ -44,7 +44,7 @@ export const Comment = () => {
               <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginTop: 8 }}>
                 <Typography variant='caption'>{comment.timestamp}</Typography>
                 <Button>
-                  <ReplyRounded /> Reply
+                  <ReplyRounded style={{ marginRight: 8 }}/> Reply
                 </Button>
               </Box>
           </Card>
