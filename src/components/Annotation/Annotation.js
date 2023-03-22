@@ -1,22 +1,28 @@
 import { useState } from 'react';
-import { IconButton, Menu, Popover, ListItemText, ListItemIcon, Typography, Modal, Button, Box, TextField, Chip } from '@mui/material';
-import { StyledListItem, ListItemIconWrapper, NoDataMessage, AnnotationText, StyledMenuItem } from '../StyledComponents';
+import { 
+  IconButton, Menu, Popover, ListItemText, ListItemIcon, Drawer, 
+  Typography, Button, Box, TextField, Chip, Tabs, Tab 
+} from '@mui/material';
+import { 
+  StyledListItem, ListItemIconWrapper, NoDataMessage, 
+  AnnotationText, StyledMenuItem 
+} from '../StyledComponents';
 import { InfoRounded, MoreVertRounded, DeleteRounded } from '../IconImports';
 import './Annotation.styles.css';
-import { AddRounded } from '@mui/icons-material';
 
 export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [newTemplateName, setNewTemplateName] = useState('');
   const [newTemplateLabels, setNewTemplateLabels] = useState([]);
   const [newLabelValue, setNewLabelValue] = useState('');
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+  const handleOpenDrawer = () => {
+    setIsDrawerOpen(true);
   };
 
-  const handleCloseModal =() => {
-    setIsModalOpen(false);
+  const handleCloseDrawer =() => {
+    setIsDrawerOpen(false);
     setNewTemplateName('');
   };
 
@@ -45,13 +51,17 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
     console.log(`Creating new template: ${newTemplateName}`)
   }
 
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
   return (
     <div className='annotations'>
       <Typography variant='h6' gutterBottom>
         Annotate Text
       </Typography>
-      <Button variant='contained' onClick={handleOpenModal} style={{ marginBottom: '15px' }}>
-        Create New Template
+      <Button variant='contained' onClick={handleOpenDrawer} style={{ marginBottom: '15px' }}>
+        Manage Templates
       </Button>
       {annotations.length === 0 ? (
         <NoDataMessage>
@@ -69,47 +79,69 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
           />
         ))
       )}
-      <Modal open={isModalOpen} onClose={handleCloseModal}>
-          <div className='modal'>
-            <Typography variant='h6' gutterBottom>
-              Create New Template
+       <Drawer
+        anchor='right' 
+        open={isDrawerOpen} 
+        onClose={handleCloseDrawer} 
+        PaperProps={{ sx: {width: '50%' } }}
+       >
+        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 3 }}>
+          <Box sx={{ width: '100%', overflow: 'auto', flex: 1 }}>
+            <Typography variant='h6' gutterBottom sx={{ textAlign: 'center'}}>
+              Manage Templates
             </Typography>
-            <TextField 
-              placeholder='Please enter a name for this Annotation Template'
-              value={newTemplateName}
-              onChange={handleInputChange}
-              fullWidth
-              margin='normal'
-            />
-            <Box display='flex' alignItems='center'>
-              <TextField
-                placeholder='Add a new label and press Enter'
-                value={newLabelValue}
-                onChange={handleLabelInputChange}
-                margin='normal'
-                sx={{ flex: '1' }}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleAddNewLabel();
-                  }
-                }}
-              />
+            <Tabs value={selectedTab} onChange={handleTabChange} style={{ borderBottom: '1px solid #e8e8e8' }}>
+              <Tab label='Select Existing Template' />
+              <Tab label='Create New Template' />
+            </Tabs>
+            {selectedTab === 0 && (
+              <Box mt={2}>
+                <Typography variant='body1'>TODO: Existing Templates</Typography>
+              </Box>
+            )}
+            {selectedTab === 1 && (
+              <>
+                <TextField 
+                  placeholder='Please enter a name for this Annotation Template'
+                  value={newTemplateName}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin='normal'
+                />
+                <Box display='flex' alignItems='center'>
+                  <TextField
+                    placeholder='Add a new label and press Enter'
+                    value={newLabelValue}
+                    onChange={handleLabelInputChange}
+                    margin='normal'
+                    sx={{ flex: '1' }}
+                    onKeyPress={(event) => {
+                      if (event.key === 'Enter') {
+                        handleAddNewLabel();
+                      }
+                    }}
+                  />
+                </Box>
+                <Box>
+                  {newTemplateLabels.map((label, index) => (
+                    <Chip key={index} label={label} onDelete={() => handleDeleteLabel(index)} style={{ margin: '4px' }} />
+                  ))}
+                </Box>                
+              </>
+            )}
+            <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, p: 3, bgcolor: 'background.paper' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
+                <Button variant='contained' color='primary' onClick={handleCreateTemplate}>
+                  Create
+                </Button>
+                <Button variant='contained' onClick={handleCloseDrawer} style={{ marginRight: '16px' }}>
+                  Cancel
+                </Button>
+              </Box>           
             </Box>
-            <Box>
-              {newTemplateLabels.map((label, index) => (
-                <Chip key={index} label={label} onDelete={() => handleDeleteLabel(index)} style={{ margin: '4px' }} />
-              ))}
-            </Box>
-            <Box display='flex' justifyContent='flex-end' mt={2}>
-              <Button variant='contained' onClick={handleCloseModal} style={{ marginRight: '16px' }}>
-                Cancel
-              </Button>
-              <Button variant='contained' color='primary' onClick={handleCreateTemplate}>
-                Create
-              </Button>
-            </Box>
-          </div>
-      </Modal>
+          </Box>
+        </Box>
+      </Drawer>
     </div>
   );
 };

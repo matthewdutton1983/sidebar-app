@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Chip, TextField, Typography } from '@mui/material';
+import { NoDataMessage } from "../StyledComponents";
 import './Classification.styles.css';
 
 export const Classification = ({ tags, onAddTag, onDeleteTag }) => {
@@ -25,14 +26,21 @@ export const Classification = ({ tags, onAddTag, onDeleteTag }) => {
         fullWidth
       />
       <div className='chips-container'>
-        {tags.map((tag, index) => (
-          <Chip
-            className='chip'
-            key={index}
-            label={tag}
-            onDelete={() => onDeleteTag(tag)}
-          />
-        ))}
+        {tags.length === 0 ? (
+          <NoDataMessage>
+            There are currently no tags for this document.
+          </NoDataMessage>
+        ) : (
+          tags.map((tag, index) => (
+            <Chip
+              className='chip'
+              key={index}
+              label={tag}
+              onDelete={() => onDeleteTag(tag)}
+              size='medium'
+            />
+          ))
+        )}
       </div>
     </div>
   );
