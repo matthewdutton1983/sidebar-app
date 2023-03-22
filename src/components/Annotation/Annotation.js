@@ -8,6 +8,7 @@ import {
   AnnotationText, StyledMenuItem 
 } from '../StyledComponents';
 import { InfoRounded, MoreVertRounded, DeleteRounded } from '../IconImports';
+import { isEmpty } from 'lodash';
 import './Annotation.styles.css';
 
 export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
@@ -63,7 +64,7 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
       <Button variant='contained' onClick={handleOpenDrawer} style={{ marginBottom: '15px' }}>
         Manage Templates
       </Button>
-      {annotations.length === 0 ? (
+      {isEmpty(annotations) ? (
         <NoDataMessage>
           There are currently no annotations for this document.
         </NoDataMessage>
