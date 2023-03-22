@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Grid, TextField, Typography } from "@mui/material";
 import { ReplyRounded } from "@mui/icons-material";
 import { NoDataMessage } from "../StyledComponents";
 import { useComments } from "./useComments";
@@ -39,12 +39,14 @@ export const Comment = () => {
       ) : (
         comments.map((comment, index) => (
           <Card key={index} style={{ marginTop: 8, marginBottom: 8, padding: 16 }}>
-            <Typography variant='subtitle2'>{comment.author} wrote:</Typography>
+            <Typography variant='subtitle1' fontWeight={'bold'}>{comment.author} wrote:</Typography>
             <Typography variant='body1' style={{ marginTop: 8}}>{comment.text}</Typography>
-            <Typography variant='caption' style={{ marginTop: 8}}>{comment.timestamp}</Typography>
-            <Button>
-              <ReplyRounded /> Reply
-            </Button> 
+              <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginTop: 8 }}>
+                <Typography variant='caption'>{comment.timestamp}</Typography>
+                <Button>
+                  <ReplyRounded /> Reply
+                </Button>
+              </Box>
           </Card>
         ))
       )}
