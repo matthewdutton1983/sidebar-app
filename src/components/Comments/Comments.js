@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { Button, Card, Grid, TextField, Typography } from "@mui/material";
-import { ReplyRounded } from "@mui/icons-material";
-import { NoDataMessage } from "../StyledComponents";
-import { useComments } from "./useComments";
+import { useState } from 'react';
+import { Button, Card, Grid, TextField, Typography } from '@mui/material';
+import { ReplyRounded } from '@mui/icons-material';
+import { NoDataMessage } from '../StyledComponents';
+import { useComments } from './useComments';
+import { isEmpty } from 'lodash';
 
 export const Comment = () => {
   const { comments, handleAddComment } = useComments();
@@ -32,7 +33,7 @@ export const Comment = () => {
           Send
         </Button>
       </Grid>
-      {comments.length === 0 ? (
+      {isEmpty(comments) ? (
         <NoDataMessage style={{ paddingTop: '15px' }}>
           No one has commented on this document.
         </NoDataMessage>

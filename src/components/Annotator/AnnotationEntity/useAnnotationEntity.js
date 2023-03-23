@@ -29,5 +29,9 @@ export const useAnnotations = () => {
     setAnnotations((prevAnnotations) => prevAnnotations.filter((_, i) => i !== index));
   };
 
-  return { annotations, handleAddAnnotation, handleDeleteAnnotation };
+  return { 
+    annotations, 
+    handleAddAnnotation, 
+    handleDeleteAnnotation,
+  };
 };

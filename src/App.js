@@ -1,7 +1,7 @@
 import { leftTools, rightTools } from './data/ToolsData';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import { Document } from './components/Document/Document';
-import { useAnnotations } from './components/Annotation/useAnnotations';
+import { useAnnotations } from './components/Annotator/AnnotationEntity/useAnnotationEntity';
 import { useComments } from './components/Comments/useComments';
 import './App.css';
 

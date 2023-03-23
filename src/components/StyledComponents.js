@@ -12,15 +12,16 @@ export const StyledMenuItem = styled(MenuItem)`
 }
 `
 
-export const StyledListItem = styled(ListItem)`
-  padding-left: 5;
-  padding-right: 0;
-  border-left: 6px solid #09ADA4;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-  }
-`;
+export const StyledListItem = styled(ListItem)(({ theme, color }) => ({
+  paddingLeft: theme.spacing(2),
+  paddingRight: 0,
+  borderLeft: `6px solid ${color}`,
+  borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+  },
+}));
+
 
 export const ListItemIconWrapper = styled(ListItemIcon)`
   min-width: 32px;

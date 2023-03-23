@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { Chip, TextField, Typography } from '@mui/material';
-import { NoDataMessage } from "../StyledComponents";
+import { NoDataMessage } from '../StyledComponents';
+import { isEmpty } from 'lodash';
 import './Classification.styles.css';
 
 export const Classification = ({ tags, onAddTag, onDeleteTag }) => {
@@ -26,7 +27,7 @@ export const Classification = ({ tags, onAddTag, onDeleteTag }) => {
         fullWidth
       />
       <div className='chips-container'>
-        {tags.length === 0 ? (
+        {isEmpty(tags) ? (
           <NoDataMessage>
             There are currently no tags for this document.
           </NoDataMessage>

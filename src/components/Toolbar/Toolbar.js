@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { AnnotationPanel } from '../Annotation/Annotation';
-import { Classification } from '../Classification/Classification';
+import { AnnotationPanel } from '../Annotator/AnnotationPanel/AnnotationPanel';
+import { Classification } from '../Classifier/Classification';
 import { Comment } from '../Comments/Comments';
 import './Toolbar.styles.css';
 

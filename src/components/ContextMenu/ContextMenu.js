@@ -7,7 +7,7 @@ export const ContextMenu = ({ active, position, onAnnotate, onSearch }) => {
   return(
     <Popover
       open={active}
-      anchorReference="anchorPosition"
+      anchorReference='anchorPosition'
       anchorPosition={{ top: position.y + 16, left: position.x }}
       onClose={() => {}}
       anchorOrigin={{
