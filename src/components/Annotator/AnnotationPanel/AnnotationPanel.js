@@ -59,7 +59,7 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
             Manage Templates
           </Typography>
           <br/>
-          <Tabs value={selectedTab} onChange={handleTabChange} style={{ borderBottom: '1px solid #e8e8e8' }}>
+          <Tabs value={selectedTab} onChange={handleTabChange} centered style={{ borderBottom: '1px solid #e8e8e8' }}>
             <Tab label='Select Existing Template' />
             <Tab label='Create New Template' />
           </Tabs>
@@ -85,9 +85,11 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
                     </Typography>
                     <TextField
                       value={newTemplateName}
+                      placeholder='This is a required field'
                       onChange={handleInputChange}
                       fullWidth
                       margin="normal"
+                      required
                     />
                   </Box>
                 </Grid>
@@ -105,9 +107,11 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
                       </Typography>
                       <TextField
                         value={newLabelValue}
+                        placeholder='This is a required field'
                         onChange={handleLabelInputChange}
                         margin="normal"
                         variant="outlined"
+                        required
                         sx={{ flex: "1", width: "100%" }}
                         onKeyPress={(event) => {
                           if (event.key === "Enter") {
@@ -164,7 +168,7 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
         )}
         <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, p: 3, bgcolor: 'background.paper' }}>
           <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
-              <Button variant='contained' color='primary' onClick={handleCreateTemplate}>
+              <Button variant='contained' color='primary' onClick={handleCreateTemplate} disabled={!newTemplateName || !newLabelValue}>
                 Create
               </Button>
               <Button variant='contained' onClick={handleCloseDrawer} style={{ marginRight: '16px' }}>
