@@ -1,57 +1,31 @@
-import { useState } from 'react';
-import { useBoolean } from 'react-use';
+import { useManageTemplates } from "../ManageTemplates/useManageTemplates";
 
 export const useAnnotationPanel = (annotations, onDeleteAnnotation) => {
-  const [isDrawerOpen, setIsDrawerOpen] = useBoolean(false);
-  const [newTemplateName, setNewTemplateName] = useState('');
-  const [newTemplateLabels, setNewTemplateLabels] = useState([]);
-  const [newLabelValue, setNewLabelValue] = useState('');
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [existingTemplates, setExistingTemplates] = useState([]);
+  const {
+    selectedTab,
+    newTemplateName,
+    newTemplateLabels,
+    newLabelValue,
+    handleInputChange,
+    handleLabelInputChange,
+    handleAddNewLabel,
+    handleDeleteLabel,
+    handleCreateTemplate,
+    handleTabChange,
+    isCreateTemplateEnabled,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    existingTemplates,
+    setExistingTemplates,
+  } = useManageTemplates();
 
   const handleOpenDrawer = () => {
     setIsDrawerOpen(true);
   };
 
-  const handleCloseDrawer =() => {
+  const handleCloseDrawer = () => {
     setIsDrawerOpen(false);
-    setNewTemplateName('');
-  };
-
-  const handleInputChange = (event) => {
-    setNewTemplateName(event.currentTarget.value);
-  };
-
-  const handleLabelInputChange = (event) => {
-    setNewLabelValue(event.target.value);
-  };
-
-  const handleAddNewLabel = () => {
-    if (newLabelValue.trim() !== '') {
-      setNewTemplateLabels([...newTemplateLabels, newLabelValue.trim()]);
-      setNewLabelValue('');
-    }
-  };
-
-  const handleDeleteLabel = (index) => {
-    const newLabels = [...newTemplateLabels];
-    newLabels.splice(index, 1);
-    setNewTemplateLabels(newLabels);
-  };
-
-  const handleCreateTemplate = () => {
-    const newTemplate = {
-      name: newTemplateName,
-      labels: newTemplateLabels
-    };
-    setExistingTemplates([...existingTemplates, newTemplate]);
-    setNewTemplateName('');
-    setNewTemplateLabels([]);
-    setSelectedTab(0);
-  }
-
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
+    handleInputChange({ currentTarget: { value: "" } });
   };
 
   const getAnnotations = () => {
@@ -73,10 +47,6 @@ export const useAnnotationPanel = (annotations, onDeleteAnnotation) => {
     name: newTemplateName.trim(),
     labels: newTemplateLabels,
   });
-
-  const isCreateTemplateEnabled = () => {
-    return newTemplateName.trim() !== '' && newTemplateLabels.length > 0;
-  };
 
   const handleSelectTemplate = (template) => {
     handleCloseDrawer();
@@ -106,6 +76,6 @@ export const useAnnotationPanel = (annotations, onDeleteAnnotation) => {
     getNewTemplate,
     isCreateTemplateEnabled,
     handleSelectTemplate,
-    handleDeleteTemplate
+    handleDeleteTemplate,
   };
 };

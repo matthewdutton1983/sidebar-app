@@ -1,12 +1,10 @@
-import { IconButton, Grid, TextField, Typography, Button, Drawer, Box, Tabs, Tab } from '@mui/material';
-import { AnnotationEntity } from '../AnnotationEntity/AnnotationEntity';
-import { NoDataMessage, StyledListItem } from '../../StyledComponents';
-import { labelColors } from '../../../utils/labelColors';
-import { useAnnotationPanel } from './useAnnotationPanel';
-import { DeleteRounded } from '../../IconImports';
-import { isEmpty } from 'lodash';
-import { ManageTemplates } from '../ManageTemplates/ManageTemplates';
-import '../AnnotationEntity/AnnotationEntity.styles.css';
+import { Typography, Button, Drawer } from "@mui/material";
+import { AnnotationEntity } from "../AnnotationEntity/AnnotationEntity";
+import { NoDataMessage } from "../../StyledComponents";
+import { useAnnotationPanel } from "./useAnnotationPanel";
+import { isEmpty } from "lodash";
+import { ManageTemplates } from "../ManageTemplates/ManageTemplates";
+import "../AnnotationEntity/AnnotationEntity.styles.css";
 
 export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
   const {
@@ -22,15 +20,19 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
     handleAddNewLabel,
     handleDeleteLabel,
     handleCreateTemplate,
-    handleTabChange
+    handleTabChange,
   } = useAnnotationPanel();
 
   return (
-    <div className='annotations'>
-      <Typography variant='h6' gutterBottom>
+    <div className="annotations">
+      <Typography variant="h6" gutterBottom>
         Annotate Text
       </Typography>
-      <Button variant='contained' onClick={handleOpenDrawer} style={{ marginBottom: '15px' }}>
+      <Button
+        variant="contained"
+        onClick={handleOpenDrawer}
+        style={{ marginBottom: "15px" }}
+      >
         Manage Templates
       </Button>
       {isEmpty(annotations) ? (
@@ -49,12 +51,12 @@ export const AnnotationPanel = ({ annotations, onDeleteAnnotation }) => {
           />
         ))
       )}
-       <Drawer
-        anchor='right' 
-        open={isDrawerOpen} 
-        onClose={handleCloseDrawer} 
-        PaperProps={{ sx: {width: '50%' } }}
-       >
+      <Drawer
+        anchor="right"
+        open={isDrawerOpen}
+        onClose={handleCloseDrawer}
+        PaperProps={{ sx: { width: "50%" } }}
+      >
         <ManageTemplates
           isDrawerOpen={isDrawerOpen}
           selectedTab={selectedTab}
