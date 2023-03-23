@@ -7,6 +7,7 @@ export const useAnnotationPanel = (annotations, onDeleteAnnotation) => {
   const [newTemplateLabels, setNewTemplateLabels] = useState([]);
   const [newLabelValue, setNewLabelValue] = useState('');
   const [selectedTab, setSelectedTab] = useState(0);
+  const [existingTemplates, setExistingTemplates] = useState([]);
 
   const handleOpenDrawer = () => {
     setIsDrawerOpen(true);
@@ -39,7 +40,14 @@ export const useAnnotationPanel = (annotations, onDeleteAnnotation) => {
   };
 
   const handleCreateTemplate = () => {
-    console.log(`Creating new template: ${newTemplateName}`)
+    const newTemplate = {
+      name: newTemplateName,
+      labels: newTemplateLabels
+    };
+    setExistingTemplates([...existingTemplates, newTemplate]);
+    setNewTemplateName('');
+    setNewTemplateLabels([]);
+    setSelectedTab(0);
   }
 
   const handleTabChange = (event, newValue) => {
@@ -70,6 +78,16 @@ export const useAnnotationPanel = (annotations, onDeleteAnnotation) => {
     return newTemplateName.trim() !== '' && newTemplateLabels.length > 0;
   };
 
+  const handleSelectTemplate = (template) => {
+    handleCloseDrawer();
+  };
+
+  const handleDeleteTemplate = (index) => {
+    const newTemplates = [...existingTemplates];
+    newTemplates.splice(index, 1);
+    setExistingTemplates(newTemplates);
+  };
+
   return {
     annotations: getAnnotations(),
     isDrawerOpen,
@@ -87,5 +105,7 @@ export const useAnnotationPanel = (annotations, onDeleteAnnotation) => {
     handleTabChange,
     getNewTemplate,
     isCreateTemplateEnabled,
+    handleSelectTemplate,
+    handleDeleteTemplate
   };
 };

@@ -3,7 +3,7 @@ import { IconButton, Menu, Popover, ListItemText, ListItemIcon, Typography } fro
 import { StyledListItem, ListItemIconWrapper, AnnotationText, StyledMenuItem } from '../../StyledComponents';
 import { InfoRounded, MoreVertRounded, DeleteRounded } from '../../IconImports';
 
-export const Annotation = ({ text, timestamp, start, end, onDelete }) => { 
+export const AnnotationEntity = ({ text, timestamp, start, end, onDelete }) => { 
   const [infoAnchorEl, setInfoAnchorEl] = useState(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
