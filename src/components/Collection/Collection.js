@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Alert,
   Button,
@@ -12,9 +12,23 @@ import "./Collection.styles.css";
 import { CreateCollectionModal } from "./CreateCollectionModal";
 
 export const Collection = () => {
+  const [collections, setCollections] = useState(() => {
+    const savedCollections = localStorage.getItem("collections");
+    return savedCollections ? JSON.parse(savedCollections) : [];
+  });
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [collections, setCollections] = useState([]);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("collections", JSON.stringify(collections));
+  }, [collections]);
+
+  useEffect(() => {
+    const storedCollections = JSON.parse(localStorage.getItem("collections"));
+    if (storedCollections) {
+      setCollections(storedCollections);
+    }
+  }, []);
 
   const handleCreateCollection = (newCollection) => {
     setCollections([...collections, newCollection]);
