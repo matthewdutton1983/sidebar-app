@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Home from "./pages/Home";
-import Collection from "./pages/Collection";
-import SmartViewer from "./pages/SmartViewer";
+import { Home } from "./pages/Home";
+import { Collection } from "./pages/Collection";
+import { SmartViewer } from "./pages/SmartViewer";
 import "./App.css";
 
 function App() {

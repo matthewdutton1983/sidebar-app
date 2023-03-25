@@ -1,5 +1,9 @@
-function Home() {
-  return <h1>This is the home page</h1>;
-}
+import { Collection } from "../components/Collection/Collection";
 
-export default Home;
+export const Home = () => {
+  return (
+    <div>
+      <Collection />
+    </div>
+  );
+};
