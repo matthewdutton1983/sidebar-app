@@ -1,50 +1,29 @@
 import { useState } from "react";
-// import { AnnotationPanel } from "../Annotator/AnnotationPanel/AnnotationPanel";
-import { Classification } from "../Classifier/Classification";
-import { Comment } from "../Comments/Comments";
+import { Annotator } from "../Annotator/Annotator";
+import { Classifier } from "../Classifier/Classifier";
+import { Comments } from "../Comments/Comments";
 import "./Toolbar.styles.css";
 
-export const Toolbar = ({
-  tools,
-  position,
-  // annotations,
-  // onDeleteAnnotation,
-  comments,
-}) => {
+export const Toolbar = ({ tools, position }) => {
   const [activeTool, setActiveTool] = useState(null);
-  const [tags, setTags] = useState([]);
 
   const handleToolClick = (tool) => {
     setActiveTool(activeTool === tool ? null : tool);
   };
 
-  const handleAddTag = (tag) => {
-    setTags([...tags, tag]);
-  };
-
-  const handleDeleteTag = (tagToDelete) => {
-    setTags(tags.filter((tag) => tag !== tagToDelete));
-  };
-
   const renderPanelContent = () => {
     if (!activeTool) return null;
 
-    // if (activeTool.name === 'Annotate') {
-    //   return (<AnnotationPanel annotations={annotations} onDeleteAnnotation={onDeleteAnnotation}/>);
-    // };
+    if (activeTool.name === "Annotate") {
+      return <Annotator />;
+    }
 
     if (activeTool.name === "Tags") {
-      return (
-        <Classification
-          tags={tags}
-          onAddTag={handleAddTag}
-          onDeleteTag={handleDeleteTag}
-        />
-      );
+      return <Classifier />;
     }
 
     if (activeTool.name === "Comments") {
-      return <Comment comments={comments} />;
+      return <Comments />;
     }
 
     return activeTool.panel;

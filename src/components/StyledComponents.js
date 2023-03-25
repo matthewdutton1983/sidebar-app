@@ -1,5 +1,5 @@
-import { styled } from '@mui/system';
-import { MenuItem, ListItem, ListItemIcon, Typography } from '@mui/material';
+import { styled } from "@mui/system";
+import { MenuItem, ListItem, ListItemIcon, Typography } from "@mui/material";
 
 export const StyledMenuItem = styled(MenuItem)`
   min-width: 140px;
@@ -9,24 +9,23 @@ export const StyledMenuItem = styled(MenuItem)`
   justify-content: flex-start;
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
-}
-`
+  }
+`;
 
 export const StyledListItem = styled(ListItem)(({ theme, color }) => ({
   paddingLeft: theme.spacing(2),
   paddingRight: 0,
   borderLeft: `6px solid ${color}`,
-  borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-  '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+  borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+  "&:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.04)",
   },
 }));
-
 
 export const ListItemIconWrapper = styled(ListItemIcon)`
   min-width: 32px;
   justify-content: flex-end;
-`
+`;
 
 export const AnnotationText = styled(Typography)`
   display: -webkit-box;
@@ -37,13 +36,7 @@ export const AnnotationText = styled(Typography)`
   font-size: 0.875rem;
 `;
 
-export const NoDataMessage = styled(Typography)`
-  text-align: left;
-  font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.6);
-`;
-
-export const ContextMenuWrapper = styled('div')`
+export const ContextMenuWrapper = styled("div")`
   display: flex;
   flex-direction: column;
   padding: 4px;

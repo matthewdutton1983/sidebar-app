@@ -1,54 +1,103 @@
-import { useState } from 'react';
-import { Button, Card, Grid, TextField, Typography } from '@mui/material';
-import { ReplyRounded } from '@mui/icons-material';
-import { NoDataMessage } from '../StyledComponents';
-import { useComments } from './useComments';
-import { isEmpty } from 'lodash';
+import { useState, useEffect } from "react";
+import { Button, Card, TextField, Typography } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
+import "./Comments.styles.css";
 
-export const Comment = () => {
-  const { comments, handleAddComment } = useComments();
-  const [commentText, setCommentText] = useState('');
+export const Comments = () => {
+  const [comments, setComments] = useState(() => {
+    const storedComments = localStorage.getItem("comments");
+    return storedComments ? JSON.parse(storedComments) : [];
+  });
+  const [commentText, setCommentText] = useState("");
+
+  useEffect(() => {
+    console.log(
+      JSON.stringify({ message: "Comments state updated", data: comments })
+    );
+    localStorage.setItem("comments", JSON.stringify(comments));
+  }, [comments]);
+
+  const handleAddComment = (text) => {
+    const comment = {
+      id: uuidv4(),
+      author: "Matthew Dutton", // replace with actual user
+      text: text,
+      timestamp: new Date().toLocaleString(),
+    };
+    setComments([...comments, comment]);
+
+    console.log(
+      JSON.stringify({
+        message: "Comment added",
+        commentId: comment.id,
+        author: comment.author,
+        text: comment.text,
+        timestamp: comment.timestamp,
+      })
+    );
+  };
+
+  const handleDeleteComment = (commentId) => {
+    setComments(comments.filter((comment) => comment.id !== commentId));
+    console.log(
+      JSON.stringify({ message: "Comment deleted", data: commentId })
+    );
+  };
 
   const handleSubmit = () => {
-    if (commentText.trim() !== '') {
+    if (commentText.trim() !== "") {
       handleAddComment(commentText.trim());
-      setCommentText('');
+      setCommentText("");
     }
   };
 
+  console.log(JSON.stringify({ message: "Rendering Comments component" }));
+
   return (
-    <div className='comments'>
-      <Typography variant='h6' gutterBottom>
+    <div>
+      <Typography variant="h6" gutterBottom>
         Comments
       </Typography>
-      <TextField 
+      <TextField
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
-        placeholder='Add a comment ...'
+        placeholder="Add a comment ..."
         fullWidth
         multiline
       />
-      <Grid container justifyContent='flex-end' style={{ marginTop: 8 }}>
-        <Button color='primary' onClick={handleSubmit} style={{ marginLeft: 8 }}>
+      <div className="comments-actions">
+        <Typography variant="body2">
+          Total comments: {comments.length}
+        </Typography>
+        <Button
+          className="comments-send-btn"
+          color="primary"
+          onClick={handleSubmit}
+        >
           Send
         </Button>
-      </Grid>
-      {isEmpty(comments) ? (
-        <NoDataMessage style={{ paddingTop: '15px' }}>
-          No one has commented on this document.
-        </NoDataMessage>
-      ) : (
-        comments.map((comment, index) => (
-          <Card key={index} style={{ marginTop: 8, marginBottom: 8, padding: 16 }}>
-            <Typography variant='subtitle2'>{comment.author} wrote:</Typography>
-            <Typography variant='body1' style={{ marginTop: 8}}>{comment.text}</Typography>
-            <Typography variant='caption' style={{ marginTop: 8}}>{comment.timestamp}</Typography>
-            <Button>
-              <ReplyRounded /> Reply
-            </Button> 
-          </Card>
-        ))
-      )}
+      </div>
+      {comments.map((comment, index) => (
+        <Card
+          key={index}
+          style={{ marginTop: 8, marginBottom: 8, padding: 16 }}
+        >
+          <Typography variant="subtitle1" fontWeight={"bold"}>
+            {comment.author} wrote:
+          </Typography>
+          <Typography variant="body1" style={{ marginTop: 8 }}>
+            {comment.text}
+          </Typography>
+          <div className="comments-actions">
+            <Typography variant="body2">{comment.timestamp}</Typography>
+            {comment.author === "Matthew Dutton" && (
+              <Button onClick={() => handleDeleteComment(comment.id)}>
+                Delete
+              </Button>
+            )}
+          </div>
+        </Card>
+      ))}
     </div>
   );
 };

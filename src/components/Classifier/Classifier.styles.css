@@ -1,0 +1,20 @@
+.chips-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.tags-count {
+  margin-bottom: 15px;
+}
+
+.chips-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}

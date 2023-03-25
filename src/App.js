@@ -1,27 +1,18 @@
-import { leftTools, rightTools } from "./data/ToolsData";
-import { Toolbar } from "./components/Toolbar/Toolbar";
-import { Document } from "./components/Document/Document";
-import { useComments } from "./components/Comments/useComments";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Home from "./pages/Home";
+import Collection from "./pages/Collection";
+import SmartViewer from "./pages/SmartViewer";
 import "./App.css";
 
 function App() {
-  // const { annotations, handleAddAnnotation, handleDeleteAnnotation } =
-  //   useAnnotations();
-  const { comments } = useComments();
-
   return (
-    <div className="container">
-      <Toolbar tools={leftTools} position="left" />
-      {/* <Document onAnnotate={handleAddAnnotation} /> */}
-      <Document />
-      <Toolbar
-        tools={rightTools}
-        position="right"
-        // annotations={annotations}
-        // onDeleteAnnotation={handleDeleteAnnotation}
-        comments={comments}
-      />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/collection" element={<Collection />} />
+        <Route path="/smartviewer" element={<SmartViewer />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
