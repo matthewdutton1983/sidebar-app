@@ -4,13 +4,16 @@ import { useCallback, useState } from "react";
 import { logger } from "../../logger";
 import "./Modals.styles.css";
 
-export const AddDocumentsModal = ({ open, onClose }) => {
+export const AddDocumentsModal = ({ open, onClose, onDocumentsAdded }) => {
   const [activeTab, setActiveTab] = useState(0);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-    logger("Files dropped into the dropzone.", { acceptedFiles });
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      logger("Files dropped into the dropzone.", { acceptedFiles });
+      onDocumentsAdded(acceptedFiles);
+    },
+    [onDocumentsAdded]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -30,8 +33,8 @@ export const AddDocumentsModal = ({ open, onClose }) => {
             onChange={handleTabChange}
             sx={{ flexGrow: 1, paddingTop: 1 }}
           >
-            <Tab label="Search Content Cloud" />
-            <Tab label="Dropzone" />
+            <Tab label="Other Methods" />
+            <Tab label="Upload from Computer" />
           </Tabs>
         </Box>
         <Box
@@ -45,7 +48,7 @@ export const AddDocumentsModal = ({ open, onClose }) => {
           {activeTab === 0 && (
             <div className="tab-content" style={{ flexGrow: 1 }}>
               <Typography variant="h6" color="textPrimary">
-                Upload documents from your computer
+                Other methods
               </Typography>
               {/* code for uploading from computer */}
             </div>

@@ -1,5 +1,12 @@
 import { Link, useParams } from "react-router-dom";
-import { Button, IconButton, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { AddRounded, HomeRounded } from "../components/IconImports";
 import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
@@ -9,7 +16,10 @@ export const CollectionPage = () => {
   const { collectionId } = useParams();
 
   const collections = JSON.parse(localStorage.getItem("collections")) || [];
-  const collection = collections.find((c) => String(c.id) === collectionId);
+  const collectionIndex = collections.findIndex(
+    (c) => String(c.id) === collectionId
+  );
+  const collection = collections[collectionIndex];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,6 +28,18 @@ export const CollectionPage = () => {
   };
 
   const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const setAddedDocuments = (documents) => {
+    const updatedCollection = {
+      ...collection,
+      documents: collection.documents.concat(
+        documents.map((doc) => ({ name: doc.name, path: doc.path }))
+      ),
+    };
+    collections[collectionIndex] = updatedCollection;
+    localStorage.setItem("collections", JSON.stringify(collections));
     setIsModalOpen(false);
   };
 
@@ -76,7 +98,15 @@ export const CollectionPage = () => {
                 Add Documents
               </Button>
             </div>
-          ) : null}
+          ) : (
+            <List>
+              {collection.documents.map((doc, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={doc.name} secondary={doc.path} />
+                </ListItem>
+              ))}
+            </List>
+          )}
         </div>
       </div>
       <AddDocumentsModal
