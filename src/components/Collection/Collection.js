@@ -11,11 +11,13 @@ export const Collection = () => {
     const savedCollections = localStorage.getItem("collections");
     return savedCollections ? JSON.parse(savedCollections) : [];
   });
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isRequiredSnackbarOpen, setIsRequiredSnackbarOpen] = useState(false);
   const [isCreatedSnackbarOpen, setIsCreatedSnackbarOpen] = useState(false);
   const [isDeletedSnackbarOpen, setIsDeletedSnackbarOpen] = useState(false);
   const [isRenameSnackbarOpen, setIsRenameSnackbarOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,12 +32,15 @@ export const Collection = () => {
   }, []);
 
   const handleCreateCollection = (newCollection) => {
-    setCollections([...collections, newCollection]);
+    const updatedCollections = [...collections, newCollection];
+    localStorage.setItem("collections", JSON.stringify(updatedCollections));
+    setCollections(updatedCollections);
     setIsCreateModalOpen(false);
     setIsRequiredSnackbarOpen(false);
     setIsDeletedSnackbarOpen(false);
     setIsCreatedSnackbarOpen(true);
     setIsRenameSnackbarOpen(false);
+    navigate(`/collection/${newCollection.id}`);
   };
 
   const handleModalClose = () => {

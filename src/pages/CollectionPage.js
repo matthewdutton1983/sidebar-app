@@ -3,6 +3,7 @@ import { Button, Typography, IconButton } from "@mui/material";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { AddRounded, HomeRounded } from "../components/IconImports";
+import { CollectionNotFound } from "../components/Collection/CollectionNotFound";
 import "../App.css";
 
 export const CollectionPage = () => {
@@ -14,9 +15,15 @@ export const CollectionPage = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const collection = JSON.parse(localStorage.getItem("collections")).find(
-    (c) => c.id === collectionId
-  );
+  const collections = JSON.parse(localStorage.getItem("collections")) || [];
+  const collection = collections.find((c) => String(c.id) === collectionId);
+
+  console.log("collectionId", collectionId);
+  console.log("collections", collections);
+
+  if (!collection) {
+    return <CollectionNotFound />;
+  }
 
   return (
     <div className="collection-page">

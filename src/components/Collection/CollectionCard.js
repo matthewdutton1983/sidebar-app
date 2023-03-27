@@ -18,7 +18,7 @@ import { DeleteCollectionModal } from "./DeleteCollectionModal";
 import { RenameCollectionModal } from "./RenameCollectionModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import FaceIcon from "@mui/icons-material/Face";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export const CollectionCard = ({
   collection,
