@@ -1,4 +1,5 @@
 import { Button, Modal, Typography } from "@mui/material";
+import { logger } from "../../logger";
 import "./Modals.styles.css";
 
 export const DeleteCollectionModal = ({
@@ -7,17 +8,22 @@ export const DeleteCollectionModal = ({
   handleCancel,
 }) => {
   const handleDeleteClick = () => {
+    logger("Delete collection modal closed.", { isOpen: open });
     handleCancel();
   };
 
   const handleDeleteConfirm = () => {
+    logger("Collection deletion confirmed.", { isOpen: open });
     handleConfirm();
     handleCancel();
   };
 
   const handleDeleteCancel = () => {
+    logger("Collection deletion cancelled.", { isOpen: open });
     handleCancel();
   };
+
+  logger("Rendering DeleteCollectionModal component.", { isOpen: open });
 
   return (
     <Modal open={open} onClose={handleDeleteCancel}>

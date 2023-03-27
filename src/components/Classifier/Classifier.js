@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Chip, TextField, Typography } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
+import { logger } from "../../logger";
 import "./Classifier.styles.css";
 
 export const Classifier = () => {
@@ -11,7 +12,7 @@ export const Classifier = () => {
   const [tagText, setTagText] = useState("");
 
   useEffect(() => {
-    console.log(JSON.stringify({ message: "Tags state updated", data: tags }));
+    logger("Tags state updated.", { tags });
     localStorage.setItem("tags", JSON.stringify(tags));
   }, [tags]);
 
@@ -28,29 +29,23 @@ export const Classifier = () => {
     setTags([...tags, tag]);
     setTagText("");
 
-    console.log(
-      JSON.stringify({
-        message: "Tag added",
-        tagId: tag.id,
-        author: tag.author,
-        text: tag.text,
-        timestamp: tag.timestamp,
-      })
-    );
+    logger("Tag added.", {
+      tagId: tag.id,
+      author: tag.author,
+      text: tag.text,
+      timestamp: tag.timestamp,
+    });
   };
 
   const handleDeleteTag = (tagToDelete) => {
     setTags(tags.filter((tag) => tag.id !== tagToDelete.id));
 
-    console.log(
-      JSON.stringify({
-        message: "Tag deleted",
-        tagId: tagToDelete.id,
-        author: tagToDelete.author,
-        text: tagToDelete.text,
-        timestamp: tagToDelete.timestamp,
-      })
-    );
+    logger("Tag deleted.", {
+      tagId: tagToDelete.id,
+      author: tagToDelete.author,
+      text: tagToDelete.text,
+      timestamp: tagToDelete.timestamp,
+    });
   };
 
   const handleKeyDown = (event) => {
@@ -60,7 +55,7 @@ export const Classifier = () => {
     }
   };
 
-  console.log(JSON.stringify({ message: "Rendering Classifier component" }));
+  logger("Rendering Classifier component.");
 
   return (
     <div className="classification">

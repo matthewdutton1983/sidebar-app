@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,14 +12,14 @@ import {
 import {
   DeleteRounded,
   EditRounded,
+  FaceRounded,
   MoreVertRounded,
   ShareRounded,
 } from "../IconImports";
 import { DeleteCollectionModal } from "../Modals/DeleteCollectionModal";
 import { RenameCollectionModal } from "../Modals/RenameCollectionModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import FaceIcon from "@mui/icons-material/Face";
-import { useState } from "react";
+import { logger } from "../../logger";
 
 export const CollectionCard = ({
   collection,
@@ -55,11 +56,16 @@ export const CollectionCard = ({
     },
   });
 
+  logger("CollectionCard component mounted.", { collection });
+
   return (
     <ThemeProvider theme={tooltipTheme}>
       <Card
         className="collection-card"
-        onDoubleClick={() => onDoubleClick(collection)}
+        onDoubleClick={() => {
+          logger("CollectionCard double clicked.", { collection });
+          onDoubleClick(collection);
+        }}
       >
         <CardContent
           className="collection-card-content"
@@ -74,7 +80,7 @@ export const CollectionCard = ({
             }}
           >
             <Chip
-              icon={<FaceIcon />}
+              icon={<FaceRounded />}
               label={`${collection.created_by}`}
               size="large"
             />
@@ -114,7 +120,13 @@ export const CollectionCard = ({
             </div>
           </div>
           <div style={{ height: "100px" }}>
-            <Tooltip className="tooltip" title={collection.name}>
+            <Tooltip
+              className="tooltip"
+              title={collection.name}
+              onMouseEnter={() => {
+                logger("Tooltip hovered.", { collection });
+              }}
+            >
               <Typography variant="h6" className="collection-name">
                 {collection.name}
               </Typography>
@@ -140,18 +152,29 @@ export const CollectionCard = ({
           open={showRenameModal}
           currentName={collection.name}
           handleConfirm={(newName) => {
+            logger("RenameCollectionModal confirmed.", {
+              collection,
+              newName,
+            });
             onRename(collection, newName);
             setShowRenameModal(false);
           }}
-          handleCancel={() => setShowRenameModal(false)}
+          handleCancel={() => {
+            logger("RenameCollectionModal canceled.", { collection });
+            setShowRenameModal(false);
+          }}
         />
         <DeleteCollectionModal
           open={showDeleteModal}
           handleConfirm={() => {
+            logger("DeleteCollectionModal confirmed.", { collection });
             onDelete(collection);
             setShowDeleteModal(false);
           }}
-          handleCancel={() => setShowDeleteModal(false)}
+          handleCancel={() => {
+            logger("DeleteCollectionModal canceled.", { collection });
+            setShowDeleteModal(false);
+          }}
         />
       </Card>
     </ThemeProvider>

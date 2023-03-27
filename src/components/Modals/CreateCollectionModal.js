@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Modal, TextField, Typography } from "@mui/material";
+import { logger } from "../../logger";
 import "./Modals.styles.css";
 
 export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
@@ -21,6 +22,8 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
       };
       onCreate(newCollection);
       setNewCollectionName("");
+
+      logger("New collection created.", { collection: newCollection });
     }
   };
 
@@ -28,6 +31,8 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
     setNewCollectionName("");
     onClose();
   };
+
+  logger("Rendering CreateCollectionModal component.");
 
   return (
     <Modal open={isOpen} onClose={onClose} className="modal">

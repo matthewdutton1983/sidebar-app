@@ -4,6 +4,7 @@ import { Box, Drawer, Tab, Tabs, Typography } from "@mui/material";
 import { ExistingTemplates } from "./ExistingTemplates";
 import { CreateTemplate } from "./CreateTemplate";
 import { labelColors } from "../../utils/labelColors";
+import { logger } from "../../logger";
 
 export const TemplateManager = ({ onClose }) => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -26,20 +27,24 @@ export const TemplateManager = ({ onClose }) => {
 
   const handleTabChange = (event, newSelectedTab) => {
     setSelectedTab(newSelectedTab);
+    logger(`Selected tab changed to ${newSelectedTab}`);
   };
 
   const handleInputChange = (event) => {
     setNewTemplateName(event.currentTarget.value);
+    logger(`Template name input value set to ${event.currentTarget.value}`);
   };
 
   const handleLabelInputChange = (event) => {
     setNewLabelValue(event.target.value);
+    logger(`New label input value set to ${event.target.value}`);
   };
 
   const handleAddNewLabel = () => {
     if (newLabelValue.trim() !== "") {
       setNewTemplateLabels([...newTemplateLabels, newLabelValue.trim()]);
       setNewLabelValue("");
+      logger("New label value added to template labels array");
     }
   };
 
@@ -47,11 +52,13 @@ export const TemplateManager = ({ onClose }) => {
     const newLabels = [...newTemplateLabels];
     newLabels.splice(index, 1);
     setNewTemplateLabels(newLabels);
+    logger(`Label with index ${index} deleted from template labels array`);
   };
 
   const handleCreateTemplate = () => {
     if (newTemplateName.trim() === "" || newTemplateLabels.length === 0) {
       setFormIncomplete(true);
+      logger("Template creation failed, template name or labels missing");
     } else {
       const newTemplate = {
         id: uuidv4(),
@@ -70,6 +77,7 @@ export const TemplateManager = ({ onClose }) => {
       setSelectedTab(0);
       setFormIncomplete(false);
       setNewTemplateCreated(true);
+      logger(`New template created with name ${newTemplate.name}`);
     }
   };
 
@@ -79,11 +87,13 @@ export const TemplateManager = ({ onClose }) => {
         (existingTemplate) => existingTemplate.id !== template.id
       )
     );
+    logger(`Template with id ${template.id} deleted`);
   };
 
   const handleSnackbarClose = () => {
     setFormIncomplete(false);
     setNewTemplateCreated(false);
+    logger("Snackbar closed");
   };
 
   return (

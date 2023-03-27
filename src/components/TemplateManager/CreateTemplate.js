@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { StyledListItem } from "../StyledComponents";
 import { DeleteRounded } from "../IconImports";
+import { logger } from "../../logger";
 
 export const CreateTemplate = ({
   newTemplateName,
@@ -25,6 +26,8 @@ export const CreateTemplate = ({
   formIncomplete,
   setFormIncomplete,
 }) => {
+  logger("Rendering CreateTemplate component");
+
   return (
     <>
       <Grid container alignItems="flex-start" spacing={2}>
@@ -134,7 +137,15 @@ export const CreateTemplate = ({
           <Button
             variant="contained"
             color="primary"
-            onClick={handleCreateTemplate}
+            onClick={() => {
+              if (newTemplateName.trim() && newTemplateLabels.length > 0) {
+                logger("Creating new template...");
+                handleCreateTemplate();
+              } else {
+                setFormIncomplete(true);
+                logger("Cannot create template: incomplete form");
+              }
+            }}
           >
             Create
           </Button>

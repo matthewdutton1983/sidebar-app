@@ -79,7 +79,11 @@ export const CollectionPage = () => {
           ) : null}
         </div>
       </div>
-      <AddDocumentsModal open={isModalOpen} onClose={handleCloseModal} />
+      <AddDocumentsModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        onDocumentsAdded={setAddedDocuments}
+      />
     </div>
   );
 };

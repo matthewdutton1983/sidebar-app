@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Card, TextField, Typography } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
+import { logger } from "../../logger";
 import "./Comments.styles.css";
 
 export const Comments = () => {
@@ -11,9 +12,7 @@ export const Comments = () => {
   const [commentText, setCommentText] = useState("");
 
   useEffect(() => {
-    console.log(
-      JSON.stringify({ message: "Comments state updated", data: comments })
-    );
+    logger("Comments state updated.", { comments });
     localStorage.setItem("comments", JSON.stringify(comments));
   }, [comments]);
 
@@ -26,22 +25,17 @@ export const Comments = () => {
     };
     setComments([...comments, comment]);
 
-    console.log(
-      JSON.stringify({
-        message: "Comment added",
-        commentId: comment.id,
-        author: comment.author,
-        text: comment.text,
-        timestamp: comment.timestamp,
-      })
-    );
+    logger("Comment added.", {
+      commentId: comment.id,
+      author: comment.author,
+      text: comment.text,
+      timestamp: comment.timestamp,
+    });
   };
 
   const handleDeleteComment = (commentId) => {
     setComments(comments.filter((comment) => comment.id !== commentId));
-    console.log(
-      JSON.stringify({ message: "Comment deleted", data: commentId })
-    );
+    logger("Comment deleted.", { commentId });
   };
 
   const handleSubmit = () => {
@@ -51,7 +45,7 @@ export const Comments = () => {
     }
   };
 
-  console.log(JSON.stringify({ message: "Rendering Comments component" }));
+  logger("Rendering Comments component.");
 
   return (
     <div>

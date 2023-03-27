@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@mui/material";
 import { ContextMenu } from "../ContextMenu/ContextMenu";
+import { logger } from "../../logger";
 import "./Document.styles.css";
 
 export const Document = ({ onAnnotate }) => {

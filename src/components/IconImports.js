@@ -3,6 +3,7 @@ export {
   CommentRounded,
   DeleteRounded,
   EditRounded,
+  FaceRounded,
   FormatListBulletedRounded,
   HomeRounded,
   InfoRounded,
