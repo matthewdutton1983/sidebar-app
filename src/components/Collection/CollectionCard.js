@@ -94,7 +94,7 @@ export const CollectionCard = ({
                     handleMenuClose();
                   }}
                 >
-                  <EditRounded sx={{ marginRight: "16px" }} />
+                  <EditRounded sx={{ marginRight: "24px" }} />
                   Rename
                 </MenuItem>
                 <MenuItem
@@ -103,11 +103,11 @@ export const CollectionCard = ({
                     handleMenuClose();
                   }}
                 >
-                  <DeleteRounded sx={{ marginRight: "16px" }} />
+                  <DeleteRounded sx={{ marginRight: "24px" }} />
                   Delete
                 </MenuItem>
                 <MenuItem>
-                  <ShareRounded sx={{ marginRight: "16px" }} />
+                  <ShareRounded sx={{ marginRight: "24px" }} />
                   Share
                 </MenuItem>
               </Menu>
