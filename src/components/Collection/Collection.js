@@ -15,6 +15,7 @@ export const Collection = () => {
   const [isRequiredSnackbarOpen, setIsRequiredSnackbarOpen] = useState(false);
   const [isCreatedSnackbarOpen, setIsCreatedSnackbarOpen] = useState(false);
   const [isDeletedSnackbarOpen, setIsDeletedSnackbarOpen] = useState(false);
+  const [isRenameSnackbarOpen, setIsRenameSnackbarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export const Collection = () => {
     setIsRequiredSnackbarOpen(false);
     setIsDeletedSnackbarOpen(false);
     setIsCreatedSnackbarOpen(true);
+    setIsRenameSnackbarOpen(false);
   };
 
   const handleModalClose = () => {
@@ -41,6 +43,7 @@ export const Collection = () => {
     setIsRequiredSnackbarOpen(false);
     setIsDeletedSnackbarOpen(false);
     setIsCreatedSnackbarOpen(false);
+    setIsRenameSnackbarOpen(false);
   };
 
   const handleRequiredSnackbarClose = () => {
@@ -55,6 +58,10 @@ export const Collection = () => {
     setIsDeletedSnackbarOpen(false);
   };
 
+  const handleRenameSnackbarClose = () => {
+    setIsDeletedSnackbarOpen(false);
+  };
+
   const handleCollectionClick = (collection) => {
     navigate(`/collection/${collection.id}`);
   };
@@ -62,6 +69,15 @@ export const Collection = () => {
   const handleDeleteCollection = (collection) => {
     setCollections(collections.filter((c) => c.id !== collection.id));
     setIsDeletedSnackbarOpen(true);
+  };
+
+  const handleRenameCollection = (collection, newName) => {
+    setCollections(
+      collections.map((c) =>
+        c.id === collection.id ? { ...c, name: newName } : c
+      )
+    );
+    setIsRenameSnackbarOpen(true);
   };
 
   return (
@@ -94,6 +110,7 @@ export const Collection = () => {
                   collection={collection}
                   onDoubleClick={() => handleCollectionClick(collection)}
                   onDelete={handleDeleteCollection}
+                  onRename={handleRenameCollection}
                 />
               )}
             </div>
@@ -125,6 +142,13 @@ export const Collection = () => {
         onClose={handleDeletedSnackbarClose}
       >
         <Alert severity="success">Collection deleted successfully</Alert>
+      </Snackbar>
+      <Snackbar
+        open={isRenameSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleRenameSnackbarClose}
+      >
+        <Alert severity="success">Collection name has been updated</Alert>
       </Snackbar>
     </div>
   );

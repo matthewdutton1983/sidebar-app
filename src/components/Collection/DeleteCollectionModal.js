@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Modal, Typography } from "@mui/material";
 import "./Collection.styles.css";
 

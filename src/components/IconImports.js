@@ -11,4 +11,5 @@ export {
   MoreVertRounded,
   SearchRounded,
   SellRounded,
+  ShareRounded,
 } from "@mui/icons-material";

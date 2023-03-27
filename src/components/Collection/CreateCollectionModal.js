@@ -49,6 +49,7 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
           id="collectionName"
           onChange={handleNewNameChange}
           value={newCollectionName}
+          multiline
         />
         <div className="modal-buttons">
           <Button variant="outlined" color="primary" onClick={handleClose}>

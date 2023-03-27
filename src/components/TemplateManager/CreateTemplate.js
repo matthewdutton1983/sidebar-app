@@ -139,7 +139,7 @@ export const CreateTemplate = ({
             Create
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
             onClick={() => setSelectedTab(0)}
             style={{ marginRight: "16px" }}
           >
