@@ -3,7 +3,6 @@ import { Button, IconButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { AddRounded, HomeRounded } from "../components/IconImports";
 import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
-import { CollectionNotFound } from "../components/Collection/CollectionNotFound";
 import "../components/Collection/Collection.styles.css";
 
 export const CollectionPage = () => {
@@ -23,7 +22,20 @@ export const CollectionPage = () => {
   };
 
   if (!collection) {
-    return <CollectionNotFound />;
+    return (
+      <div className="collection-page">
+        <div className="top-row">
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <IconButton>
+              <HomeRounded sx={{ fontSize: "36px" }} />
+            </IconButton>
+          </Link>
+          <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
+            Collection not found
+          </Typography>
+        </div>
+      </div>
+    );
   }
 
   return (
