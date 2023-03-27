@@ -21,7 +21,10 @@ export const DeleteCollectionModal = ({
 
   return (
     <Modal open={open} onClose={handleDeleteCancel}>
-      <div className="modal-content">
+      <div
+        className="modal-content"
+        style={{ width: "400px", maxHeight: "100%" }}
+      >
         <Typography variant="h5" gutterBottom>
           Delete this collection
         </Typography>

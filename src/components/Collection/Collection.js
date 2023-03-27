@@ -100,9 +100,8 @@ export const Collection = () => {
 
       {collections.length === 0 ? (
         <div className="no-collections-message">
-          <Typography variant="body1" sx={{ marginTop: "16px" }}>
-            There are no collections in your workspace. Press the 'Create
-            Collection' button to get started.
+          <Typography variant="h5" sx={{ marginTop: "16px" }}>
+            There are no collections in your workspace.
           </Typography>
         </div>
       ) : (

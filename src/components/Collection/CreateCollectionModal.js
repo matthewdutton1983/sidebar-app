@@ -31,7 +31,10 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
 
   return (
     <Modal open={isOpen} onClose={onClose} className="modal">
-      <div className="modal-content">
+      <div
+        className="modal-content"
+        style={{ width: "500px", maxHeight: "100%" }}
+      >
         <Typography variant="h5">Create a new collection</Typography>
         <br />
         <Typography variant="body1">

@@ -29,7 +29,10 @@ export const RenameCollectionModal = ({
 
   return (
     <Modal open={open} onClose={handleRenameCancel}>
-      <div className="modal-content">
+      <div
+        className="modal-content"
+        style={{ width: "800px", maxHeight: "100%" }}
+      >
         <Typography variant="h5" gutterBottom>
           Rename this collection
         </Typography>
