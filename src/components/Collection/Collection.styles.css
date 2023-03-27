@@ -14,22 +14,28 @@
   margin-bottom: 16px;
 }
 
+.home > h6 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
 .create-collection-button-container {
   margin-top: 16px;
 }
 
 .collection-cards-container {
   position: relative;
+  justify-items: start;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: auto auto auto auto;
+  gap: 50px;
   margin-top: 20px;
 }
 
 .collection-card {
   position: relative;
   height: 200px;
-  width: 350px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -44,6 +50,17 @@
   position: relative;
   display: flex;
   justify-content: space-between;
+}
+
+.collection-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  word-break: break-word;
+  margin-top: 20px;
 }
 
 .collection-card:hover {

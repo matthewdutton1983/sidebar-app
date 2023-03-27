@@ -16,9 +16,17 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
         id: uuidv4(),
         name: newCollectionName,
         documents: [],
+        created_by: "Matthew Dutton", // replace with actual user
+        created_date: new Date().toLocaleString(),
       };
       onCreate(newCollection);
+      setNewCollectionName("");
     }
+  };
+
+  const handleClose = () => {
+    setNewCollectionName("");
+    onClose();
   };
 
   return (
@@ -43,7 +51,7 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
           value={newCollectionName}
         />
         <div className="modal-buttons">
-          <Button variant="outlined" color="primary" onClick={onClose}>
+          <Button variant="outlined" color="primary" onClick={handleClose}>
             Cancel
           </Button>
           <Button

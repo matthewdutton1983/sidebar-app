@@ -1,6 +1,6 @@
 import { Collection } from "../components/Collection/Collection";
 
-export const Home = () => {
+export const HomePage = () => {
   return (
     <div>
       <Collection />

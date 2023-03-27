@@ -4,6 +4,7 @@ export {
   DeleteRounded,
   EditRounded,
   FormatListBulletedRounded,
+  HomeRounded,
   InfoRounded,
   LocationOnRounded,
   MapRounded,
