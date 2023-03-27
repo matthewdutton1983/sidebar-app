@@ -1,6 +1,7 @@
 import { Modal, Typography, Button } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { useCallback, useState } from "react";
+import "./Modals.styles.css";
 
 export const AddDocumentsModal = ({ open, onClose }) => {
   const onDrop = useCallback((acceptedFiles) => {

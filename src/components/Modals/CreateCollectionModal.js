@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Modal, TextField, Typography } from "@mui/material";
-import "./Collection.styles.css";
+import "./Modals.styles.css";
 
 export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
   const [newCollectionName, setNewCollectionName] = useState("");

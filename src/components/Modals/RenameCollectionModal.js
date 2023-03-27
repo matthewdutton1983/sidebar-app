@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Modal, TextField, Typography } from "@mui/material";
-import "./Collection.styles.css";
+import "./Modals.styles.css";
 
 export const RenameCollectionModal = ({
   open,

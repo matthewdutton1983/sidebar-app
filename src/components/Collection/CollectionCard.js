@@ -14,8 +14,8 @@ import {
   MoreVertRounded,
   ShareRounded,
 } from "../IconImports";
-import { DeleteCollectionModal } from "./DeleteCollectionModal";
-import { RenameCollectionModal } from "./RenameCollectionModal";
+import { DeleteCollectionModal } from "../Modals/DeleteCollectionModal";
+import { RenameCollectionModal } from "../Modals/RenameCollectionModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import FaceIcon from "@mui/icons-material/Face";
 import { useState } from "react";

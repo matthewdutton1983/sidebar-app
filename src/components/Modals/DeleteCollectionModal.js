@@ -1,5 +1,5 @@
 import { Button, Modal, Typography } from "@mui/material";
-import "./Collection.styles.css";
+import "./Modals.styles.css";
 
 export const DeleteCollectionModal = ({
   open,

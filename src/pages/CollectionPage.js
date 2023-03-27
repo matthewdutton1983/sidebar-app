@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { Button, IconButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { AddRounded, HomeRounded } from "../components/IconImports";
-import { AddDocumentsModal } from "../components/Collection/AddDocumentsModal";
+import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
 import { CollectionNotFound } from "../components/Collection/CollectionNotFound";
 import "../components/Collection/Collection.styles.css";
 

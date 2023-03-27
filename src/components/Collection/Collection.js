@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Snackbar, Typography } from "@mui/material";
 import { AddRounded } from "../IconImports";
-import "./Collection.styles.css";
-import { CreateCollectionModal } from "./CreateCollectionModal";
+import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
+import "./Collection.styles.css";
 
 export const Collection = () => {
   const [collections, setCollections] = useState(() => {

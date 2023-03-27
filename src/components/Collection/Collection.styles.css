@@ -81,11 +81,18 @@
   margin-bottom: 16px;
 }
 
-.modal {
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* .modal {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fafafa;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 999;
 }
 
 .modal-content {
@@ -105,12 +112,6 @@
   background-color: rgba(255, 255, 255, 0.98);
 }
 
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 24px;
-}
-
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
@@ -119,7 +120,7 @@
 
 .modal-buttons button {
   margin-left: 8px;
-}
+} */
 
 .bottom-row {
   display: flex;
