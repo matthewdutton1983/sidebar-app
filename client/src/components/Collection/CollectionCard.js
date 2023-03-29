@@ -15,7 +15,7 @@ import {
   FaceRounded,
   MoreVertRounded,
   ShareRounded,
-} from "../IconImports";
+} from "@mui/icons-material";
 import { DeleteCollectionModal } from "../Modals/DeleteCollectionModal";
 import { RenameCollectionModal } from "../Modals/RenameCollectionModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";

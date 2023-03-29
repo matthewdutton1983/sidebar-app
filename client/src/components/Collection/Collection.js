@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Snackbar, Typography } from "@mui/material";
-import { AddRounded } from "../IconImports";
+import { AddRounded } from "@mui/icons-material";
 import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
 import { logger } from "../../logger";

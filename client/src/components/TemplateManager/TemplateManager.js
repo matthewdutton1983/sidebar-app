@@ -105,7 +105,7 @@ export const TemplateManager = ({ onClose }) => {
     >
       <Box sx={{ p: 4 }}>
         <Typography variant="h6" gutterBottom sx={{ textAlign: "center" }}>
-          TemplateManager{" "}
+          Manage Templates{" "}
         </Typography>
         <br />
         <Tabs

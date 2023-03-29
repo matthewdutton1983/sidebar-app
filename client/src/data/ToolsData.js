@@ -6,7 +6,7 @@ import {
   MapRounded,
   SearchRounded,
   SellRounded,
-} from "../components/IconImports";
+} from "@mui/icons-material";
 
 export const leftTools = [
   { id: 1, name: "Sections", icon: <FormatListBulletedRounded /> },

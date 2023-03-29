@@ -87,43 +87,95 @@
   margin-top: 24px;
 }
 
-/* .modal {
+.middle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.middle-row-left {
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.1);
-  z-index: 999;
 }
 
-.modal-content {
-  background-color: #ffffff;
-  border-radius: 4px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  padding: 24px;
-  overflow-y: auto;
-  margin: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.middle-row-left > * {
+  margin-right: auto;
 }
 
-.modal.open .modal-content {
-  background-color: rgba(255, 255, 255, 0.98);
+.middle-row .centered-container {
+  display: flex;
+  align-items: center;
 }
 
-.modal-buttons {
+.middle-row .centered-container .delete-icon {
+  margin-left: auto;
+}
+
+.delete-documents-container {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
 }
-
-.modal-buttons button {
-  margin-left: 8px;
-} */
 
 .bottom-row {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.bottom-row-left {
+  flex: 1;
+}
+
+.bottom-row-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+  height: 100%;
+}
+
+.document-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+  margin: 0;
+  align-self: flex-start;
+}
+
+.document-item {
+  width: 100%;
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.checked-document {
+  background-color: #e3f2fd !important;
+}
+
+.document-item:hover:not(.checked-document) {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.document-item:last-child {
+  border-bottom: none;
+}
+
+.document-item button {
+  margin-left: auto;
+}
+
+.checked {
+  background-color: #e6f3ff;
 }

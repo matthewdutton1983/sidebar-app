@@ -1,6 +1,6 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import { StyledListItem } from "../StyledComponents";
-import { DeleteRounded } from "../IconImports";
+import { DeleteRounded } from "@mui/icons-material";
 import { logger } from "../../logger";
 
 export const ExistingTemplates = ({

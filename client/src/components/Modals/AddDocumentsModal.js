@@ -2,39 +2,18 @@ import { Modal, Typography, Button, Box, Tab, Tabs } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { useCallback, useState } from "react";
 import { logger } from "../../logger";
-import axios from "axios";
 import "./Modals.styles.css";
 
 export const AddDocumentsModal = ({ open, onClose, onDocumentsAdded }) => {
   const [activeTab, setActiveTab] = useState(0);
 
-  // const onDrop = useCallback(
-  //   (acceptedFiles) => {
-  //     logger("Files dropped into the dropzone.", { acceptedFiles });
-  //     onDocumentsAdded(acceptedFiles);
-  //   },
-  //   [onDocumentsAdded]
-  // );
-
-  const onDrop = useCallback(async (acceptedFiles) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", acceptedFiles[0]);
-
-      const response = await axios.post(
-        "http://localhost:3001/upload",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      // Handle the response, e.g., add the uploaded file info to your collection
-      logger(response.data);
-    } catch (error) {
-      console.error("Error uploading the file", error);
-    }
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      logger("Files dropped into the dropzone.", { acceptedFiles });
+      onDocumentsAdded(acceptedFiles);
+    },
+    [onDocumentsAdded]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
