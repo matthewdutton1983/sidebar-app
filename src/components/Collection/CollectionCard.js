@@ -31,6 +31,7 @@ export const CollectionCard = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showRenameModal, setShowRenameModal] = useState(false);
+  const [showInfoMenu, setShowInfoMenu] = useState(false);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,6 +39,14 @@ export const CollectionCard = ({
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleInfoMenuClick = () => {
+    setShowInfoMenu(true);
+  };
+
+  const handleInfoMenuClose = () => {
+    setShowInfoMenu(false);
   };
 
   const tooltipTheme = createTheme({
@@ -95,15 +104,48 @@ export const CollectionCard = ({
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
               >
-                <MenuItem
-                  onClick={() => {
-                    handleMenuClose();
-                    alert(`Collection ID: ${collection.id}`);
-                  }}
-                >
+                <MenuItem onClick={handleInfoMenuClick}>
                   <InfoRounded sx={{ marginRight: "24px" }} />
                   Info
                 </MenuItem>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={showInfoMenu}
+                  onClose={handleInfoMenuClose}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  transformOrigin={{ vertical: "top", horizontal: "left" }}
+                >
+                  <MenuItem>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      Collection ID:&nbsp;&nbsp;
+                    </Typography>
+                    {collection.id}
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      Collection Name:&nbsp;&nbsp;
+                    </Typography>
+                    {collection.name}
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      Created By:&nbsp;&nbsp;
+                    </Typography>
+                    {collection.created_by}
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      Created Date:&nbsp;&nbsp;
+                    </Typography>
+                    {collection.created_date}
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      Total Documents:&nbsp;&nbsp;
+                    </Typography>
+                    {collection.documents.length}
+                  </MenuItem>
+                </Menu>
                 <MenuItem
                   onClick={() => {
                     setShowRenameModal(true);

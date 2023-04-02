@@ -3,8 +3,8 @@ import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 const snsClient = new SNSClient({
   region: "us-east-1",
   credentials: {
-    accessKeyId: "AKIAT5UENV5U4RBTTUWN",
-    secretAccessKey: "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",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
 
@@ -18,7 +18,7 @@ export const publishNewCollectionMessage = async (bucketName) => {
 
   const params = {
     Message: JSON.stringify(payload),
-    TopicArn: "arn:aws:sns:us-east-1:269786918761:COLLECTION_CREATED",
+    TopicArn: `arn:aws:sns:us-east-1:${process.env.AWS_ACCOUNT_NUMBER}:COLLECTION_CREATED`,
   };
 
   const command = new PublishCommand(params);
