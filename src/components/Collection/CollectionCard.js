@@ -13,6 +13,7 @@ import {
   DeleteRounded,
   EditRounded,
   FaceRounded,
+  InfoRounded,
   MoreVertRounded,
   ShareRounded,
 } from "@mui/icons-material";
@@ -94,6 +95,15 @@ export const CollectionCard = ({
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
               >
+                <MenuItem
+                  onClick={() => {
+                    handleMenuClose();
+                    alert(`Collection ID: ${collection.id}`);
+                  }}
+                >
+                  <InfoRounded sx={{ marginRight: "24px" }} />
+                  Info
+                </MenuItem>
                 <MenuItem
                   onClick={() => {
                     setShowRenameModal(true);

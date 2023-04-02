@@ -13,8 +13,9 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
 
   const handleCreateCollection = () => {
     if (newCollectionName) {
+      const newCollectionId = uuidv4();
       const newCollection = {
-        id: uuidv4(),
+        id: newCollectionId,
         name: newCollectionName,
         documents: [],
         created_by: "Matthew Dutton", // replace with actual user

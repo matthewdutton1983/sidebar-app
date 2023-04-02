@@ -4,6 +4,7 @@ import { Alert, Button, Snackbar, Typography } from "@mui/material";
 import { AddRounded } from "@mui/icons-material";
 import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
+import { publishNewCollectionMessage } from "../../services/Sns";
 import { logger } from "../../logger";
 import "./Collection.styles.css";
 
@@ -34,7 +35,9 @@ export const Collection = () => {
     }
   }, []);
 
-  const handleCreateCollection = (newCollection) => {
+  const handleCreateCollection = async (newCollection) => {
+    const bucketName = newCollection.id;
+    await publishNewCollectionMessage(bucketName);
     const updatedCollections = [...collections, newCollection];
     localStorage.setItem("collections", JSON.stringify(updatedCollections));
     setCollections(updatedCollections);

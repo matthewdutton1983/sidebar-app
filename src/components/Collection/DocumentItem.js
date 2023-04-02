@@ -7,6 +7,7 @@ export const DocumentItem = ({
   doc = {},
   handleCheckboxChange,
   handleDeleteDocument,
+  allDocumentsChecked,
 }) => {
   return (
     <div
@@ -16,7 +17,7 @@ export const DocumentItem = ({
       <div>
         <Checkbox
           color="primary"
-          checked={doc.checked}
+          checked={allDocumentsChecked ? true : doc.checked}
           onChange={(e) => handleCheckboxChange(e, index)}
         />
       </div>

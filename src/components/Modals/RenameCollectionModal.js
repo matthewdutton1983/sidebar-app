@@ -9,12 +9,12 @@ export const RenameCollectionModal = ({
   handleConfirm,
   handleCancel,
 }) => {
-  const [newName, setNewName] = useState(currentName);
+  const [newName, setNewName] = useState("");
+  const [nameValue, setNameValue] = useState(currentName);
 
   useEffect(() => {
-    logger(`Renaming collection from ${currentName} to ${newName}`);
-    setNewName(currentName);
-  }, [currentName, newName]);
+    setNameValue(currentName);
+  }, [currentName]);
 
   const handleRenameClick = () => {
     logger(
@@ -55,8 +55,11 @@ export const RenameCollectionModal = ({
         <TextField
           fullWidth
           variant="standard"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
+          value={nameValue}
+          onChange={(e) => {
+            setNameValue(e.target.value);
+            setNewName(e.target.value);
+          }}
           style={{ marginBottom: "16px" }}
         />
         <div className="modal-buttons">

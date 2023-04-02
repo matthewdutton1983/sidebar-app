@@ -16,7 +16,6 @@ export const TemplateManager = ({ onClose }) => {
   const [newTemplateLabels, setNewTemplateLabels] = useState([]);
   const [newLabelValue, setNewLabelValue] = useState("");
   const [formIncomplete, setFormIncomplete] = useState(false);
-  const [newTemplateCreated, setNewTemplateCreated] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(
@@ -76,7 +75,6 @@ export const TemplateManager = ({ onClose }) => {
       setNewLabelValue("");
       setSelectedTab(0);
       setFormIncomplete(false);
-      setNewTemplateCreated(true);
       logger(`New template created with name ${newTemplate.name}`);
     }
   };
@@ -88,12 +86,6 @@ export const TemplateManager = ({ onClose }) => {
       )
     );
     logger(`Template with id ${template.id} deleted`);
-  };
-
-  const handleSnackbarClose = () => {
-    setFormIncomplete(false);
-    setNewTemplateCreated(false);
-    logger("Snackbar closed");
   };
 
   return (

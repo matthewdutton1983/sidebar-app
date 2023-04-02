@@ -89,29 +89,11 @@
 
 .middle-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   gap: 16px;
   padding: 16px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.middle-row-left {
-  display: flex;
-  align-items: center;
-}
-
-.middle-row-left > * {
-  margin-right: auto;
-}
-
-.middle-row .centered-container {
-  display: flex;
-  align-items: center;
-}
-
-.middle-row .centered-container .delete-icon {
-  margin-left: auto;
+  justify-content: flex-start;
 }
 
 .delete-documents-container {
@@ -125,8 +107,12 @@
   justify-content: space-between;
   align-items: flex-start;
 }
+
 .bottom-row-left {
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .bottom-row-right {
