@@ -18,7 +18,7 @@ export const publishNewCollectionMessage = async (bucketName) => {
 
   const params = {
     Message: JSON.stringify(payload),
-    TopicArn: `arn:aws:sns:us-east-1:${process.env.AWS_ACCOUNT_NUMBER}:COLLECTION_CREATED`,
+    TopicArn: `arn:aws:sns:us-east-1:269786918761:COLLECTION_CREATED`,
   };
 
   const command = new PublishCommand(params);
@@ -28,10 +28,41 @@ export const publishNewCollectionMessage = async (bucketName) => {
     console.log(
       `SNS message published with type ${payload.type} for creating bucket: ${bucketName}`
     );
-    console.log(`SNS publish response data:`, data);
+    console.log("SNS publish response data:", data);
   } catch (error) {
     console.error(
       `Error publishing SNS message for bucket: ${bucketName}`,
+      error
+    );
+    throw error;
+  }
+};
+
+export const publishDocumentUploadedMessage = async (bucketName, document) => {
+  const payload = {
+    type: "DOCUMENT_UPLOADED",
+    details: {
+      bucketName: bucketName,
+      documentName: document.name,
+    },
+  };
+
+  const params = {
+    Message: JSON.stringify(payload),
+    TopicArn: "arn:aws:sns:us-east-1:269786918761:DOCUMENTS_UPLOADED",
+  };
+
+  const command = new PublishCommand(params);
+
+  try {
+    const data = await snsClient.send(command);
+    console.log(
+      `SNS message published with type ${payload.type} for uploaded document: ${document.name}`
+    );
+    console.log("SNS publish response data:", data);
+  } catch (error) {
+    console.error(
+      `Error publishing SNS message for uploaded document: ${document.name}`,
       error
     );
     throw error;

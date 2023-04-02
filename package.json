@@ -24,6 +24,7 @@
     "@aws-sdk/client-sns": "^3.303.0",
     "@aws-sdk/client-textract": "^3.303.0",
     "@aws-sdk/client-transcribe": "^3.303.0",
+    "@aws-sdk/signature-v4": "^3.303.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",

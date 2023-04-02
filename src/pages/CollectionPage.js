@@ -12,7 +12,8 @@ import { DocumentList } from "../components/Collection/DocumentList";
 import { EmptyCollection } from "../components/Collection/EmptyCollection";
 import { FilterCollection } from "../components/Collection/FilterCollection";
 import { v4 as uuidv4 } from "uuid";
-import { uploadDocument } from "../services/S3";
+import { publishDocumentUploadedMessage } from "../services/Sns";
+// import { uploadDocument } from "../services/S3";
 import "../components/Collection/Collection.styles.css";
 
 export const CollectionPage = () => {
@@ -53,6 +54,7 @@ export const CollectionPage = () => {
       const docId = uuidv4();
       const uploadedDoc = await uploadDocument(collectionId, doc, docId);
       if (uploadedDoc) {
+        await publishDocumentUploadedMessage(collectionId, uploadedDoc);
         uploadedDocuments.push(uploadedDoc);
       }
     }
