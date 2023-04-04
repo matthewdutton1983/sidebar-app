@@ -3,8 +3,8 @@ import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 const snsClient = new SNSClient({
   region: "us-east-1",
   credentials: {
-    accessKeyId: "AKIAT5UENV5UUGFY4P5I",
-    secretAccessKey: "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",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
   },
 });
 

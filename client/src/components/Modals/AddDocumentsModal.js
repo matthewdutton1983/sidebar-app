@@ -18,10 +18,11 @@ export const AddDocumentsModal = ({
       logger("Files dropped into the dropzone.", { acceptedFiles });
 
       const documents = acceptedFiles.map((file) => {
+        const docId = uuidv4();
         const document = {
-          id: uuidv4(),
+          id: docId,
           name: file.name,
-          path: `s3://${collectionId}/${file.id}`,
+          path: `s3://${collectionId}/${docId}`,
         };
         logger("Document added:", document);
         return document;
