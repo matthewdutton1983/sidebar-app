@@ -4,8 +4,8 @@ import { Alert, Button, Snackbar, Typography } from "@mui/material";
 import { AddRounded } from "@mui/icons-material";
 import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
-import { publishNewCollectionMessage } from "../../services/Sns";
 import { logger } from "../../logger";
+import axios from "axios";
 import "./Collection.styles.css";
 
 export const Collection = () => {
@@ -36,18 +36,21 @@ export const Collection = () => {
   }, []);
 
   const handleCreateCollection = async (newCollection) => {
-    const bucketName = newCollection.id;
-    await publishNewCollectionMessage(bucketName);
-    const updatedCollections = [...collections, newCollection];
-    localStorage.setItem("collections", JSON.stringify(updatedCollections));
-    setCollections(updatedCollections);
-    setIsCreateModalOpen(false);
-    setIsRequiredSnackbarOpen(false);
-    setIsDeletedSnackbarOpen(false);
-    setIsCreatedSnackbarOpen(true);
-    setIsRenameSnackbarOpen(false);
-    logger("New collection created", newCollection);
-    navigate(`/collection/${newCollection.id}`);
+    try {
+      const response = await axios.post("/api/collections", newCollection);
+      const createdCollection = response.data;
+      const updatedCollections = [...collections, createdCollection];
+      setCollections(updatedCollections);
+      setIsCreateModalOpen(false);
+      setIsRequiredSnackbarOpen(false);
+      setIsDeletedSnackbarOpen(false);
+      setIsCreatedSnackbarOpen(true);
+      setIsRenameSnackbarOpen(false);
+      logger("New collection created", createdCollection);
+      navigate(`/collection/${createdCollection.id}`);
+    } catch (error) {
+      console.error("Error creating collection", error);
+    }
   };
 
   const handleModalClose = () => {

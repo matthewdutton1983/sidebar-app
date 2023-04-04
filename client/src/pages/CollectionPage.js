@@ -11,9 +11,7 @@ import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
 import { DocumentList } from "../components/Collection/DocumentList";
 import { EmptyCollection } from "../components/Collection/EmptyCollection";
 import { FilterCollection } from "../components/Collection/FilterCollection";
-import { v4 as uuidv4 } from "uuid";
-import { publishDocumentUploadedMessage } from "../services/Sns";
-// import { uploadDocument } from "../services/S3";
+import axios from "axios";
 import "../components/Collection/Collection.styles.css";
 
 export const CollectionPage = () => {
@@ -43,31 +41,34 @@ export const CollectionPage = () => {
       ),
     };
     collections[collectionIndex] = updatedCollection;
-    localStorage.setItem("collections", JSON.stringify(collections));
     setCollection(updatedCollection);
   };
 
-  const setAddedDocuments = async (documents) => {
-    const uploadedDocuments = [];
+  const setAddedDocuments = async (documents, collectionId) => {
+    console.log("collectionId in setAddedDocuments:", collectionId);
 
-    for (const doc of documents) {
-      const docId = uuidv4();
-      const uploadedDoc = await uploadDocument(collectionId, doc, docId);
-      if (uploadedDoc) {
-        await publishDocumentUploadedMessage(collectionId, uploadedDoc);
-        uploadedDocuments.push(uploadedDoc);
-      }
+    if (documents.length > 0) {
+      console.log(
+        `Sending POST request to upload documents to /api/collections/${collectionId}/documents`
+      );
+      await axios.post(`/api/collections/${collectionId}/documents`, {
+        documents,
+      });
+
+      documents.forEach((doc) => {
+        console.log(`Uploaded document:`, doc);
+      });
     }
 
     const updatedCollection = {
       ...collection,
-      documents: collection.documents.concat(uploadedDocuments),
+      documents: collection.documents.concat(documents),
     };
 
     collections[collectionIndex] = updatedCollection;
-    localStorage.setItem("collections", JSON.stringify(collections));
     setCollection(updatedCollection);
     setIsModalOpen(false);
+    console.log(`Updated collection:`, updatedCollection);
   };
 
   const handleAllDocumentsChecked = (event) => {
@@ -77,7 +78,6 @@ export const CollectionPage = () => {
     }));
     const updatedCollection = { ...collection, documents: updatedDocuments };
     collections[collectionIndex] = updatedCollection;
-    localStorage.setItem("collections", JSON.stringify(collections));
     setCollection(updatedCollection);
     setAllDocumentsChecked(event.target.checked);
   };
@@ -87,7 +87,6 @@ export const CollectionPage = () => {
     updatedDocuments[index].checked = event.target.checked;
     const updatedCollection = { ...collection, documents: updatedDocuments };
     collections[collectionIndex] = updatedCollection;
-    localStorage.setItem("collections", JSON.stringify(collections));
     setCollection(updatedCollection);
   };
 
@@ -189,7 +188,10 @@ export const CollectionPage = () => {
       <AddDocumentsModal
         open={isModalOpen}
         onClose={handleCloseModal}
-        onDocumentsAdded={setAddedDocuments}
+        onDocumentsAdded={(documents) =>
+          setAddedDocuments(collectionId, documents)
+        }
+        collectionId={collectionId}
       />
     </div>
   );

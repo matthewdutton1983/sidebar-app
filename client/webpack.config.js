@@ -1,3 +1,5 @@
+export {};
+
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 
@@ -27,16 +29,9 @@ module.exports = {
   },
   resolve: {
     fallback: {
+      fs: false,
       path: require.resolve("path-browserify"),
       os: require.resolve("os-browserify/browser"),
-      fs: false,
-      crypto: require.resolve("crypto-browserify"),
-      http: require.resolve("stream-http"),
-      https: require.resolve("https-browserify"),
-      stream: require.resolve("stream-browserify"),
-      timers: require.resolve("timers-browserify"),
-      assert: require.resolve("assert/"),
-      util: require.resolve("util/"),
     },
   },
   plugins: [new Dotenv()],

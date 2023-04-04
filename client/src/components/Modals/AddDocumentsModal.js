@@ -2,17 +2,34 @@ import { Modal, Typography, Button, Box, Tab, Tabs } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { useCallback, useState } from "react";
 import { logger } from "../../logger";
+import { v4 as uuidv4 } from "uuid";
 import "./Modals.styles.css";
 
-export const AddDocumentsModal = ({ open, onClose, onDocumentsAdded }) => {
+export const AddDocumentsModal = ({
+  open,
+  onClose,
+  onDocumentsAdded,
+  collectionId,
+}) => {
   const [activeTab, setActiveTab] = useState(0);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
       logger("Files dropped into the dropzone.", { acceptedFiles });
-      onDocumentsAdded(acceptedFiles);
+
+      const documents = acceptedFiles.map((file) => {
+        const document = {
+          id: uuidv4(),
+          name: file.name,
+          path: `s3://${collectionId}/${file.id}`,
+        };
+        logger("Document added:", document);
+        return document;
+      });
+
+      onDocumentsAdded(collectionId, documents);
     },
-    [onDocumentsAdded]
+    [onDocumentsAdded, collectionId]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });

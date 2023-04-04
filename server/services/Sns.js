@@ -3,9 +3,14 @@ import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 const snsClient = new SNSClient({
   region: "us-east-1",
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: "AKIAT5UENV5UUGFY4P5I",
+    secretAccessKey: "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",
   },
+});
+
+console.log("AWS Credentials:", {
+  accessKeyId: snsClient.config.credentials.accessKeyId,
+  secretAccessKey: snsClient.config.credentials.secretAccessKey,
 });
 
 export const publishNewCollectionMessage = async (bucketName) => {
@@ -21,9 +26,8 @@ export const publishNewCollectionMessage = async (bucketName) => {
     TopicArn: `arn:aws:sns:us-east-1:269786918761:COLLECTION_CREATED`,
   };
 
-  const command = new PublishCommand(params);
-
   try {
+    const command = new PublishCommand(params);
     const data = await snsClient.send(command);
     console.log(
       `SNS message published with type ${payload.type} for creating bucket: ${bucketName}`
@@ -38,31 +42,38 @@ export const publishNewCollectionMessage = async (bucketName) => {
   }
 };
 
-export const publishDocumentUploadedMessage = async (bucketName, document) => {
+export const publishDocumentsUploadedMessage = async (
+  collectionId,
+  documentUploads
+) => {
+  console.log("collectionId in publishDocumentsUploadedMessage:", collectionId);
   const payload = {
-    type: "DOCUMENT_UPLOADED",
+    type: "DOCUMENTS_UPLOADED",
     details: {
-      bucketName: bucketName,
-      documentName: document.name,
+      bucketName: collectionId,
+      documents: documentUploads,
     },
   };
 
   const params = {
     Message: JSON.stringify(payload),
-    TopicArn: "arn:aws:sns:us-east-1:269786918761:DOCUMENTS_UPLOADED",
+    TopicArn: `arn:aws:sns:us-east-1:269786918761:DOCUMENTS_UPLOADED`,
   };
 
-  const command = new PublishCommand(params);
-
   try {
+    const command = new PublishCommand(params);
     const data = await snsClient.send(command);
     console.log(
-      `SNS message published with type ${payload.type} for uploaded document: ${document.name}`
+      `SNS message published with type ${
+        payload.type
+      } for uploaded documents: ${documentUploads.map((doc) => doc.name)}`
     );
-    console.log("SNS publish response data:", data);
+    console.log(`SNS publish response data:`, data);
   } catch (error) {
     console.error(
-      `Error publishing SNS message for uploaded document: ${document.name}`,
+      `Error publishing SNS message for uploaded documents: ${documentUploads
+        .map((doc) => doc.name)
+        .join(", ")}`,
       error
     );
     throw error;
