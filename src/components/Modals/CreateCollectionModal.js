@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { Button, Modal, TextField, Typography } from "@mui/material";
 import { logger } from "../../logger";
 import "./Modals.styles.css";
@@ -13,13 +12,9 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
 
   const handleCreateCollection = () => {
     if (newCollectionName) {
-      const newCollectionId = uuidv4();
       const newCollection = {
-        id: newCollectionId,
         name: newCollectionName,
-        documents: [],
-        created_by: "Matthew Dutton", // replace with actual user
-        created_date: new Date().toLocaleString(),
+        createdBy: "Matthew Dutton", // replace with actual user
       };
       onCreate(newCollection);
       setNewCollectionName("");

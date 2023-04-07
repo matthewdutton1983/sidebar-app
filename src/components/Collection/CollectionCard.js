@@ -91,7 +91,7 @@ export const CollectionCard = ({
           >
             <Chip
               icon={<FaceRounded />}
-              label={`${collection.created_by}`}
+              label={`${collection.createdBy}`}
               size="large"
             />
             <div style={{ flex: 1 }}></div>
@@ -131,20 +131,20 @@ export const CollectionCard = ({
                     <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                       Created By:&nbsp;&nbsp;
                     </Typography>
-                    {collection.created_by}
+                    {collection.createdBy}
                   </MenuItem>
                   <MenuItem>
                     <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                       Created Date:&nbsp;&nbsp;
                     </Typography>
-                    {collection.created_date}
+                    {collection.createdDate}
                   </MenuItem>
-                  <MenuItem>
+                  {/* <MenuItem>
                     <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                       Total Documents:&nbsp;&nbsp;
                     </Typography>
-                    {collection.documents.length}
-                  </MenuItem>
+                    {collection.documents ? collection.documents.length : "0"}
+                  </MenuItem> */}
                 </Menu>
                 <MenuItem
                   onClick={() => {
@@ -193,10 +193,10 @@ export const CollectionCard = ({
             }}
           >
             <Typography variant="body1" style={{ alignSelf: "flex-end" }}>
-              {`Documents: ${collection.documents.length}`}
+              {`Documents: ${collection.documentCount}`}
             </Typography>
             <Typography variant="body1" style={{ alignSelf: "flex-end" }}>
-              {collection.created_date}
+              {collection.createdDate}
             </Typography>
           </div>
         </CardContent>

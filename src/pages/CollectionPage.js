@@ -16,12 +16,7 @@ import "../components/Collection/Collection.styles.css";
 
 export const CollectionPage = () => {
   const { collectionId } = useParams();
-
-  const collections = JSON.parse(localStorage.getItem("collections")) || [];
-  const collectionIndex = collections.findIndex(
-    (c) => String(c.id) === collectionId
-  );
-  const [collection, setCollection] = useState(collections[collectionIndex]);
+  const [collection, setCollection] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [allDocumentsChecked, setAllDocumentsChecked] = useState(false);
 
@@ -40,14 +35,13 @@ export const CollectionPage = () => {
         (doc, index) => index !== documentIndex
       ),
     };
-    collections[collectionIndex] = updatedCollection;
     setCollection(updatedCollection);
   };
 
-  const setAddedDocuments = async (documents, collectionId) => {
+  const setAddedDocuments = async (collectionId, documents) => {
     console.log("collectionId in setAddedDocuments:", collectionId);
 
-    if (documents.length > 0) {
+    if (collection.documentCount > 0) {
       console.log(
         `Sending POST request to upload documents to /api/collections/${collectionId}/documents`
       );
@@ -65,7 +59,6 @@ export const CollectionPage = () => {
       documents: collection.documents.concat(documents),
     };
 
-    collections[collectionIndex] = updatedCollection;
     setCollection(updatedCollection);
     setIsModalOpen(false);
     console.log(`Updated collection:`, updatedCollection);
@@ -77,7 +70,6 @@ export const CollectionPage = () => {
       checked: event.target.checked,
     }));
     const updatedCollection = { ...collection, documents: updatedDocuments };
-    collections[collectionIndex] = updatedCollection;
     setCollection(updatedCollection);
     setAllDocumentsChecked(event.target.checked);
   };
@@ -86,7 +78,6 @@ export const CollectionPage = () => {
     const updatedDocuments = [...collection.documents];
     updatedDocuments[index].checked = event.target.checked;
     const updatedCollection = { ...collection, documents: updatedDocuments };
-    collections[collectionIndex] = updatedCollection;
     setCollection(updatedCollection);
   };
 
@@ -103,7 +94,7 @@ export const CollectionPage = () => {
             <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
               {collection.name}
             </Typography>
-            {collection.documents.length > 0 && (
+            {collection.documentCount > 0 && (
               <Button
                 variant="contained"
                 onClick={handleOpenModal}
@@ -124,7 +115,7 @@ export const CollectionPage = () => {
           </Typography>
         )}
       </div>
-      {collection && collection.documents.length > 0 && (
+      {collection && collection.documentCount > 0 && (
         <div className="middle-row">
           <div className="centered-container" style={{ alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -138,7 +129,7 @@ export const CollectionPage = () => {
                 fontWeight="bold"
                 sx={{ flexGrow: 1, paddingRight: "8px" }}
               >
-                {`Documents 1-${collection.documents.length} of ${collection.documents.length}`}
+                {`Documents 1-${collection.documentCount} of ${collection.documentCount}`}
               </Typography>
               <IconButton>
                 <InfoRounded />
@@ -160,13 +151,13 @@ export const CollectionPage = () => {
         className="bottom-row"
         style={{
           alignItems:
-            collection && collection.documents.length === 0
+            collection && collection.documentCount === 0
               ? "center"
               : "flex-start",
         }}
       >
         <div className="bottom-row-left">
-          {collection && collection.documents.length === 0 ? (
+          {collection && collection.documentCount === 0 ? (
             <EmptyCollection handleOpenModal={handleOpenModal} />
           ) : (
             <div className="document-list-wrapper">
@@ -179,7 +170,7 @@ export const CollectionPage = () => {
             </div>
           )}
         </div>
-        {collection && collection.documents.length > 0 && (
+        {collection && collection.documentCount > 0 && (
           <div className="bottom-row-right" style={{ width: "450px" }}>
             <FilterCollection />
           </div>
