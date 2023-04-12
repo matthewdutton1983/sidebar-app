@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Button, Typography } from "@mui/material";
-import { TemplateManager } from "../TemplateManager/TemplateManager";
-import { logger } from "../../logger";
+import { TemplateManager } from "./TemplateManager";
+import { Logger } from "../../Logger";
 import "./Annotator.styles.css";
 
 export const Annotator = () => {
   const [isTemplateManagerOpen, setIsTemplateManagerOpen] = useState(false);
 
   const handleOpenTemplateManager = () => {
-    logger("TemplateManager opened.");
+    Logger("TemplateManager opened.");
     setIsTemplateManagerOpen(true);
   };
 
   const handleCloseTemplateManager = () => {
-    logger("TemplateManager closed.");
+    Logger("TemplateManager closed.");
     setIsTemplateManagerOpen(false);
   };
 
@@ -33,7 +33,7 @@ export const Annotator = () => {
       {isTemplateManagerOpen && (
         <TemplateManager
           onClose={() => {
-            logger("TemplateManager onClose event triggered.");
+            Logger("TemplateManager onClose event triggered.");
             handleCloseTemplateManager();
           }}
         />

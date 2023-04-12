@@ -1,7 +1,7 @@
 import { Modal, Typography, Button, Box, Tab, Tabs } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { useCallback, useState } from "react";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 import { v4 as uuidv4 } from "uuid";
 import "./Modals.styles.css";
 
@@ -15,7 +15,7 @@ export const AddDocumentsModal = ({
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      logger("Files dropped into the dropzone.", { acceptedFiles });
+      Logger("Files dropped into the dropzone.", { acceptedFiles });
 
       const documents = acceptedFiles.map((file) => {
         const docId = uuidv4();
@@ -24,7 +24,7 @@ export const AddDocumentsModal = ({
           name: file.name,
           path: `s3://${collectionId}/${docId}`,
         };
-        logger("Document added:", document);
+        Logger("Document added:", document);
         return document;
       });
 
@@ -39,7 +39,7 @@ export const AddDocumentsModal = ({
     setActiveTab(newValue);
   };
 
-  logger("Rendering AddDocumentsModal component.");
+  Logger("Rendering AddDocumentsModal component.");
 
   return (
     <Modal open={open} onClose={onClose} className="modal">

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Card, TextField, Typography } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 import "./Comments.styles.css";
 
 export const Comments = () => {
@@ -12,7 +12,7 @@ export const Comments = () => {
   const [commentText, setCommentText] = useState("");
 
   useEffect(() => {
-    logger("Comments state updated.", { comments });
+    Logger("Comments state updated.", { comments });
     localStorage.setItem("comments", JSON.stringify(comments));
   }, [comments]);
 
@@ -25,7 +25,7 @@ export const Comments = () => {
     };
     setComments([...comments, comment]);
 
-    logger("Comment added.", {
+    Logger("Comment added.", {
       commentId: comment.id,
       author: comment.author,
       text: comment.text,
@@ -35,7 +35,7 @@ export const Comments = () => {
 
   const handleDeleteComment = (commentId) => {
     setComments(comments.filter((comment) => comment.id !== commentId));
-    logger("Comment deleted.", { commentId });
+    Logger("Comment deleted.", { commentId });
   };
 
   const handleSubmit = () => {
@@ -45,7 +45,7 @@ export const Comments = () => {
     }
   };
 
-  logger("Rendering Comments component.");
+  Logger("Rendering Comments component.");
 
   return (
     <div>

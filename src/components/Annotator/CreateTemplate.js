@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { StyledListItem } from "../StyledComponents";
 import { DeleteRounded } from "@mui/icons-material";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 
 export const CreateTemplate = ({
   newTemplateName,
@@ -26,7 +26,7 @@ export const CreateTemplate = ({
   formIncomplete,
   setFormIncomplete,
 }) => {
-  logger("Rendering CreateTemplate component");
+  Logger("Rendering CreateTemplate component");
 
   return (
     <>
@@ -139,11 +139,11 @@ export const CreateTemplate = ({
             color="primary"
             onClick={() => {
               if (newTemplateName.trim() && newTemplateLabels.length > 0) {
-                logger("Creating new template...");
+                Logger("Creating new template...");
                 handleCreateTemplate();
               } else {
                 setFormIncomplete(true);
-                logger("Cannot create template: incomplete form");
+                Logger("Cannot create template: incomplete form");
               }
             }}
           >

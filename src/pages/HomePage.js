@@ -1,9 +1,9 @@
-import { Collection } from "../components/Collection/Collection";
+import { CollectionsList } from "../components/Collections/CollectionsList";
 
 export const HomePage = () => {
   return (
     <div>
-      <Collection />
+      <CollectionsList />
     </div>
   );
 };

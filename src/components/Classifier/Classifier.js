@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Chip, TextField, Typography } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 import "./Classifier.styles.css";
 
 export const Classifier = () => {
@@ -12,7 +12,7 @@ export const Classifier = () => {
   const [tagText, setTagText] = useState("");
 
   useEffect(() => {
-    logger("Tags state updated.", { tags });
+    Logger("Tags state updated.", { tags });
     localStorage.setItem("tags", JSON.stringify(tags));
   }, [tags]);
 
@@ -29,7 +29,7 @@ export const Classifier = () => {
     setTags([...tags, tag]);
     setTagText("");
 
-    logger("Tag added.", {
+    Logger("Tag added.", {
       tagId: tag.id,
       author: tag.author,
       text: tag.text,
@@ -40,7 +40,7 @@ export const Classifier = () => {
   const handleDeleteTag = (tagToDelete) => {
     setTags(tags.filter((tag) => tag.id !== tagToDelete.id));
 
-    logger("Tag deleted.", {
+    Logger("Tag deleted.", {
       tagId: tagToDelete.id,
       author: tagToDelete.author,
       text: tagToDelete.text,
@@ -55,7 +55,7 @@ export const Classifier = () => {
     }
   };
 
-  logger("Rendering Classifier component.");
+  Logger("Rendering Classifier component.");
 
   return (
     <div className="classification">

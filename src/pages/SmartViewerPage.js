@@ -1,6 +1,6 @@
-import { leftTools, rightTools } from "../data/ToolsData";
+import { leftTools, rightTools } from "../components/Toolbar/ToolsData";
 import { Toolbar } from "../components/Toolbar/Toolbar";
-import { Document } from "../components/Document/Document";
+import { Document } from "../components/Documents/Document";
 
 export const SmartViewerPage = () => {
   return (

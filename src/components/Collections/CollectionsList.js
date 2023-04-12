@@ -4,7 +4,7 @@ import { Alert, Button, Snackbar, Typography } from "@mui/material";
 import { AddRounded } from "@mui/icons-material";
 import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 import axios from "axios";
 import "./Collection.styles.css";
 import { CustomSnackbar } from "./CustomSnackbar";
@@ -12,7 +12,7 @@ import { CustomSnackbar } from "./CustomSnackbar";
 const COLLECTIONS_ENDPOINT =
   "https://sjarvqxh09.execute-api.us-east-1.amazonaws.com/dev/collections";
 
-export const Collection = () => {
+export const CollectionsList = () => {
   const [collections, setCollections] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [snackbarState, setSnackbarState] = useState({
@@ -35,9 +35,9 @@ export const Collection = () => {
       try {
         const response = await axios.get(COLLECTIONS_ENDPOINT);
         setCollections(response.data);
-        logger("Collections loaded successfully", response.data);
+        Logger("Collections loaded successfully", response.data);
       } catch (error) {
-        logger("Error loading collections", error);
+        Logger("Error loading collections", error);
       }
     };
     fetchCollections();
@@ -58,7 +58,7 @@ export const Collection = () => {
         message: snackbarMessages.create,
         severity: "success",
       });
-      logger("New collection created", createdCollection);
+      Logger("New collection created", createdCollection);
       navigate(`/collection/${createdCollection.id}`);
     } catch (error) {
       console.error("Error creating collection", error);
@@ -67,7 +67,7 @@ export const Collection = () => {
 
   const handleCollectionClick = (collection) => {
     navigate(`/collection/${collection.id}`);
-    logger("Collection clicked", collection);
+    Logger("Collection clicked", collection);
   };
 
   const handleDeleteCollection = async (collection) => {
@@ -79,7 +79,7 @@ export const Collection = () => {
         message: snackbarMessages.delete,
         severity: "success",
       });
-      logger("Collection deleted", collection);
+      Logger("Collection deleted", collection);
     } catch (error) {
       console.error("Error deleting collection", error);
     }
@@ -106,7 +106,7 @@ export const Collection = () => {
         message: snackbarMessages.rename,
         severity: "success",
       });
-      logger("Collection renamed", updatedCollection);
+      Logger("Collection renamed", updatedCollection);
     } catch (error) {
       console.error("Error renaming collection", error);
     }
@@ -131,7 +131,7 @@ export const Collection = () => {
           variant="contained"
           onClick={() => {
             setIsCreateModalOpen(true);
-            logger("Create collection button clicked");
+            Logger("Create collection button clicked");
           }}
         >
           <AddRounded sx={{ paddingRight: "8px" }} />
@@ -155,15 +155,15 @@ export const Collection = () => {
                   collection={collection}
                   onDoubleClick={() => {
                     handleCollectionClick(collection);
-                    logger("Collection double clicked", collection);
+                    Logger("Collection double clicked", collection);
                   }}
                   onDelete={(collection) => {
                     handleDeleteCollection(collection);
-                    logger("Collection deleted", collection);
+                    Logger("Collection deleted", collection);
                   }}
                   onRename={(collection, newName) => {
                     handleRenameCollection(collection, newName);
-                    logger("Collection renamed", collection);
+                    Logger("Collection renamed", collection);
                   }}
                 />
               )}
@@ -175,11 +175,11 @@ export const Collection = () => {
         isOpen={isCreateModalOpen}
         onClose={() => {
           handleModalClose();
-          logger("Create collection modal closed");
+          Logger("Create collection modal closed");
         }}
         onCreate={(newCollection) => {
           handleCreateCollection(newCollection);
-          logger("Collection created", newCollection);
+          Logger("Collection created", newCollection);
         }}
       />
       {snackbarState.isOpen && (
@@ -193,7 +193,7 @@ export const Collection = () => {
               ...snackbarState,
               isOpen: false,
             });
-            logger("Snackbar closed");
+            Logger("Snackbar closed");
           }}
         />
       )}

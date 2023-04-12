@@ -1,25 +1,25 @@
 import { Button, Modal, Typography } from "@mui/material";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 import "./Modals.styles.css";
 
 export const DeleteDocumentsModal = ({ open, handleConfirm, handleCancel }) => {
   const handleDeleteClick = () => {
-    logger("Delete documents modal closed.", { isOpen: open });
+    Logger("Delete documents modal closed.", { isOpen: open });
     handleCancel();
   };
 
   const handleDeleteConfirm = () => {
-    logger("Document deletion confirmed.", { isOpen: open });
+    Logger("Document deletion confirmed.", { isOpen: open });
     handleConfirm();
     handleCancel();
   };
 
   const handleDeleteCancel = () => {
-    logger("Document deletion cancelled.", { isOpen: open });
+    Logger("Document deletion cancelled.", { isOpen: open });
     handleCancel();
   };
 
-  logger("Rendering DeleteDocumentsModal component.", { isOpen: open });
+  Logger("Rendering DeleteDocumentsModal component.", { isOpen: open });
 
   return (
     <Modal open={open} onClose={handleDeleteCancel}>

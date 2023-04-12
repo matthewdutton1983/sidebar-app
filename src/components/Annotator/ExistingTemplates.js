@@ -1,13 +1,13 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import { StyledListItem } from "../StyledComponents";
 import { DeleteRounded } from "@mui/icons-material";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 
 export const ExistingTemplates = ({
   existingTemplates,
   handleDeleteTemplate,
 }) => {
-  logger("Rendering ExistingTemplates component");
+  Logger("Rendering ExistingTemplates component");
 
   return (
     <>
@@ -26,7 +26,7 @@ export const ExistingTemplates = ({
               <Box sx={{ marginLeft: "auto" }}>
                 <IconButton
                   onClick={() => {
-                    logger(`Deleting template ${template.id}`);
+                    Logger(`Deleting template ${template.id}`);
                     handleDeleteTemplate(template);
                   }}
                   sx={{

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Modal, TextField, Typography } from "@mui/material";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 import "./Modals.styles.css";
 
 export const RenameCollectionModal = ({
@@ -17,14 +17,14 @@ export const RenameCollectionModal = ({
   }, [currentName]);
 
   const handleRenameClick = () => {
-    logger(
+    Logger(
       `User canceled renaming collection from ${currentName} to ${newName}`
     );
     handleCancel();
   };
 
   const handleRenameConfirm = () => {
-    logger(
+    Logger(
       `User confirmed renaming collection from ${currentName} to ${newName}`
     );
     handleConfirm(newName);
@@ -32,7 +32,7 @@ export const RenameCollectionModal = ({
   };
 
   const handleRenameCancel = () => {
-    logger(
+    Logger(
       `User canceled renaming collection from ${currentName} to ${newName}`
     );
     handleCancel();

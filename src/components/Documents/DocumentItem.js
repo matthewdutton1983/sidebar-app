@@ -1,6 +1,6 @@
 import { Checkbox, IconButton, Typography } from "@mui/material";
 import { DeleteRounded } from "@mui/icons-material";
-import "./Collection.styles.css";
+import "./Document.styles.css";
 
 export const DocumentItem = ({
   index,

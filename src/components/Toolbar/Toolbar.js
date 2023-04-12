@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Annotator } from "../Annotator/Annotator";
 import { Classifier } from "../Classifier/Classifier";
 import { Comments } from "../Comments/Comments";
-import { logger } from "../../logger";
+import { Logger } from "../../Logger";
 import "./Toolbar.styles.css";
 
 export const Toolbar = ({ tools, position }) => {
   const [activeTool, setActiveTool] = useState(null);
 
   const handleToolClick = (tool) => {
-    logger(`Toolbar: ${tool.name} clicked`);
+    Logger(`Toolbar: ${tool.name} clicked`);
     setActiveTool(activeTool === tool ? null : tool);
   };
 
@@ -31,7 +31,7 @@ export const Toolbar = ({ tools, position }) => {
     return activeTool.panel;
   };
 
-  logger(`Toolbar: rendered with position ${position}`);
+  Logger(`Toolbar: rendered with position ${position}`);
 
   return (
     <div className={`toolbar ${position}`}>

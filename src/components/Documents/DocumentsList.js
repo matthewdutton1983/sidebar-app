@@ -1,6 +1,6 @@
 import { DocumentItem } from "./DocumentItem";
 
-export const DocumentList = ({
+export const DocumentsList = ({
   documents,
   handleCheckboxChange,
   handleDeleteDocument,

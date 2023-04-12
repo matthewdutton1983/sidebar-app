@@ -8,11 +8,11 @@ import {
   HomeRounded,
 } from "@mui/icons-material";
 import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
-import { DocumentList } from "../components/Collection/DocumentList";
-import { EmptyCollection } from "../components/Collection/EmptyCollection";
-import { FilterCollection } from "../components/Collection/FilterCollection";
+import { DocumentsList } from "../components/Documents/DocumentsList";
+import { EmptyCollection } from "../components/Collections/EmptyCollection";
+import { FilterCollection } from "../components/Collections/FilterCollection";
 import axios from "axios";
-import "../components/Collection/Collection.styles.css";
+import "../components/Collections/Collection.styles.css";
 
 export const CollectionPage = () => {
   const { collectionId } = useParams();
@@ -161,7 +161,7 @@ export const CollectionPage = () => {
             <EmptyCollection handleOpenModal={handleOpenModal} />
           ) : (
             <div className="document-list-wrapper">
-              <DocumentList
+              <DocumentsList
                 documents={collection.documents}
                 handleCheckboxChange={handleCheckboxChange}
                 handleDeleteDocument={handleDeleteDocument}
