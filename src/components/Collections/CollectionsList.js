@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Button, Snackbar, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { AddRounded } from "@mui/icons-material";
 import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
 import { Logger } from "../../Logger";
-import axios from "axios";
+import {
+  fetchCollections,
+  createCollection,
+  deleteCollection,
+  renameCollection,
+} from "../../utils/collectionsApi";
 import "./Collection.styles.css";
 import { CustomSnackbar } from "./CustomSnackbar";
-
-const COLLECTIONS_ENDPOINT =
-  "https://sjarvqxh09.execute-api.us-east-1.amazonaws.com/dev/collections";
 
 export const CollectionsList = () => {
   const [collections, setCollections] = useState([]);
@@ -31,25 +33,21 @@ export const CollectionsList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCollections = async () => {
+    const loadCollections = async () => {
       try {
-        const response = await axios.get(COLLECTIONS_ENDPOINT);
-        setCollections(response.data);
-        Logger("Collections loaded successfully", response.data);
+        const response = await fetchCollections();
+        setCollections(response);
+        Logger("Collections loaded successfully", response);
       } catch (error) {
         Logger("Error loading collections", error);
       }
     };
-    fetchCollections();
+    loadCollections();
   }, []);
 
   const handleCreateCollection = async (newCollection) => {
     try {
-      const response = await axios.post(COLLECTIONS_ENDPOINT, {
-        name: newCollection.name,
-        createdBy: newCollection.createdBy,
-      });
-      const createdCollection = response.data;
+      const createdCollection = await createCollection(newCollection);
       const updatedCollections = [...collections, createdCollection];
       setCollections(updatedCollections);
       setIsCreateModalOpen(false);
@@ -72,7 +70,7 @@ export const CollectionsList = () => {
 
   const handleDeleteCollection = async (collection) => {
     try {
-      await axios.delete(`${COLLECTIONS_ENDPOINT}/${collection.id}`);
+      await deleteCollection(collection);
       setCollections(collections.filter((c) => c.id !== collection.id));
       setSnackbarState({
         isOpen: true,
@@ -88,14 +86,8 @@ export const CollectionsList = () => {
   const handleRenameCollection = async (collection, newName) => {
     try {
       console.log("Renaming collection with ID", collection.id, "to", newName);
-      const response = await axios.put(
-        `${COLLECTIONS_ENDPOINT}/${collection.id}`,
-        {
-          name: newName,
-        }
-      );
-      console.log("PUT request succeeded:", response);
-      const updatedCollection = response.data;
+      const updatedCollection = await renameCollection(collection, newName);
+      console.log("PUT request succeeded:", updatedCollection);
       setCollections(
         collections.map((c) =>
           c.id === updatedCollection.id ? updatedCollection : c
