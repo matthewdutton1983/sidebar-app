@@ -1,7 +1,7 @@
 import { DocumentItem } from "./DocumentItem";
 
 export const DocumentsList = ({
-  documents,
+  documents = [],
   handleCheckboxChange,
   handleDeleteDocument,
   allDocumentsChecked,

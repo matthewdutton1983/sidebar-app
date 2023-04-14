@@ -7,28 +7,15 @@ import { CollectionCard } from "./CollectionCard";
 import { Logger } from "../../Logger";
 import {
   fetchCollections,
-  createCollection,
   deleteCollection,
   renameCollection,
+  fetchCollectionById,
 } from "../../utils/collectionsApi";
 import "./Collection.styles.css";
-import { CustomSnackbar } from "./CustomSnackbar";
 
 export const CollectionsList = () => {
   const [collections, setCollections] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [snackbarState, setSnackbarState] = useState({
-    isOpen: false,
-    message: "",
-    severity: "",
-  });
-
-  const snackbarMessages = {
-    create: "Collection created successfully",
-    delete: "Collection deleted successfully",
-    rename: "Collection name has been updated",
-    requiredFields: "Please complete all required fields",
-  };
 
   const navigate = useNavigate();
 
@@ -45,44 +32,32 @@ export const CollectionsList = () => {
     loadCollections();
   }, []);
 
-  const handleCreateCollection = async (newCollection) => {
+  const handleCollectionClick = async (collection) => {
     try {
-      const createdCollection = await createCollection(newCollection);
-      const updatedCollections = [...collections, createdCollection];
-      setCollections(updatedCollections);
-      setIsCreateModalOpen(false);
-      setSnackbarState({
-        isOpen: true,
-        message: snackbarMessages.create,
-        severity: "success",
-      });
-      Logger("New collection created", createdCollection);
-      navigate(`/collection/${createdCollection.id}`);
+      const fetchedCollection = await fetchCollectionById(collection.id);
+      if (fetchedCollection) {
+        navigate(`/collection/${fetchedCollection.id}`);
+        Logger("Collection clicked", fetchedCollection);
+      } else {
+        console.error(`Collection with ID ${collection.id} not found`);
+      }
     } catch (error) {
-      console.error("Error creating collection", error);
+      console.error(`Error fetching collection ${collection.id}`, error);
     }
   };
 
-  const handleCollectionClick = (collection) => {
-    navigate(`/collection/${collection.id}`);
-    Logger("Collection clicked", collection);
-  };
-
+  // TODO: Move this code to the DeleteCollectionModal
   const handleDeleteCollection = async (collection) => {
     try {
       await deleteCollection(collection);
       setCollections(collections.filter((c) => c.id !== collection.id));
-      setSnackbarState({
-        isOpen: true,
-        message: snackbarMessages.delete,
-        severity: "success",
-      });
       Logger("Collection deleted", collection);
     } catch (error) {
       console.error("Error deleting collection", error);
     }
   };
 
+  // TODO: Move this code to the RenameCollectionModal
   const handleRenameCollection = async (collection, newName) => {
     try {
       console.log("Renaming collection with ID", collection.id, "to", newName);
@@ -93,11 +68,6 @@ export const CollectionsList = () => {
           c.id === updatedCollection.id ? updatedCollection : c
         )
       );
-      setSnackbarState({
-        isOpen: true,
-        message: snackbarMessages.rename,
-        severity: "success",
-      });
       Logger("Collection renamed", updatedCollection);
     } catch (error) {
       console.error("Error renaming collection", error);
@@ -106,10 +76,7 @@ export const CollectionsList = () => {
 
   const handleModalClose = () => {
     setIsCreateModalOpen(false);
-    setSnackbarState({
-      ...snackbarState,
-      isOpen: false,
-    });
+    Logger("Create collection modal closed");
   };
 
   return (
@@ -131,7 +98,7 @@ export const CollectionsList = () => {
         </Button>
       </div>
 
-      {collections.length === 0 ? (
+      {collections && collections.length === 0 ? (
         <div className="no-collections-message">
           <Typography variant="h5" sx={{ marginTop: "16px" }}>
             There are no collections in your workspace.
@@ -170,25 +137,13 @@ export const CollectionsList = () => {
           Logger("Create collection modal closed");
         }}
         onCreate={(newCollection) => {
-          handleCreateCollection(newCollection);
-          Logger("Collection created", newCollection);
+          setCollections([...collections, newCollection]);
+          setIsCreateModalOpen(false);
+          Logger("New collection created", newCollection);
+          navigate(`/collection/${newCollection.id}`);
         }}
+        // TODO: Render the other modals in the same way
       />
-      {snackbarState.isOpen && (
-        <CustomSnackbar
-          message={snackbarState.message}
-          severity={snackbarState.severity}
-          open={snackbarState.isOpen}
-          autoHideDuration={3000}
-          onClose={() => {
-            setSnackbarState({
-              ...snackbarState,
-              isOpen: false,
-            });
-            Logger("Snackbar closed");
-          }}
-        />
-      )}
     </div>
   );
 };

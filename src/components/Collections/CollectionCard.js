@@ -139,12 +139,12 @@ export const CollectionCard = ({
                     </Typography>
                     {collection.createdDate}
                   </MenuItem>
-                  {/* <MenuItem>
+                  <MenuItem>
                     <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                       Total Documents:&nbsp;&nbsp;
                     </Typography>
-                    {collection.documents ? collection.documents.length : "0"}
-                  </MenuItem> */}
+                    {collection.documents ? collection.documentCount : "0"}
+                  </MenuItem>
                 </Menu>
                 <MenuItem
                   onClick={() => {

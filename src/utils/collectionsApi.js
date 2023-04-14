@@ -72,3 +72,20 @@ export const renameCollection = async (collection, newName) => {
     return null;
   }
 };
+
+export const fetchCollectionById = async (collectionId) => {
+  try {
+    const response = await axios.get(`${COLLECTIONS_ENDPOINT}/${collectionId}`);
+    const collection = response.data;
+    return new Collection(
+      collection.id,
+      collection.name,
+      collection.createdBy,
+      collection.createdDate,
+      collection.documents
+    );
+  } catch (error) {
+    console.error(`Error fetching collection ${collectionId}`, error);
+    return null;
+  }
+};

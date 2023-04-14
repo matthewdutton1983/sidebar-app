@@ -94,7 +94,7 @@ export const CollectionPage = () => {
             <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
               {collection.name}
             </Typography>
-            {collection.documentCount > 0 && (
+            {collection?.documentCount > 0 && (
               <Button
                 variant="contained"
                 onClick={handleOpenModal}
@@ -115,7 +115,7 @@ export const CollectionPage = () => {
           </Typography>
         )}
       </div>
-      {collection && collection.documentCount > 0 && (
+      {collection && collection?.documentCount > 0 && (
         <div className="middle-row">
           <div className="centered-container" style={{ alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -129,7 +129,7 @@ export const CollectionPage = () => {
                 fontWeight="bold"
                 sx={{ flexGrow: 1, paddingRight: "8px" }}
               >
-                {`Documents 1-${collection.documentCount} of ${collection.documentCount}`}
+                {`Documents 1-${collection?.documentCount} of ${collection?.documentCount}`}
               </Typography>
               <IconButton>
                 <InfoRounded />
@@ -151,18 +151,18 @@ export const CollectionPage = () => {
         className="bottom-row"
         style={{
           alignItems:
-            collection && collection.documentCount === 0
+            collection && collection?.documentCount === 0
               ? "center"
               : "flex-start",
         }}
       >
         <div className="bottom-row-left">
-          {collection && collection.documentCount === 0 ? (
+          {collection && collection?.documentCount === 0 ? (
             <EmptyCollection handleOpenModal={handleOpenModal} />
           ) : (
             <div className="document-list-wrapper">
               <DocumentsList
-                documents={collection.documents}
+                documents={collection?.documents}
                 handleCheckboxChange={handleCheckboxChange}
                 handleDeleteDocument={handleDeleteDocument}
                 allDocumentsChecked={allDocumentsChecked}
@@ -170,7 +170,7 @@ export const CollectionPage = () => {
             </div>
           )}
         </div>
-        {collection && collection.documentCount > 0 && (
+        {collection && collection?.documentCount > 0 && (
           <div className="bottom-row-right" style={{ width: "450px" }}>
             <FilterCollection />
           </div>
