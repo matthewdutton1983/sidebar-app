@@ -5,12 +5,7 @@ import { AddRounded } from "@mui/icons-material";
 import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
 import { Logger } from "../../Logger";
-import {
-  fetchCollections,
-  deleteCollection,
-  renameCollection,
-  fetchCollectionById,
-} from "../../utils/collectionsApi";
+import { Collection } from "../../models/Collection";
 import "./Collection.styles.css";
 
 export const CollectionsList = () => {
@@ -22,11 +17,11 @@ export const CollectionsList = () => {
   useEffect(() => {
     const loadCollections = async () => {
       try {
-        const response = await fetchCollections();
+        const response = await Collection.fetchCollections();
         setCollections(response);
-        Logger("Collections loaded successfully", response);
+        console.log("Collections loaded successfully", response);
       } catch (error) {
-        Logger("Error loading collections", error);
+        console.error("Error loading collections", error);
       }
     };
     loadCollections();
@@ -34,10 +29,12 @@ export const CollectionsList = () => {
 
   const handleCollectionClick = async (collection) => {
     try {
-      const fetchedCollection = await fetchCollectionById(collection.id);
+      const fetchedCollection = await Collection.fetchCollectionById(
+        collection.id
+      );
       if (fetchedCollection) {
         navigate(`/collection/${fetchedCollection.id}`);
-        Logger("Collection clicked", fetchedCollection);
+        console.log("Collection clicked", fetchedCollection);
       } else {
         console.error(`Collection with ID ${collection.id} not found`);
       }
@@ -46,22 +43,23 @@ export const CollectionsList = () => {
     }
   };
 
-  // TODO: Move this code to the DeleteCollectionModal
   const handleDeleteCollection = async (collection) => {
     try {
-      await deleteCollection(collection);
+      await Collection.deleteCollection(collection);
       setCollections(collections.filter((c) => c.id !== collection.id));
-      Logger("Collection deleted", collection);
+      console.log("Collection deleted", collection);
     } catch (error) {
       console.error("Error deleting collection", error);
     }
   };
 
-  // TODO: Move this code to the RenameCollectionModal
   const handleRenameCollection = async (collection, newName) => {
     try {
       console.log("Renaming collection with ID", collection.id, "to", newName);
-      const updatedCollection = await renameCollection(collection, newName);
+      const updatedCollection = await Collection.renameCollection(
+        collection,
+        newName
+      );
       console.log("PUT request succeeded:", updatedCollection);
       setCollections(
         collections.map((c) =>
@@ -76,7 +74,7 @@ export const CollectionsList = () => {
 
   const handleModalClose = () => {
     setIsCreateModalOpen(false);
-    Logger("Create collection modal closed");
+    console.log("Create collection modal closed");
   };
 
   return (
@@ -90,7 +88,7 @@ export const CollectionsList = () => {
           variant="contained"
           onClick={() => {
             setIsCreateModalOpen(true);
-            Logger("Create collection button clicked");
+            console.log("Create collection button clicked");
           }}
         >
           <AddRounded sx={{ paddingRight: "8px" }} />
@@ -108,21 +106,21 @@ export const CollectionsList = () => {
         <div className="collection-cards-container">
           {collections.map((collection) => (
             <div key={collection.id}>
-              {collection.name && (
+              {collection && collection.name && (
                 <CollectionCard
                   key={collection.id}
                   collection={collection}
                   onDoubleClick={() => {
                     handleCollectionClick(collection);
-                    Logger("Collection double clicked", collection);
+                    console.log("Collection double clicked", collection);
                   }}
                   onDelete={(collection) => {
                     handleDeleteCollection(collection);
-                    Logger("Collection deleted", collection);
+                    console.log("Collection deleted", collection);
                   }}
                   onRename={(collection, newName) => {
                     handleRenameCollection(collection, newName);
-                    Logger("Collection renamed", collection);
+                    console.log("Collection renamed", collection);
                   }}
                 />
               )}
@@ -136,8 +134,15 @@ export const CollectionsList = () => {
           handleModalClose();
           Logger("Create collection modal closed");
         }}
-        onCreate={(newCollection) => {
-          setCollections([...collections, newCollection]);
+        onCreate={async (newCollection) => {
+          if (!newCollection.id) {
+            console.error("New collection has no ID");
+            return;
+          }
+          setCollections((prevCollections) => [
+            ...prevCollections,
+            newCollection,
+          ]);
           setIsCreateModalOpen(false);
           Logger("New collection created", newCollection);
           navigate(`/collection/${newCollection.id}`);

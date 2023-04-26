@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { Button, IconButton, Checkbox, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AddRounded,
   DeleteRounded,
@@ -11,22 +11,40 @@ import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
 import { DocumentsList } from "../components/Documents/DocumentsList";
 import { EmptyCollection } from "../components/Collections/EmptyCollection";
 import { FilterCollection } from "../components/Collections/FilterCollection";
-import axios from "axios";
+import { Collection } from "../models/Collection";
+import { Logger } from "../Logger";
 import "../components/Collections/Collection.styles.css";
 
 export const CollectionPage = () => {
   const { collectionId } = useParams();
-  const [collection, setCollection] = useState(null);
+
+  const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [allDocumentsChecked, setAllDocumentsChecked] = useState(false);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  useEffect(() => {
+    const fetchActiveCollection = async () => {
+      try {
+        const response = await Collection.fetchCollectionById(collectionId);
+        const fetchedCollection = new Collection(
+          response.id,
+          response.name,
+          response.createdBy,
+          response.createdDate,
+          response.documents.map((doc) => ({
+            id: doc.id,
+            name: doc.name,
+            content: doc.content,
+          }))
+        );
+        setCollection(fetchedCollection);
+        Logger("Collection loaded successfully", response);
+      } catch (error) {
+        Logger(`Error loading collection ${collectionId}`, error);
+      }
+    };
+    fetchActiveCollection();
+  }, [collectionId]);
 
   const handleDeleteDocument = (documentIndex) => {
     const updatedCollection = {
@@ -36,32 +54,6 @@ export const CollectionPage = () => {
       ),
     };
     setCollection(updatedCollection);
-  };
-
-  const setAddedDocuments = async (collectionId, documents) => {
-    console.log("collectionId in setAddedDocuments:", collectionId);
-
-    if (collection.documentCount > 0) {
-      console.log(
-        `Sending POST request to upload documents to /api/collections/${collectionId}/documents`
-      );
-      await axios.post(`/api/collections/${collectionId}/documents`, {
-        documents,
-      });
-
-      documents.forEach((doc) => {
-        console.log(`Uploaded document:`, doc);
-      });
-    }
-
-    const updatedCollection = {
-      ...collection,
-      documents: collection.documents.concat(documents),
-    };
-
-    setCollection(updatedCollection);
-    setIsModalOpen(false);
-    console.log(`Updated collection:`, updatedCollection);
   };
 
   const handleAllDocumentsChecked = (event) => {
@@ -81,6 +73,14 @@ export const CollectionPage = () => {
     setCollection(updatedCollection);
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="collection-page">
       <div className="top-row">
@@ -94,7 +94,7 @@ export const CollectionPage = () => {
             <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
               {collection.name}
             </Typography>
-            {collection?.documentCount > 0 && (
+            {collection && collection.documents.length > 0 && (
               <Button
                 variant="contained"
                 onClick={handleOpenModal}
@@ -115,7 +115,7 @@ export const CollectionPage = () => {
           </Typography>
         )}
       </div>
-      {collection && collection?.documentCount > 0 && (
+      {collection && collection?.documents.length > 0 && (
         <div className="middle-row">
           <div className="centered-container" style={{ alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -129,7 +129,7 @@ export const CollectionPage = () => {
                 fontWeight="bold"
                 sx={{ flexGrow: 1, paddingRight: "8px" }}
               >
-                {`Documents 1-${collection?.documentCount} of ${collection?.documentCount}`}
+                {`Documents 1-${collection?.documents.length} of ${collection?.documents.length}`}
               </Typography>
               <IconButton>
                 <InfoRounded />
@@ -151,13 +151,13 @@ export const CollectionPage = () => {
         className="bottom-row"
         style={{
           alignItems:
-            collection && collection?.documentCount === 0
+            collection && collection?.documents.length === 0
               ? "center"
               : "flex-start",
         }}
       >
         <div className="bottom-row-left">
-          {collection && collection?.documentCount === 0 ? (
+          {collection && collection?.documents.length === 0 ? (
             <EmptyCollection handleOpenModal={handleOpenModal} />
           ) : (
             <div className="document-list-wrapper">
@@ -170,7 +170,7 @@ export const CollectionPage = () => {
             </div>
           )}
         </div>
-        {collection && collection?.documentCount > 0 && (
+        {collection && collection?.documents.length > 0 && (
           <div className="bottom-row-right" style={{ width: "450px" }}>
             <FilterCollection />
           </div>
@@ -179,10 +179,7 @@ export const CollectionPage = () => {
       <AddDocumentsModal
         open={isModalOpen}
         onClose={handleCloseModal}
-        onDocumentsAdded={(documents) =>
-          setAddedDocuments(collectionId, documents)
-        }
-        collectionId={collectionId}
+        collection={collection}
       />
     </div>
   );

@@ -143,7 +143,7 @@ export const CollectionCard = ({
                     <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                       Total Documents:&nbsp;&nbsp;
                     </Typography>
-                    {collection.documents ? collection.documentCount : "0"}
+                    {collection.documents ? collection.documents.length : "0"}
                   </MenuItem>
                 </Menu>
                 <MenuItem
@@ -193,7 +193,7 @@ export const CollectionCard = ({
             }}
           >
             <Typography variant="body1" style={{ alignSelf: "flex-end" }}>
-              {`Documents: ${collection.documentCount}`}
+              {`Documents: ${collection.documents.length}`}
             </Typography>
             <Typography variant="body1" style={{ alignSelf: "flex-end" }}>
               {collection.createdDate}

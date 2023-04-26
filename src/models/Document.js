@@ -1,9 +1,8 @@
 export class Document {
-  static documentCount = 0;
-
-  constructor(name, content) {
+  constructor(id, name, type, url) {
+    this.id = id;
     this.name = name;
-    this.content = content;
-    Document.documentCount++;
+    this.type = type;
+    this.url = url;
   }
 }

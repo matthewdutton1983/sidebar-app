@@ -3,7 +3,7 @@ import { Card, CardContent } from "@mui/material";
 import { ContextMenu } from "../ContextMenu/ContextMenu";
 import "./Document.styles.css";
 
-export const Document = ({ onAnnotate }) => {
+export const DocumentWindow = ({ onAnnotate }) => {
   const [selectedText, setSelectedText] = useState("");
   const [contextMenuActive, setContextMenuActive] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({

@@ -2,43 +2,36 @@ import { Modal, Typography, Button, Box, Tab, Tabs } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { useCallback, useState } from "react";
 import { Logger } from "../../Logger";
-import { v4 as uuidv4 } from "uuid";
 import "./Modals.styles.css";
 
-export const AddDocumentsModal = ({
-  open,
-  onClose,
-  onDocumentsAdded,
-  collectionId,
-}) => {
+export const AddDocumentsModal = ({ open, onClose, collection }) => {
   const [activeTab, setActiveTab] = useState(0);
 
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      Logger("Files dropped into the dropzone.", { acceptedFiles });
-
-      const documents = acceptedFiles.map((file) => {
-        const docId = uuidv4();
-        const document = {
-          id: docId,
-          name: file.name,
-          path: `s3://${collectionId}/${docId}`,
-        };
-        Logger("Document added:", document);
-        return document;
-      });
-
-      onDocumentsAdded(collectionId, documents);
+  const handleFileDrop = useCallback(
+    async (acceptedFiles) => {
+      console.log("acceptedFiles:", acceptedFiles);
+      try {
+        const documents = await collection.uploadDocuments(acceptedFiles);
+        console.log("Documents uploaded successfully:", documents);
+      } catch (error) {
+        console.error(error);
+        throw new Error(
+          `Error uploading documents to collection ${collection.id}`
+        );
+      }
     },
-    [onDocumentsAdded, collectionId]
+    [collection]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleFileDrop,
+    multiple: true,
+  });
 
   const handleTabChange = (event, newValue) => {
+    console.log("event:", event);
     setActiveTab(newValue);
   };
-
   Logger("Rendering AddDocumentsModal component.");
 
   return (
@@ -51,8 +44,8 @@ export const AddDocumentsModal = ({
             onChange={handleTabChange}
             sx={{ flexGrow: 1, paddingTop: 1 }}
           >
-            <Tab label="Other Methods" />
             <Tab label="Upload from Computer" />
+            <Tab label="Other Methods" />
           </Tabs>
         </Box>
         <Box
@@ -64,14 +57,6 @@ export const AddDocumentsModal = ({
           }}
         >
           {activeTab === 0 && (
-            <div className="tab-content" style={{ flexGrow: 1 }}>
-              <Typography variant="h6" color="textPrimary">
-                Other methods
-              </Typography>
-              {/* code for uploading from computer */}
-            </div>
-          )}
-          {activeTab === 1 && (
             <div className="tab-content" style={{ flexGrow: 1 }}>
               <div
                 {...getRootProps()}
@@ -110,6 +95,14 @@ export const AddDocumentsModal = ({
                   </>
                 )}
               </div>
+            </div>
+          )}
+          {activeTab === 1 && (
+            <div className="tab-content" style={{ flexGrow: 1 }}>
+              <Typography variant="h6" color="textPrimary">
+                Other methods
+              </Typography>
+              {/* code for uploading from other sources */}
             </div>
           )}
         </Box>

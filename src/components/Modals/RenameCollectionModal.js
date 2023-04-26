@@ -10,6 +10,7 @@ import {
 import { Logger } from "../../Logger";
 import "./Modals.styles.css";
 
+// TODO: Re-render CollectionCard
 export const RenameCollectionModal = ({
   open,
   currentName,

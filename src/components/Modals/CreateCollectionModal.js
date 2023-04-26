@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Logger } from "../../Logger";
-import { createCollection } from "../../utils/collectionsApi";
+import { Collection } from "../../models/Collection";
 import "./Modals.styles.css";
 
 export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
@@ -26,9 +26,10 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
         createdBy: "Matthew Dutton", // replace with actual user
       };
       try {
-        const createdCollection = await createCollection(newCollection);
+        const createdCollection = await Collection.createCollection(
+          newCollection
+        );
         onCreate(createdCollection);
-        Logger("New collection created", { collection: createdCollection });
         setShowCreateSnackbar(true);
       } catch (error) {
         console.error("Error creating collection", error);
@@ -45,6 +46,7 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
     if (reason === "clickaway") {
       return;
     }
+    console.log(event);
     setShowCreateSnackbar(false);
   };
 
@@ -94,9 +96,10 @@ export const CreateCollectionModal = ({ isOpen, onClose, onCreate }) => {
           </div>
         </div>
       </Modal>
+      {/* Need to look into why this Snackbar is not being displayed */}
       <Snackbar
         open={showCreateSnackbar}
-        autoHideDuration={3000}
+        autoHideDuration={6000}
         onClose={handleCreateSnackbarClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
