@@ -4,8 +4,8 @@ export const DocumentsList = ({
   documents = [],
   handleCheckboxChange,
   handleDeleteDocument,
-  allDocumentsChecked,
 }) => {
+  console.log("documents:", documents);
   return (
     <div className="document-list-wrapper">
       {documents.map((doc, index) => (
@@ -15,7 +15,6 @@ export const DocumentsList = ({
           index={index}
           handleCheckboxChange={handleCheckboxChange}
           handleDeleteDocument={handleDeleteDocument}
-          allDocumentsChecked={allDocumentsChecked}
         />
       ))}
     </div>

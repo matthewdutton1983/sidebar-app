@@ -3,6 +3,5 @@ export class Document {
     this.id = id;
     this.name = name;
     this.type = type;
-    this.url = url;
   }
 }

@@ -10,22 +10,24 @@ export class Collection {
     this.documents = documents;
   }
 
-  // // Fetch all collections from the server
+  // Fetch all collections from the server
   static async fetchCollections() {
     console.log(`Loading collections...`);
     try {
       const response = await axios.get(COLLECTIONS_ENDPOINT);
       console.log("response:", response.data);
-      return response.data.map(
-        (collection) =>
-          new Collection(
-            collection.id,
-            collection.name,
-            collection.createdBy,
-            collection.createdDate,
-            collection.documents
-          )
-      );
+      return response.data.map((collection) => {
+        const { id, name, createdBy, createdDate, documents } = collection;
+        const collectionObject = new Collection(
+          id,
+          name,
+          createdBy,
+          createdDate,
+          documents
+        );
+        console.log("Collection object:", collectionObject);
+        return collectionObject;
+      });
     } catch (error) {
       console.error("Error loading collections", error);
       return [];
@@ -40,13 +42,16 @@ export class Collection {
         `${COLLECTIONS_ENDPOINT}/${collectionId}`
       );
       const collection = response.data;
-      return new Collection(
+      console.log("response:", response.data);
+      const collectionObject = new Collection(
         collection.id,
         collection.name,
         collection.createdBy,
         collection.createdDate,
         collection.documents
       );
+      console.log("Collection object:", collectionObject);
+      return collectionObject;
     } catch (error) {
       console.error(`Error fetching collection ${collectionId}`, error);
       return null;

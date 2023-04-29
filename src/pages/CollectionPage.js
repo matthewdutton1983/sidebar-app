@@ -1,12 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { Button, IconButton, Checkbox, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import {
-  AddRounded,
-  DeleteRounded,
-  InfoRounded,
-  HomeRounded,
-} from "@mui/icons-material";
+import { AddRounded, DeleteRounded, HomeRounded } from "@mui/icons-material";
 import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
 import { DocumentsList } from "../components/Documents/DocumentsList";
 import { EmptyCollection } from "../components/Collections/EmptyCollection";
@@ -20,7 +15,6 @@ export const CollectionPage = () => {
 
   const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [allDocumentsChecked, setAllDocumentsChecked] = useState(false);
 
   useEffect(() => {
     const fetchActiveCollection = async () => {
@@ -33,8 +27,8 @@ export const CollectionPage = () => {
           response.createdDate,
           response.documents.map((doc) => ({
             id: doc.id,
-            name: doc.name,
-            content: doc.content,
+            name: doc.fileName,
+            type: doc.fileType,
           }))
         );
         setCollection(fetchedCollection);
@@ -61,9 +55,13 @@ export const CollectionPage = () => {
       ...doc,
       checked: event.target.checked,
     }));
+    console.log("updatedDocuments:", updatedDocuments);
     const updatedCollection = { ...collection, documents: updatedDocuments };
     setCollection(updatedCollection);
-    setAllDocumentsChecked(event.target.checked);
+  };
+
+  const areAllDocumentsChecked = () => {
+    return collection.documents.every((doc) => doc.checked);
   };
 
   const handleCheckboxChange = (event, index) => {
@@ -119,11 +117,7 @@ export const CollectionPage = () => {
         <div className="middle-row">
           <div className="centered-container" style={{ alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <Checkbox
-                color="primary"
-                checked={allDocumentsChecked}
-                onChange={handleAllDocumentsChecked}
-              />
+              <Checkbox color="primary" onChange={handleAllDocumentsChecked} />
               <Typography
                 variant="body1"
                 fontWeight="bold"
@@ -131,11 +125,8 @@ export const CollectionPage = () => {
               >
                 {`Documents 1-${collection?.documents.length} of ${collection?.documents.length}`}
               </Typography>
-              <IconButton>
-                <InfoRounded />
-              </IconButton>
             </div>
-            {allDocumentsChecked && (
+            {areAllDocumentsChecked() && (
               <IconButton
                 edge="end"
                 aria-label="delete"
@@ -165,7 +156,6 @@ export const CollectionPage = () => {
                 documents={collection?.documents}
                 handleCheckboxChange={handleCheckboxChange}
                 handleDeleteDocument={handleDeleteDocument}
-                allDocumentsChecked={allDocumentsChecked}
               />
             </div>
           )}
