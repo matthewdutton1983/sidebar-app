@@ -22,6 +22,11 @@
   transition: background-color 0.2s ease-in-out;
 }
 
+.custom-typography {
+  line-height: normal !important;
+  margin-bottom: 0 !important;
+}
+
 .checked-document {
   background-color: #e3f2fd !important;
 }

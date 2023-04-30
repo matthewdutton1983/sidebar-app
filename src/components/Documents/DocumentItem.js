@@ -21,7 +21,7 @@ export const DocumentItem = ({
           onChange={(e) => handleCheckboxChange(e, index)}
         />
       </div>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body1" gutterBottom className="custom-typography">
         {doc.name}
       </Typography>
       <IconButton

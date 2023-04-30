@@ -117,7 +117,11 @@ export const CollectionPage = () => {
         <div className="middle-row">
           <div className="centered-container" style={{ alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <Checkbox color="primary" onChange={handleAllDocumentsChecked} />
+              <Checkbox
+                color="primary"
+                checked={areAllDocumentsChecked()}
+                onChange={handleAllDocumentsChecked}
+              />
               <Typography
                 variant="body1"
                 fontWeight="bold"
