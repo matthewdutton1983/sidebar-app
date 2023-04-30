@@ -92,7 +92,7 @@ export const CollectionPage = () => {
             <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
               {collection.name}
             </Typography>
-            {collection && collection.documents.length > 0 && (
+            {/* {collection && collection.documents.length > 0 && (
               <Button
                 variant="contained"
                 onClick={handleOpenModal}
@@ -105,7 +105,7 @@ export const CollectionPage = () => {
                 <AddRounded sx={{ paddingRight: "8px" }} />
                 Add Documents
               </Button>
-            )}
+            )} */}
           </>
         ) : (
           <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
@@ -114,22 +114,27 @@ export const CollectionPage = () => {
         )}
       </div>
       {collection && collection?.documents.length > 0 && (
-        <div className="middle-row">
-          <div className="centered-container" style={{ alignItems: "center" }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Checkbox
-                color="primary"
-                checked={areAllDocumentsChecked()}
-                onChange={handleAllDocumentsChecked}
-              />
-              <Typography
-                variant="body1"
-                fontWeight="bold"
-                sx={{ flexGrow: 1, paddingRight: "8px" }}
-              >
-                {`Documents 1-${collection?.documents.length} of ${collection?.documents.length}`}
-              </Typography>
-            </div>
+        <div
+          className="middle-row"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Checkbox
+              color="primary"
+              checked={areAllDocumentsChecked()}
+              onChange={handleAllDocumentsChecked}
+            />
+            <Typography
+              variant="body1"
+              fontWeight="bold"
+              sx={{ paddingRight: "8px" }}
+            >
+              {`Documents 1-${collection?.documents.length} of ${collection?.documents.length}`}
+            </Typography>
             {areAllDocumentsChecked() && (
               <IconButton
                 edge="end"
@@ -140,8 +145,20 @@ export const CollectionPage = () => {
               </IconButton>
             )}
           </div>
+          <Button
+            variant="contained"
+            onClick={handleOpenModal}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+            }}
+          >
+            <AddRounded sx={{ paddingRight: "8px" }} />
+            Add Documents
+          </Button>
         </div>
       )}
+
       <div
         className="bottom-row"
         style={{
