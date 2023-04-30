@@ -4,6 +4,7 @@ export const DocumentsList = ({
   documents = [],
   handleCheckboxChange,
   handleDeleteDocument,
+  handleDocumentDoubleClick,
 }) => {
   console.log("documents:", documents);
   return (
@@ -15,6 +16,7 @@ export const DocumentsList = ({
           index={index}
           handleCheckboxChange={handleCheckboxChange}
           handleDeleteDocument={handleDeleteDocument}
+          handleDocumentDoubleClick={handleDocumentDoubleClick}
         />
       ))}
     </div>

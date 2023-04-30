@@ -1,5 +1,11 @@
-import { Link, useParams } from "react-router-dom";
-import { Button, IconButton, Checkbox, Typography } from "@mui/material";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Button,
+  IconButton,
+  Checkbox,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { AddRounded, DeleteRounded, HomeRounded } from "@mui/icons-material";
 import { AddDocumentsModal } from "../components/Modals/AddDocumentsModal";
@@ -15,6 +21,15 @@ export const CollectionPage = () => {
 
   const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const navigate = useNavigate();
+
+  const itemsPerPage = 50;
+  const totalPages = Math.ceil(collection?.documents.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const visibleDocuments = collection?.documents.slice(startIndex, endIndex);
 
   useEffect(() => {
     const fetchActiveCollection = async () => {
@@ -79,6 +94,22 @@ export const CollectionPage = () => {
     setIsModalOpen(false);
   };
 
+  const handlePageChange = (event, value) => {
+    console.log("event:", event);
+    setPage(value);
+  };
+
+  const handleDocumentDoubleClick = async (documentId) => {
+    try {
+      console.log("documentId:", documentId);
+      const response = await collection.fetchDocumentById(documentId);
+      console.log("response:", response);
+      navigate(`/collection/${collectionId}/documents/${documentId}`);
+    } catch (error) {
+      console.error(`Error loading document ${documentId}`, error);
+    }
+  };
+
   return (
     <div className="collection-page">
       <div className="top-row">
@@ -92,20 +123,6 @@ export const CollectionPage = () => {
             <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
               {collection.name}
             </Typography>
-            {/* {collection && collection.documents.length > 0 && (
-              <Button
-                variant="contained"
-                onClick={handleOpenModal}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  margin: "auto",
-                }}
-              >
-                <AddRounded sx={{ paddingRight: "8px" }} />
-                Add Documents
-              </Button>
-            )} */}
           </>
         ) : (
           <Typography variant="h5" sx={{ flexGrow: 1, paddingLeft: "16px" }}>
@@ -158,31 +175,37 @@ export const CollectionPage = () => {
           </Button>
         </div>
       )}
-
-      <div
-        className="bottom-row"
-        style={{
-          alignItems:
-            collection && collection?.documents.length === 0
-              ? "center"
-              : "flex-start",
-        }}
-      >
-        <div className="bottom-row-left">
-          {collection && collection?.documents.length === 0 ? (
-            <EmptyCollection handleOpenModal={handleOpenModal} />
-          ) : (
+      <div className="bottom-row">
+        {collection && collection?.documents.length > 0 && (
+          <div className="bottom-row-left">
             <div className="document-list-wrapper">
               <DocumentsList
-                documents={collection?.documents}
+                documents={visibleDocuments}
                 handleCheckboxChange={handleCheckboxChange}
                 handleDeleteDocument={handleDeleteDocument}
+                handleDocumentDoubleClick={handleDocumentDoubleClick}
               />
             </div>
-          )}
-        </div>
+            <div className="pagination-container">
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={handlePageChange}
+                color="primary"
+                showFirstButton
+                showLastButton
+                size="large"
+              />
+            </div>
+          </div>
+        )}
+        {collection && collection?.documents.length === 0 && (
+          <div className="empty-collection-container">
+            <EmptyCollection handleOpenModal={handleOpenModal} />
+          </div>
+        )}
         {collection && collection?.documents.length > 0 && (
-          <div className="bottom-row-right" style={{ width: "450px" }}>
+          <div className="bottom-row-right">
             <FilterCollection />
           </div>
         )}

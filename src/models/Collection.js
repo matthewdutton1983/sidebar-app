@@ -121,13 +121,12 @@ export class Collection {
     }
   }
 
+  // Upload one or more documents to the server
   async uploadDocuments(files) {
     console.log("Files to be uploaded:", files);
-
     const documents = await Promise.all(
       files.map(async (file) => {
         console.log(`Uploading file ${file.name}`);
-
         const response = await axios.post(DOCUMENTS_ENDPOINT(this.id), file, {
           headers: {
             "Content-Type": file.type,
@@ -138,15 +137,33 @@ export class Collection {
         });
         console.log("response.data:", response.data);
         const { id, url } = response.data;
-
         return new Document(id, file.name, file.type, url);
       })
     );
-
     this.documents.push(...documents);
     return documents;
   }
 
+  // Fetch a document from the server
+  async fetchDocumentById(documentId) {
+    console.log(`Fetching document ${documentId} from collection ${this.id}`);
+    try {
+      const response = await axios.get(
+        `${DOCUMENTS_ENDPOINT(this.id)}/${documentId}`
+      );
+      const document = response.data;
+      console.log("response:", response.data);
+      const { id, name, type, content } = document;
+      const documentObject = new Document(id, name, type, content);
+      console.log("documentObject:", documentObject);
+      return documentObject;
+    } catch (error) {
+      console.error(`Error fetching document ${documentId}`, error);
+      return null;
+    }
+  }
+
+  // Remove one or more documents on the server
   // async removeDocuments(documents) {
   //   console.log(`Starting removeDocuments for ${documents}`);
   //   try {

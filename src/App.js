@@ -10,7 +10,10 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/collection/:collectionId" element={<CollectionPage />} />
-        <Route path="/smartviewer" element={<SmartViewerPage />} />
+        <Route
+          path="/collection/:collectionId/documents/:documentId"
+          element={<SmartViewerPage />}
+        />
       </Routes>
     </BrowserRouter>
   );

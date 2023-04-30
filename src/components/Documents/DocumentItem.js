@@ -7,12 +7,14 @@ export const DocumentItem = ({
   doc = {},
   handleCheckboxChange,
   handleDeleteDocument,
+  handleDocumentDoubleClick,
 }) => {
   console.log("doc:", doc);
   return (
     <div
       key={index}
       className={`document-item ${doc.checked ? "checked-document" : ""}`}
+      onDoubleClick={() => handleDocumentDoubleClick(doc.id)}
     >
       <div>
         <Checkbox
