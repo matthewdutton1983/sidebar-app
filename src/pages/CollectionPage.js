@@ -104,7 +104,17 @@ export const CollectionPage = () => {
       console.log("documentId:", documentId);
       const response = await collection.fetchDocumentById(documentId);
       console.log("response:", response);
-      navigate(`/collection/${collectionId}/documents/${documentId}`);
+
+      const uint8Array = Uint8Array.from(atob(response.content), (c) =>
+        c.charCodeAt(0)
+      );
+      const blob = new Blob([uint8Array], { type: "application/pdf" });
+
+      const objectUrl = URL.createObjectURL(blob);
+
+      navigate(`/collection/${collectionId}/documents/${documentId}`, {
+        state: { fetchedDocument: { ...response, content: objectUrl } },
+      });
     } catch (error) {
       console.error(`Error loading document ${documentId}`, error);
     }

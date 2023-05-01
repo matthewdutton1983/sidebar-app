@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Document } from "./Document";
 import { COLLECTIONS_ENDPOINT, DOCUMENTS_ENDPOINT } from "../utils/endpoints";
 
 export class Collection {
