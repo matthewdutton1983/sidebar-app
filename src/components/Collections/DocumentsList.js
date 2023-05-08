@@ -9,10 +9,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { LabelRounded } from "@mui/icons-material";
 import { AddDocumentsButton } from "../Reusable/AddDocumentsButton";
 import { DeleteButton } from "../Reusable/DeleteButton";
+import { LabelButton } from "../Reusable/LabelButton";
 import { SearchBar } from "../Reusable/SearchBar";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import "./DocumentsList.styles.css";
 
 export const DocumentsList = ({
@@ -41,12 +43,23 @@ export const DocumentsList = ({
   const displayDocumentsText = () => {
     const selectedCount = getSelectedDocumentsCount();
     if (selectedCount > 0) {
-      return `${selectedCount} document${
-        selectedCount > 1 ? "s" : ""
-      } selected`;
+      return (
+        <Fragment>
+          <span>
+            {selectedCount} document{selectedCount > 1 ? "s" : ""} selected
+          </span>
+          <DeleteButton onClick={handleDeleteSelectedDocuments} />
+        </Fragment>
+      );
     } else {
       return `Documents ${startIndex + 1}-${endIndex} of ${documents.length}`;
     }
+  };
+
+  const handleDeleteSelectedDocuments = () => {
+    const selectedDocuments = documents.filter((document) => document.checked);
+    console.log("selectedDocuments:", selectedDocuments);
+    // Delete selected documents
   };
 
   return (
@@ -128,6 +141,7 @@ export const DocumentsList = ({
                       >
                         {document.name}
                         <div className="button-container">
+                          <LabelButton />
                           <DeleteButton
                             onClick={() => handleDeleteDocument(document.id)}
                           />

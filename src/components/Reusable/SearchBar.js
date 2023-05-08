@@ -6,8 +6,9 @@ export const SearchBar = () => {
     <TextField
       id="searchBar"
       variant="outlined"
-      placeholder="Search documents..."
+      placeholder="Search ..."
       size="small"
+      style={{ width: "350px" }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
