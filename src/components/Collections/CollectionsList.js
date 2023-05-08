@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
-import { AddRounded } from "@mui/icons-material";
 import { CreateCollectionModal } from "../Modals/CreateCollectionModal";
 import { CollectionCard } from "./CollectionCard";
 import { Logger } from "../../Logger";
@@ -91,7 +90,6 @@ export const CollectionsList = () => {
             console.log("Create collection button clicked");
           }}
         >
-          <AddRounded sx={{ paddingRight: "8px" }} />
           Create Collection
         </Button>
       </div>

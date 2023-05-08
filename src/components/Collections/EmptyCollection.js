@@ -1,5 +1,5 @@
-import { Button, Typography } from "@mui/material";
-import { AddRounded } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import { AddDocumentsButton } from "../Reusable/AddDocumentsButton";
 import "./Collection.styles.css";
 
 export const EmptyCollection = ({ handleOpenModal }) => {
@@ -19,17 +19,7 @@ export const EmptyCollection = ({ handleOpenModal }) => {
         >
           Add documents to your collection
         </Typography>
-        <Button
-          variant="contained"
-          onClick={handleOpenModal}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-          }}
-        >
-          <AddRounded sx={{ paddingRight: "8px" }} />
-          Add Documents
-        </Button>
+        <AddDocumentsButton onClick={handleOpenModal} />
       </div>
     </div>
   );

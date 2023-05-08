@@ -165,19 +165,14 @@ export class Collection {
   }
 
   // Remove one or more documents on the server
-  // async removeDocuments(documents) {
-  //   console.log(`Starting removeDocuments for ${documents}`);
-  //   try {
-  //     await deleteDocumentsRequest(documents);
-  //     this.documents = this.documents.filter(
-  //       (doc) => !documents.find((d) => d.id === doc.id)
-  //     );
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw new Error(`Error removing documents from collection ${this.id}`);
-  //   }
-  // }
-  // get documentCount() {
-  //   return this.documents.length;
-  // }
+  async removeDocument(documentId) {
+    console.log(`Starting removeDocument for ${documentId}`);
+    try {
+      await axios.delete(`${DOCUMENTS_ENDPOINT(this.id)}/${documentId}`);
+      this.documents = this.documents.filter((doc) => doc.id !== documentId);
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Error removing document from collection ${this.id}`);
+    }
+  }
 }

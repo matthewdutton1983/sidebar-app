@@ -2,7 +2,6 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { CollectionPage } from "./pages/CollectionPage";
 import { SmartViewerPage } from "./pages/SmartViewerPage";
-import "./App.css";
 
 function App() {
   return (
