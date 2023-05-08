@@ -16,7 +16,7 @@ export const leftTools = [
 
 export const rightTools = [
   { id: 1, name: "Annotate", icon: <EditRounded /> },
-  { id: 2, name: "Tags", icon: <SellRounded /> },
+  { id: 2, name: "Labels", icon: <SellRounded /> },
   { id: 3, name: "Comments", icon: <CommentRounded /> },
   { id: 4, name: "Search", icon: <SearchRounded /> },
 ];

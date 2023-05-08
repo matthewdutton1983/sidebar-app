@@ -60,3 +60,16 @@
 .documents-table .table-row.checked .button-container {
   display: flex;
 }
+
+.documents-table .table-row.menu-open {
+  background-color: #f5f5f5;
+}
+
+.documents-table .table-row.menu-open:hover {
+  background-color: #f5f5f5;
+}
+
+.documents-table .table-row.menu-open .checkbox-container,
+.documents-table .table-row.menu-open .button-container {
+  display: flex;
+}

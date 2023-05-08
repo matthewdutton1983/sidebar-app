@@ -9,7 +9,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { LabelRounded } from "@mui/icons-material";
 import { AddDocumentsButton } from "../Reusable/AddDocumentsButton";
 import { DeleteButton } from "../Reusable/DeleteButton";
 import { LabelButton } from "../Reusable/LabelButton";
@@ -27,6 +26,7 @@ export const DocumentsList = ({
   handleOpenModal,
 }) => {
   const [page, setPage] = useState(0);
+  const [menuOpenRowIndex, setMenuOpenRowIndex] = useState(null);
   const rowsPerPage = 100;
   const startIndex = page * rowsPerPage;
   const endIndex = Math.min((page + 1) * rowsPerPage, documents.length);
@@ -60,6 +60,14 @@ export const DocumentsList = ({
     const selectedDocuments = documents.filter((document) => document.checked);
     console.log("selectedDocuments:", selectedDocuments);
     // Delete selected documents
+  };
+
+  const handleLabelButtonClick = (index) => {
+    setMenuOpenRowIndex(index);
+  };
+
+  const handleLabelMenuClose = () => {
+    setMenuOpenRowIndex(null);
   };
 
   return (
@@ -111,7 +119,11 @@ export const DocumentsList = ({
                   <TableRow
                     key={document.id}
                     className={
-                      document.checked ? "table-row checked" : "table-row"
+                      document.checked
+                        ? "table-row checked"
+                        : index === menuOpenRowIndex
+                        ? "table-row menu-open"
+                        : "table-row"
                     }
                     onDoubleClick={() => handleDocumentDoubleClick(document.id)}
                   >
@@ -141,7 +153,11 @@ export const DocumentsList = ({
                       >
                         {document.name}
                         <div className="button-container">
-                          <LabelButton />
+                          <LabelButton
+                            style={{ marginRight: "8px" }}
+                            onClick={() => handleLabelButtonClick(index)}
+                            onClose={handleLabelMenuClose}
+                          />
                           <DeleteButton
                             onClick={() => handleDeleteDocument(document.id)}
                           />
