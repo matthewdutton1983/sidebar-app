@@ -1,0 +1,113 @@
+import { Button, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { SellRounded } from "@mui/icons-material";
+import { useState } from "react";
+import { NewLabelForm } from "./NewLabelForm";
+import "./DocumentsList.styles.css";
+
+export const LabelsMenu = ({ onClick, onClose, style }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isNewLabelFormOpen, setIsNewLabelFormOpen] = useState(false);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    setAnchorEl({
+      left: event.clientX,
+      top: event.clientY + 4,
+    });
+    onClick && onClick();
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    onClose && onClose();
+  };
+
+  const handleOpenNewLabelForm = () => {
+    setIsNewLabelFormOpen(true);
+  };
+
+  const handleCloseNewLabelForm = () => {
+    setIsNewLabelFormOpen(false);
+  };
+
+  const labels = [];
+
+  return (
+    <>
+      <div style={style}>
+        <IconButton
+          edge="end"
+          aria-label="label"
+          onClick={handleClick}
+          size="small"
+        >
+          <SellRounded />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorPosition={anchorEl}
+          anchorReference="anchorPosition"
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+          PaperProps={{
+            style: {
+              minWidth: "300px",
+            },
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            style={{
+              marginLeft: "16px",
+              marginRight: "16px",
+              marginTop: "16px",
+              marginBottom: "16px",
+            }}
+          >
+            Label this document as ...
+          </Typography>
+          {labels.length === 0 ? (
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              style={{
+                marginLeft: "16px",
+                marginRight: "16px",
+                marginBottom: "16px",
+              }}
+            >
+              There are no labels in this collection
+            </Typography>
+          ) : (
+            labels.map((label) => (
+              <MenuItem onClick={handleClose}>{label}</MenuItem>
+            ))
+          )}
+          <div
+            style={{
+              borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+              margin: "0 16px",
+            }}
+          />
+          <Button
+            onClick={handleOpenNewLabelForm}
+            color="primary"
+            style={{
+              marginLeft: "16px",
+              marginRight: "16px",
+              marginTop: "16px",
+              marginBottom: "16px",
+            }}
+          >
+            Create new label
+          </Button>
+        </Menu>
+      </div>
+      {isNewLabelFormOpen && <NewLabelForm onClose={handleCloseNewLabelForm} />}
+    </>
+  );
+};

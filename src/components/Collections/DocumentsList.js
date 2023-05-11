@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { AddDocumentsButton } from "../Reusable/AddDocumentsButton";
 import { DeleteButton } from "../Reusable/DeleteButton";
-import { LabelButton } from "../Reusable/LabelButton";
+import { LabelsMenu } from "./LabelsMenu";
 import { SearchBar } from "../Reusable/SearchBar";
 import { Fragment, useState } from "react";
 import "./DocumentsList.styles.css";
@@ -153,7 +153,7 @@ export const DocumentsList = ({
                       >
                         {document.name}
                         <div className="button-container">
-                          <LabelButton
+                          <LabelsMenu
                             style={{ marginRight: "8px" }}
                             onClick={() => handleLabelButtonClick(index)}
                             onClose={handleLabelMenuClose}
