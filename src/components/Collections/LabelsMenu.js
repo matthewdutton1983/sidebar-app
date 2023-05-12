@@ -1,4 +1,11 @@
-import { Button, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { SellRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { NewLabelForm } from "./NewLabelForm";
@@ -7,6 +14,8 @@ import "./DocumentsList.styles.css";
 export const LabelsMenu = ({ onClick, onClose, style }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isNewLabelFormOpen, setIsNewLabelFormOpen] = useState(false);
+  const [isCheckboxSelected, setIsCheckboxSelected] = useState(false);
+  const [labels, setLabels] = useState([]);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -31,7 +40,16 @@ export const LabelsMenu = ({ onClick, onClose, style }) => {
     setIsNewLabelFormOpen(false);
   };
 
-  const labels = [];
+  const handleLabelSelect = (index) => {
+    setLabels((prevLabels) => {
+      const newLabels = prevLabels.map((label, i) =>
+        i === index ? { ...label, isSelected: !label.isSelected } : label
+      );
+      const anySelected = newLabels.some((label) => label.isSelected);
+      setIsCheckboxSelected(anySelected);
+      return newLabels;
+    });
+  };
 
   return (
     <>
@@ -83,31 +101,78 @@ export const LabelsMenu = ({ onClick, onClose, style }) => {
               There are no labels in this collection
             </Typography>
           ) : (
-            labels.map((label) => (
-              <MenuItem onClick={handleClose}>{label}</MenuItem>
+            labels.map((label, index) => (
+              <MenuItem
+                onClick={(e) => e.stopPropagation()}
+                style={{ paddingTop: "4px", paddingBottom: "4px" }}
+              >
+                <Checkbox
+                  checked={label.isSelected}
+                  onChange={() => handleLabelSelect(index)}
+                  color="primary"
+                  style={{ marginLeft: "-12px", marginRight: "0px" }}
+                />
+                <span style={{ color: "#000" }}>{label.text}</span>
+                <div
+                  style={{
+                    marginLeft: "auto",
+                    display: "inline-block",
+                    width: "16px",
+                    height: "16px",
+                    borderRadius: "50%",
+                    backgroundColor: label.color,
+                  }}
+                />
+              </MenuItem>
             ))
           )}
           <div
             style={{
               borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-              margin: "0 16px",
+              marginTop: "16px",
             }}
           />
-          <Button
-            onClick={handleOpenNewLabelForm}
-            color="primary"
-            style={{
-              marginLeft: "16px",
-              marginRight: "16px",
-              marginTop: "16px",
-              marginBottom: "16px",
-            }}
-          >
-            Create new label
-          </Button>
+          {isCheckboxSelected ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginLeft: "16px",
+                marginRight: "16px",
+                marginTop: "16px",
+                marginBottom: "16px",
+              }}
+            >
+              <Button
+                onClick={handleClose}
+                variant="outlined"
+                style={{ marginRight: "16px" }}
+              >
+                Cancel
+              </Button>
+              <Button color="primary" variant="contained">
+                Apply
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={handleOpenNewLabelForm}
+              color="primary"
+              style={{
+                marginLeft: "16px",
+                marginRight: "16px",
+                marginTop: "16px",
+                marginBottom: "8px",
+              }}
+            >
+              Create new label
+            </Button>
+          )}
         </Menu>
       </div>
-      {isNewLabelFormOpen && <NewLabelForm onClose={handleCloseNewLabelForm} />}
+      {isNewLabelFormOpen && (
+        <NewLabelForm onClose={handleCloseNewLabelForm} setLabels={setLabels} />
+      )}
     </>
   );
 };

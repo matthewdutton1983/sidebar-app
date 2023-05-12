@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  Chip,
   Pagination,
   Paper,
   Table,
@@ -151,6 +152,16 @@ export const DocumentsList = ({
                           width: "100%",
                         }}
                       >
+                        {(document.labels || []).map((label, index) => (
+                          <Chip
+                            key={index}
+                            label={label.text}
+                            style={{
+                              backgroundColor: label.color,
+                              marginRight: "8px",
+                            }}
+                          />
+                        ))}
                         {document.name}
                         <div className="button-container">
                           <LabelsMenu

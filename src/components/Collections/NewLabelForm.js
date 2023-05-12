@@ -11,12 +11,17 @@ import { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import "./DocumentsList.styles.css";
 
-export const NewLabelForm = ({ onClose }) => {
+export const NewLabelForm = ({ onClose, setLabels }) => {
   const [labelText, setLabelText] = useState("");
-  const [selectedColor, setSelectedColor] = useState("#E8EAED");
+  const [selectedColor, setSelectedColor] = useState("#FDD663");
 
   const handleSubmit = () => {
-    // Add logic to submit new label here
+    if (labelText.trim()) {
+      setLabels((prevLabels) => [
+        ...prevLabels,
+        { text: labelText, color: selectedColor, isSelected: false },
+      ]);
+    }
     onClose();
   };
 
@@ -24,9 +29,7 @@ export const NewLabelForm = ({ onClose }) => {
     setSelectedColor(color.hex);
   };
 
-  // Grab colors from Google Pinpoint and add a color picker
   const colors = [
-    "#E8EAED",
     "#FDD663",
     "#F28B82",
     "#C58AF9",
@@ -36,6 +39,7 @@ export const NewLabelForm = ({ onClose }) => {
     "#FF8BCB",
     "#669DF6",
     "#81C995",
+    "#D3D6DB",
   ];
 
   return (
@@ -93,6 +97,7 @@ export const NewLabelForm = ({ onClose }) => {
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
             onClick={onClose}
+            variant="outlined"
             style={{ marginRight: "16px", marginBottom: "16px" }}
           >
             Cancel
