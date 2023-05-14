@@ -14,15 +14,19 @@ import "./DocumentsList.styles.css";
 export const NewLabelForm = ({ onClose, setLabels }) => {
   const [labelText, setLabelText] = useState("");
   const [selectedColor, setSelectedColor] = useState("#FDD663");
+  const [error, setError] = useState(false);
 
   const handleSubmit = () => {
     if (labelText.trim()) {
+      setError(false);
       setLabels((prevLabels) => [
         ...prevLabels,
         { text: labelText, color: selectedColor, isSelected: false },
       ]);
+      onClose();
+    } else {
+      setError(true);
     }
-    onClose();
   };
 
   const handleColorChange = (color) => {
@@ -55,6 +59,8 @@ export const NewLabelForm = ({ onClose, setLabels }) => {
           value={labelText}
           onChange={(e) => setLabelText(e.target.value)}
           fullWidth
+          error={error}
+          helperText={error ? "Label name is required" : ""}
         />
         <Typography
           variant="subtitle1"

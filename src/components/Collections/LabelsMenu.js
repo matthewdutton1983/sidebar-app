@@ -11,11 +11,21 @@ import { useState } from "react";
 import { NewLabelForm } from "./NewLabelForm";
 import "./DocumentsList.styles.css";
 
-export const LabelsMenu = ({ onClick, onClose, style }) => {
+export const LabelsMenu = ({
+  onClick,
+  onClose,
+  style,
+  labels,
+  setLabels,
+  documentLabels,
+  setDocumentLabels,
+  documentId,
+}) => {
+  console.log(labels);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [isNewLabelFormOpen, setIsNewLabelFormOpen] = useState(false);
   const [isCheckboxSelected, setIsCheckboxSelected] = useState(false);
-  const [labels, setLabels] = useState([]);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -49,6 +59,15 @@ export const LabelsMenu = ({ onClick, onClose, style }) => {
       setIsCheckboxSelected(anySelected);
       return newLabels;
     });
+  };
+
+  const handleApplyLabels = () => {
+    const selectedLabels = labels.filter((label) => label.isSelected);
+    setDocumentLabels((prevDocumentLabels) => ({
+      ...prevDocumentLabels,
+      [documentId]: selectedLabels,
+    }));
+    handleClose();
   };
 
   return (
@@ -103,6 +122,7 @@ export const LabelsMenu = ({ onClick, onClose, style }) => {
           ) : (
             labels.map((label, index) => (
               <MenuItem
+                key={index}
                 onClick={(e) => e.stopPropagation()}
                 style={{ paddingTop: "4px", paddingBottom: "4px" }}
               >
@@ -150,7 +170,11 @@ export const LabelsMenu = ({ onClick, onClose, style }) => {
               >
                 Cancel
               </Button>
-              <Button color="primary" variant="contained">
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handleApplyLabels}
+              >
                 Apply
               </Button>
             </div>

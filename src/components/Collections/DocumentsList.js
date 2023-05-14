@@ -25,9 +25,12 @@ export const DocumentsList = ({
   handleAllDocumentsChecked,
   areAllDocumentsChecked,
   handleOpenModal,
+  labels,
+  setLabels,
 }) => {
   const [page, setPage] = useState(0);
   const [menuOpenRowIndex, setMenuOpenRowIndex] = useState(null);
+  const [documentLabels, setDocumentLabels] = useState({});
   const rowsPerPage = 100;
   const startIndex = page * rowsPerPage;
   const endIndex = Math.min((page + 1) * rowsPerPage, documents.length);
@@ -147,27 +150,43 @@ export const DocumentsList = ({
                       <div
                         style={{
                           display: "flex",
-                          justifyContent: "space-between",
+                          justifyContent: "flex-start",
                           alignItems: "center",
                           width: "100%",
                         }}
                       >
-                        {(document.labels || []).map((label, index) => (
-                          <Chip
-                            key={index}
-                            label={label.text}
-                            style={{
-                              backgroundColor: label.color,
-                              marginRight: "8px",
-                            }}
-                          />
-                        ))}
-                        {document.name}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginRight: "8px",
+                          }}
+                        >
+                          {(documentLabels[document.id] || []).map(
+                            (label, index) => (
+                              <Chip
+                                key={index}
+                                label={label.text}
+                                size="small"
+                                style={{
+                                  backgroundColor: label.color,
+                                  marginRight: "8px",
+                                }}
+                              />
+                            )
+                          )}
+                        </div>
+                        <div style={{ flexGrow: 1 }}>{document.name}</div>
                         <div className="button-container">
                           <LabelsMenu
                             style={{ marginRight: "8px" }}
                             onClick={() => handleLabelButtonClick(index)}
                             onClose={handleLabelMenuClose}
+                            labels={labels}
+                            setLabels={setLabels}
+                            documentLabels={documentLabels}
+                            setDocumentLabels={setDocumentLabels}
+                            documentId={document.id}
                           />
                           <DeleteButton
                             onClick={() => handleDeleteDocument(document.id)}

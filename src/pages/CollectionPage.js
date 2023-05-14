@@ -14,25 +14,43 @@ export const CollectionPage = () => {
   const { collectionId } = useParams();
   const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [labels, setLabels] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchActiveCollection = async () => {
       try {
-        const response = await Collection.fetchCollectionById(collectionId);
+        console.log(`Fetching details for collection ${collectionId}`);
+
+        const collection = await Collection.fetchCollectionById(collectionId);
+
         const fetchedCollection = new Collection(
-          response.id,
-          response.name,
-          response.createdBy,
-          response.createdDate
+          collection.id,
+          collection.name,
+          collection.createdBy,
+          collection.createdDate
         );
-        fetchedCollection.documents = response.documents.map((doc) => ({
+
+        fetchedCollection.documents = collection.documents.map((doc) => ({
           id: doc.id,
           name: doc.fileName,
           type: doc.fileType,
         }));
+
+        fetchedCollection.labels = collection.labels
+          .map((label) => ({
+            id: label.id,
+            text: label.text,
+            color: label.color,
+            createdBy: label.createdBy,
+            createdDate: label.createdDate,
+          }))
+          .sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate));
+
+        console.log("Collection loaded successfully", collection);
+
         setCollection(fetchedCollection);
-        Logger("Collection loaded successfully", response);
+        setLabels(fetchedCollection.labels);
       } catch (error) {
         Logger(`Error loading collection ${collectionId}`, error);
       }
@@ -143,6 +161,8 @@ export const CollectionPage = () => {
               handleAllDocumentsChecked={handleAllDocumentsChecked}
               areAllDocumentsChecked={areAllDocumentsChecked}
               handleOpenModal={handleOpenModal}
+              labels={labels}
+              setLabels={setLabels}
             />
           </div>
         )}

@@ -1,14 +1,19 @@
 import axios from "axios";
 import { Document } from "./Document";
-import { COLLECTIONS_ENDPOINT, DOCUMENTS_ENDPOINT } from "../utils/endpoints";
+import {
+  COLLECTIONS_ENDPOINT,
+  COLLECTION_LABELS_ENDPOINT,
+  DOCUMENTS_ENDPOINT,
+} from "../utils/endpoints";
 
 export class Collection {
-  constructor(id, name, createdBy, createdDate, documents = []) {
+  constructor(id, name, createdBy, createdDate, documents = [], labels = []) {
     this.id = id;
     this.name = name;
     this.createdBy = createdBy;
     this.createdDate = createdDate;
     this.documents = documents;
+    this.labels = labels;
   }
 
   // Fetch all collections from the server
@@ -49,7 +54,8 @@ export class Collection {
         collection.name,
         collection.createdBy,
         collection.createdDate,
-        collection.documents
+        collection.documents,
+        collection.labels
       );
       console.log("Collection object:", collectionObject);
       return collectionObject;
@@ -165,6 +171,7 @@ export class Collection {
   }
 
   // Remove one or more documents on the server
+  // TODO: NEED TO FIX THIS
   async removeDocument(documentId) {
     console.log(`Starting removeDocument for ${documentId}`);
     try {
@@ -173,6 +180,31 @@ export class Collection {
     } catch (error) {
       console.error(error);
       throw new Error(`Error removing document from collection ${this.id}`);
+    }
+  }
+
+  // Create a new label in the current collection on the server
+  async createLabel(label) {
+    console.log(`Creating a new label in collection ${this.id}`);
+    try {
+      const response = await axios.post(
+        COLLECTION_LABELS_ENDPOINT,
+        {
+          collectionId: this.id,
+          text: label.text,
+          color: label.color,
+          createdBy: label.createdBy,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response.data:", response.data);
+      await this.fetchLabels();
+    } catch (error) {
+      console.error("Error creating label", error);
     }
   }
 }
