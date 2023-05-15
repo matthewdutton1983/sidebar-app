@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { SellRounded } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NewLabelForm } from "./NewLabelForm";
 import "./DocumentsList.styles.css";
 
@@ -17,23 +17,19 @@ export const LabelsMenu = ({
   style,
   labels,
   setLabels,
-  documentLabels,
   setDocumentLabels,
   documentId,
+  collection,
 }) => {
-  console.log(labels);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [isNewLabelFormOpen, setIsNewLabelFormOpen] = useState(false);
-  const [isCheckboxSelected, setIsCheckboxSelected] = useState(false);
+  const [selectedLabelIndexes, setSelectedLabelIndexes] = useState([]);
   const open = Boolean(anchorEl);
+  const menuRef = useRef(null);
 
   const handleClick = (event) => {
     event.preventDefault();
-    setAnchorEl({
-      left: event.clientX,
-      top: event.clientY + 4,
-    });
+    setAnchorEl(event.currentTarget);
     onClick && onClick();
   };
 
@@ -51,29 +47,42 @@ export const LabelsMenu = ({
   };
 
   const handleLabelSelect = (index) => {
-    setLabels((prevLabels) => {
-      const newLabels = prevLabels.map((label, i) =>
-        i === index ? { ...label, isSelected: !label.isSelected } : label
-      );
-      const anySelected = newLabels.some((label) => label.isSelected);
-      setIsCheckboxSelected(anySelected);
-      return newLabels;
+    setSelectedLabelIndexes((prevIndexes) => {
+      const updatedIndexes = [...prevIndexes];
+      const labelIndex = updatedIndexes.indexOf(index);
+      if (labelIndex !== -1) {
+        updatedIndexes.splice(labelIndex, 1);
+      } else {
+        updatedIndexes.push(index);
+      }
+      return updatedIndexes;
     });
   };
 
-  const handleApplyLabels = () => {
-    const selectedLabels = labels.filter((label) => label.isSelected);
-    setDocumentLabels((prevDocumentLabels) => ({
-      ...prevDocumentLabels,
-      [documentId]: selectedLabels,
-    }));
-    handleClose();
+  const handleApplyLabels = async () => {
+    const selectedLabels = selectedLabelIndexes.map((index) => labels[index]);
+    try {
+      await collection.applyLabelsToDocument(documentId, selectedLabels);
+      setDocumentLabels((prevDocumentLabels) => ({
+        ...prevDocumentLabels,
+        [documentId]: selectedLabels,
+      }));
+      handleClose();
+    } catch (error) {
+      console.error(`Failed to apply labels to document ${documentId}:`, error);
+      alert("An error occurred while applying labels. Please try again.");
+    }
   };
+
+  useEffect(() => {
+    setSelectedLabelIndexes([]);
+  }, [documentId]);
 
   return (
     <>
       <div style={style}>
         <IconButton
+          ref={menuRef}
           edge="end"
           aria-label="label"
           onClick={handleClick}
@@ -85,14 +94,18 @@ export const LabelsMenu = ({
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
-          anchorPosition={anchorEl}
-          anchorReference="anchorPosition"
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
+          anchorReference="anchorEl"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
           }}
           PaperProps={{
             style: {
-              minWidth: "300px",
+              minWidth: "350px",
             },
           }}
         >
@@ -152,7 +165,7 @@ export const LabelsMenu = ({
               marginTop: "16px",
             }}
           />
-          {isCheckboxSelected ? (
+          {selectedLabelIndexes.length > 0 ? (
             <div
               style={{
                 display: "flex",
@@ -195,7 +208,11 @@ export const LabelsMenu = ({
         </Menu>
       </div>
       {isNewLabelFormOpen && (
-        <NewLabelForm onClose={handleCloseNewLabelForm} setLabels={setLabels} />
+        <NewLabelForm
+          onClose={handleCloseNewLabelForm}
+          setLabels={setLabels}
+          collection={collection}
+        />
       )}
     </>
   );

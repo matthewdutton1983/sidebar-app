@@ -4,6 +4,7 @@ import {
   COLLECTIONS_ENDPOINT,
   COLLECTION_LABELS_ENDPOINT,
   DOCUMENTS_ENDPOINT,
+  DOCUMENT_LABELS_ENDPOINT,
 } from "../utils/endpoints";
 
 export class Collection {
@@ -188,12 +189,13 @@ export class Collection {
     console.log(`Creating a new label in collection ${this.id}`);
     try {
       const response = await axios.post(
-        COLLECTION_LABELS_ENDPOINT,
+        COLLECTION_LABELS_ENDPOINT(this.id),
         {
-          collectionId: this.id,
-          text: label.text,
-          color: label.color,
-          createdBy: label.createdBy,
+          label: {
+            text: label.text,
+            color: label.color,
+            createdBy: label.createdBy,
+          },
         },
         {
           headers: {
@@ -202,9 +204,32 @@ export class Collection {
         }
       );
       console.log("response.data:", response.data);
-      await this.fetchLabels();
     } catch (error) {
       console.error("Error creating label", error);
+    }
+  }
+
+  // Apply labels to a document on the server
+  async applyLabelsToDocument(documentId, labels) {
+    console.log(
+      `Applying labels to document ${documentId} in collection ${this.id}`
+    );
+    try {
+      const response = await axios.post(
+        DOCUMENT_LABELS_ENDPOINT(this.id, documentId),
+        {
+          labels: labels,
+          addedBy: "Matthew Dutton",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response.data:", response.data);
+    } catch (error) {
+      console.error("Error applying labels to document", error);
     }
   }
 }

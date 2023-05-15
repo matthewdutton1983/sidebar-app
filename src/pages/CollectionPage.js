@@ -15,6 +15,7 @@ export const CollectionPage = () => {
   const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [labels, setLabels] = useState([]);
+  const [refreshLabels, setRefreshLabels] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -163,6 +164,7 @@ export const CollectionPage = () => {
               handleOpenModal={handleOpenModal}
               labels={labels}
               setLabels={setLabels}
+              collection={collection}
             />
           </div>
         )}

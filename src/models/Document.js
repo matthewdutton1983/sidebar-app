@@ -7,7 +7,9 @@ export class Document {
     this.labels = labels;
   }
 
-  addLabel(label) {
+  // add static from response method
+
+  applyLabel(label) {
     this.labels.push(label);
   }
 }

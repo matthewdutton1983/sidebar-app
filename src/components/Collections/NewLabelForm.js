@@ -11,21 +11,32 @@ import { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import "./DocumentsList.styles.css";
 
-export const NewLabelForm = ({ onClose, setLabels }) => {
+export const NewLabelForm = ({ onClose, setLabels, collection }) => {
   const [labelText, setLabelText] = useState("");
-  const [selectedColor, setSelectedColor] = useState("#FDD663");
-  const [error, setError] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [labelTextError, setLabelTextError] = useState(false);
+  const [labelColorError, setLabelColorError] = useState(false);
 
-  const handleSubmit = () => {
-    if (labelText.trim()) {
-      setError(false);
-      setLabels((prevLabels) => [
-        ...prevLabels,
-        { text: labelText, color: selectedColor, isSelected: false },
-      ]);
-      onClose();
+  const handleSubmit = async () => {
+    console.log("collection:", collection);
+    if (labelText.trim() && selectedColor) {
+      setLabelTextError(false);
+      setLabelColorError(false);
+      const newLabel = {
+        text: labelText,
+        color: selectedColor,
+        createdBy: "Matthew Dutton",
+      };
+      setLabels((prevLabels) => [...prevLabels, newLabel]);
+      try {
+        await collection.createLabel(newLabel);
+        onClose();
+      } catch (error) {
+        console.error("Error creating label", error);
+      }
     } else {
-      setError(true);
+      if (!labelText.trim()) setLabelTextError(true);
+      if (!selectedColor) setLabelColorError(true);
     }
   };
 
@@ -59,8 +70,9 @@ export const NewLabelForm = ({ onClose, setLabels }) => {
           value={labelText}
           onChange={(e) => setLabelText(e.target.value)}
           fullWidth
-          error={error}
-          helperText={error ? "Label name is required" : ""}
+          error={labelTextError}
+          helperText={labelTextError ? "Label name is required" : ""}
+          autoComplete="off"
         />
         <Typography
           variant="subtitle1"
@@ -69,7 +81,7 @@ export const NewLabelForm = ({ onClose, setLabels }) => {
           Choose a color:
         </Typography>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {colors.map((color, index) => (
+          {colors.map((color) => (
             <div
               key={color}
               onClick={() => handleColorChange({ hex: color })}
@@ -87,10 +99,10 @@ export const NewLabelForm = ({ onClose, setLabels }) => {
                 position: "relative",
               }}
             >
-              {selectedColor === color && (
+              {selectedColor === color && selectedColor !== null && (
                 <CheckIcon
                   style={{
-                    color: index === 5 ? "#fff" : "#000",
+                    color: selectedColor === "#3C4043" ? "#fff" : "#000",
                     fontSize: "20px",
                   }}
                 />
@@ -98,6 +110,15 @@ export const NewLabelForm = ({ onClose, setLabels }) => {
             </div>
           ))}
         </div>
+        {labelColorError && (
+          <Typography
+            color="error"
+            variant="body2"
+            style={{ paddingTop: "16px" }}
+          >
+            Please select a color for your new label
+          </Typography>
+        )}
       </DialogContent>
       <DialogActions>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>

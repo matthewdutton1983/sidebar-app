@@ -27,6 +27,7 @@ export const DocumentsList = ({
   handleOpenModal,
   labels,
   setLabels,
+  collection,
 }) => {
   const [page, setPage] = useState(0);
   const [menuOpenRowIndex, setMenuOpenRowIndex] = useState(null);
@@ -184,9 +185,9 @@ export const DocumentsList = ({
                             onClose={handleLabelMenuClose}
                             labels={labels}
                             setLabels={setLabels}
-                            documentLabels={documentLabels}
                             setDocumentLabels={setDocumentLabels}
                             documentId={document.id}
+                            collection={collection}
                           />
                           <DeleteButton
                             onClick={() => handleDeleteDocument(document.id)}
