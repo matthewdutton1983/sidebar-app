@@ -50,6 +50,7 @@ export class Collection {
       );
       const collection = response.data;
       console.log("response:", response.data);
+
       const collectionObject = new Collection(
         collection.id,
         collection.name,

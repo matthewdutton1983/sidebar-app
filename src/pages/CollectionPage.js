@@ -15,7 +15,6 @@ export const CollectionPage = () => {
   const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [labels, setLabels] = useState([]);
-  const [refreshLabels, setRefreshLabels] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +35,7 @@ export const CollectionPage = () => {
           id: doc.id,
           name: doc.fileName,
           type: doc.fileType,
+          labels: doc.labels,
         }));
 
         fetchedCollection.labels = collection.labels

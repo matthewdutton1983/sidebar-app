@@ -117,6 +117,8 @@ export const DocumentsList = ({
             {documents
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((document, index) => {
+                console.log(document);
+                console.log("document.labels:", document.labels);
                 const isChecked = document.hasOwnProperty("checked")
                   ? document.checked
                   : false;
@@ -163,10 +165,10 @@ export const DocumentsList = ({
                             marginRight: "8px",
                           }}
                         >
-                          {(documentLabels[document.id] || []).map(
-                            (label, index) => (
+                          {Array.isArray(document.labels) &&
+                            document.labels.map((label) => (
                               <Chip
-                                key={index}
+                                key={`${document.id}-${label.id}`}
                                 label={label.text}
                                 size="small"
                                 style={{
@@ -174,8 +176,7 @@ export const DocumentsList = ({
                                   marginRight: "8px",
                                 }}
                               />
-                            )
-                          )}
+                            ))}
                         </div>
                         <div style={{ flexGrow: 1 }}>{document.name}</div>
                         <div className="button-container">
