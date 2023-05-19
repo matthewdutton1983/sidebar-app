@@ -1,11 +1,30 @@
 import { Box, Chip, Typography } from "@mui/material";
+import { Label } from "@mui/icons-material";
 import "./Collection.styles.css";
 
-export const FilterCollection = ({ documents }) => {
+export const FilterCollection = ({ collection, documents, onFilter }) => {
   const allLabels = documents.flatMap((doc) => doc.labels || []);
+
   const labelsMap = new Map();
   allLabels.forEach((label) => labelsMap.set(label.parentId, label));
+
   const uniqueLabels = Array.from(labelsMap.values());
+
+  const collectionLabelsMap = new Map();
+  collection.labels.forEach((label) =>
+    collectionLabelsMap.set(label.id, label)
+  );
+
+  uniqueLabels.sort((a, b) => {
+    const aCreatedDate = new Date(
+      collectionLabelsMap.get(a.parentId).createdDate
+    );
+    const bCreatedDate = new Date(
+      collectionLabelsMap.get(b.parentId).createdDate
+    );
+    return aCreatedDate - bCreatedDate;
+  });
+
   console.log("uniqueLabels:", uniqueLabels);
 
   return (
@@ -46,16 +65,13 @@ export const FilterCollection = ({ documents }) => {
               paddingLeft: "8px",
             }}
             icon={
-              <span
+              <Label
                 style={{
-                  height: "10px",
-                  width: "10px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  backgroundColor: label.color,
+                  color: label.color,
                 }}
               />
             }
+            onClick={() => onFilter(label.parentId)}
           />
         ))}
       </Box>

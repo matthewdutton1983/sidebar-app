@@ -15,6 +15,7 @@ export const CollectionPage = () => {
   const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [labels, setLabels] = useState([]);
+  const [selectedLabelId, setSelectedLabelId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -120,6 +121,15 @@ export const CollectionPage = () => {
     }
   };
 
+  const getFilteredDocuments = () => {
+    if (selectedLabelId && collection?.documents) {
+      return collection.documents.filter((doc) =>
+        doc.labels.some((label) => label.parentId === selectedLabelId)
+      );
+    }
+    return collection?.documents;
+  };
+
   return (
     <div className="collection-page">
       <div
@@ -155,7 +165,7 @@ export const CollectionPage = () => {
         {collection && collection?.documents.length > 0 && (
           <div className="bottom-row-left">
             <DocumentsList
-              documents={collection?.documents}
+              documents={getFilteredDocuments()}
               handleCheckboxChange={handleCheckboxChange}
               handleDeleteDocument={handleDeleteDocument}
               handleDocumentDoubleClick={handleDocumentDoubleClick}
@@ -175,7 +185,11 @@ export const CollectionPage = () => {
         )}
         {collection && collection?.documents.length > 0 && (
           <div className="bottom-row-right">
-            <FilterCollection documents={collection.documents} />
+            <FilterCollection
+              collection={collection}
+              documents={collection.documents}
+              onFilter={setSelectedLabelId}
+            />
           </div>
         )}
       </div>
