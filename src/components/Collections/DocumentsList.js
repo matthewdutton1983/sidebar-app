@@ -117,8 +117,6 @@ export const DocumentsList = ({
             {documents
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((document, index) => {
-                console.log(document);
-                console.log("document.labels:", document.labels);
                 const isChecked = document.hasOwnProperty("checked")
                   ? document.checked
                   : false;

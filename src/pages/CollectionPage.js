@@ -175,7 +175,7 @@ export const CollectionPage = () => {
         )}
         {collection && collection?.documents.length > 0 && (
           <div className="bottom-row-right">
-            <FilterCollection />
+            <FilterCollection documents={collection.documents} />
           </div>
         )}
       </div>
