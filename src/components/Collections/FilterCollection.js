@@ -1,4 +1,4 @@
-import { Typography, Chip, Box } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import "./Collection.styles.css";
 
 export const FilterCollection = ({ documents }) => {
@@ -26,9 +26,18 @@ export const FilterCollection = ({ documents }) => {
       >
         By label
       </Typography>
-      {uniqueLabels.map((label) => (
-        <Box key={label.id} sx={{ paddingLeft: "16px", paddingTop: "16px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          paddingLeft: "16px",
+          paddingTop: "16px",
+          gap: "8px",
+        }}
+      >
+        {uniqueLabels.map((label) => (
           <Chip
+            key={label.id}
             label={label.text}
             variant="outlined"
             style={{
@@ -44,13 +53,12 @@ export const FilterCollection = ({ documents }) => {
                   borderRadius: "50%",
                   display: "inline-block",
                   backgroundColor: label.color,
-                  marginRight: "8px",
                 }}
               />
             }
           />
-        </Box>
-      ))}
+        ))}
+      </Box>
     </div>
   );
 };

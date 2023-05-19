@@ -105,7 +105,7 @@ export const LabelsMenu = ({
           }}
           PaperProps={{
             style: {
-              minWidth: "350px",
+              minWidth: "300px",
             },
           }}
         >
@@ -128,6 +128,7 @@ export const LabelsMenu = ({
                 marginLeft: "16px",
                 marginRight: "16px",
                 marginBottom: "16px",
+                fontSize: "0.75rem",
               }}
             >
               There are no labels in this collection
@@ -137,7 +138,11 @@ export const LabelsMenu = ({
               <MenuItem
                 key={index}
                 onClick={(e) => e.stopPropagation()}
-                style={{ paddingTop: "4px", paddingBottom: "4px" }}
+                style={{
+                  paddingTop: "0px",
+                  paddingBottom: "0px",
+                  fontSize: "0.85rem",
+                }}
               >
                 <Checkbox
                   checked={label.isSelected}
