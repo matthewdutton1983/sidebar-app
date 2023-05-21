@@ -15,30 +15,27 @@ export const CollectionPage = () => {
   const [collection, setCollection] = useState(new Collection());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [labels, setLabels] = useState([]);
-  const [selectedLabelId, setSelectedLabelId] = useState(null);
+  const [selectedFilters, setSelectedFilters] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchActiveCollection = async () => {
       try {
         console.log(`Fetching details for collection ${collectionId}`);
-
         const collection = await Collection.fetchCollectionById(collectionId);
-
         const fetchedCollection = new Collection(
           collection.id,
           collection.name,
           collection.createdBy,
           collection.createdDate
         );
-
         fetchedCollection.documents = collection.documents.map((doc) => ({
           id: doc.id,
           name: doc.fileName,
           type: doc.fileType,
           labels: doc.labels,
         }));
-
         fetchedCollection.labels = collection.labels
           .map((label) => ({
             id: label.id,
@@ -48,9 +45,7 @@ export const CollectionPage = () => {
             createdDate: label.createdDate,
           }))
           .sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate));
-
         console.log("Collection loaded successfully", collection);
-
         setCollection(fetchedCollection);
         setLabels(fetchedCollection.labels);
       } catch (error) {
@@ -122,12 +117,21 @@ export const CollectionPage = () => {
   };
 
   const getFilteredDocuments = () => {
-    if (selectedLabelId && collection?.documents) {
+    if (selectedFilters.length > 0) {
       return collection.documents.filter((doc) =>
-        doc.labels.some((label) => label.parentId === selectedLabelId)
+        selectedFilters.every((filterId) =>
+          doc.labels.some((label) => label.parentId === filterId)
+        )
       );
     }
-    return collection?.documents;
+    return collection.documents;
+  };
+
+  const clearSelectedFilter = (filterId) => {
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = prevFilters.filter((id) => id !== filterId);
+      return updatedFilters;
+    });
   };
 
   return (
@@ -188,7 +192,9 @@ export const CollectionPage = () => {
             <FilterCollection
               collection={collection}
               documents={collection.documents}
-              onFilter={setSelectedLabelId}
+              onFilter={setSelectedFilters}
+              selectedFilters={selectedFilters}
+              clearSelectedFilter={clearSelectedFilter}
             />
           </div>
         )}

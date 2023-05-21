@@ -31,7 +31,7 @@ export const DocumentsList = ({
 }) => {
   const [page, setPage] = useState(0);
   const [menuOpenRowIndex, setMenuOpenRowIndex] = useState(null);
-  const [documentLabels, setDocumentLabels] = useState({});
+  const [setDocumentLabels] = useState({});
   const rowsPerPage = 100;
   const startIndex = page * rowsPerPage;
   const endIndex = Math.min((page + 1) * rowsPerPage, documents.length);
@@ -163,6 +163,9 @@ export const DocumentsList = ({
                             marginRight: "8px",
                           }}
                         >
+                          <div style={{ flexGrow: 1, marginRight: "8px" }}>
+                            {document.name}
+                          </div>
                           {Array.isArray(document.labels) &&
                             document.labels.map((label) => (
                               <Chip
@@ -176,7 +179,6 @@ export const DocumentsList = ({
                               />
                             ))}
                         </div>
-                        <div style={{ flexGrow: 1 }}>{document.name}</div>
                         <div className="button-container">
                           <LabelsMenu
                             style={{ marginRight: "8px" }}

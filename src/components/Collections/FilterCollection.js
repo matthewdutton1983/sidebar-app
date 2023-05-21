@@ -2,7 +2,13 @@ import { Box, Chip, Typography } from "@mui/material";
 import { Label } from "@mui/icons-material";
 import "./Collection.styles.css";
 
-export const FilterCollection = ({ collection, documents, onFilter }) => {
+export const FilterCollection = ({
+  collection,
+  documents,
+  onFilter,
+  selectedFilters,
+  clearSelectedFilter,
+}) => {
   const allLabels = documents.flatMap((doc) => doc.labels || []);
 
   const labelsMap = new Map();
@@ -25,7 +31,23 @@ export const FilterCollection = ({ collection, documents, onFilter }) => {
     return aCreatedDate - bCreatedDate;
   });
 
-  console.log("uniqueLabels:", uniqueLabels);
+  const labelsToDisplay =
+    selectedFilters.length > 0
+      ? uniqueLabels.filter(
+          (label) => !selectedFilters.includes(label.parentId)
+        )
+      : uniqueLabels;
+
+  const handleFilter = (filterId) => {
+    const isFilterSelected = selectedFilters.includes(filterId);
+    let updatedFilters;
+    if (isFilterSelected) {
+      updatedFilters = selectedFilters.filter((filter) => filter !== filterId);
+    } else {
+      updatedFilters = [...selectedFilters, filterId];
+    }
+    onFilter(updatedFilters);
+  };
 
   return (
     <div>
@@ -37,13 +59,41 @@ export const FilterCollection = ({ collection, documents, onFilter }) => {
       >
         Filter collection
       </Typography>
+      {selectedFilters.length > 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            paddingLeft: "16px",
+            paddingTop: "16px",
+            gap: "8px",
+            flexWrap: "wrap",
+          }}
+        >
+          {selectedFilters.map((filterId) => {
+            const selectedLabel = collectionLabelsMap.get(filterId);
+            return (
+              <Chip
+                key={selectedLabel.id}
+                label={selectedLabel.text}
+                variant="outlined"
+                onDelete={() => clearSelectedFilter(filterId)}
+                style={{
+                  borderColor: "lightgray",
+                }}
+                icon={<Label style={{ color: selectedLabel.color }} />}
+              />
+            );
+          })}
+        </Box>
+      )}
       <Typography
+        key="label"
         variant="subtitle1"
         fontWeight="normal"
         gutterBottom
         sx={{ paddingLeft: "16px", paddingTop: "16px" }}
       >
-        By label
+        By labels
       </Typography>
       <Box
         sx={{
@@ -54,15 +104,13 @@ export const FilterCollection = ({ collection, documents, onFilter }) => {
           gap: "8px",
         }}
       >
-        {uniqueLabels.map((label) => (
+        {labelsToDisplay.map((label) => (
           <Chip
             key={label.id}
             label={label.text}
             variant="outlined"
             style={{
               borderColor: "lightgray",
-              color: "black",
-              paddingLeft: "8px",
             }}
             icon={
               <Label
@@ -71,10 +119,37 @@ export const FilterCollection = ({ collection, documents, onFilter }) => {
                 }}
               />
             }
-            onClick={() => onFilter(label.parentId)}
+            onClick={() => handleFilter(label.parentId)}
           />
         ))}
       </Box>
+      <Typography
+        key="people"
+        variant="subtitle1"
+        fontWeight="normal"
+        gutterBottom
+        sx={{ paddingLeft: "16px", paddingTop: "16px" }}
+      >
+        By people
+      </Typography>
+      <Typography
+        key="organizations"
+        variant="subtitle1"
+        fontWeight="normal"
+        gutterBottom
+        sx={{ paddingLeft: "16px", paddingTop: "16px" }}
+      >
+        By organizations
+      </Typography>
+      <Typography
+        key="locations"
+        variant="subtitle1"
+        fontWeight="normal"
+        gutterBottom
+        sx={{ paddingLeft: "16px", paddingTop: "16px" }}
+      >
+        By locations
+      </Typography>
     </div>
   );
 };
