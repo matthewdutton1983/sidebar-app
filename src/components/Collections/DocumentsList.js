@@ -32,6 +32,8 @@ export const DocumentsList = ({
   const [page, setPage] = useState(0);
   const [menuOpenRowIndex, setMenuOpenRowIndex] = useState(null);
   const [setDocumentLabels] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+
   const rowsPerPage = 100;
   const startIndex = page * rowsPerPage;
   const endIndex = Math.min((page + 1) * rowsPerPage, documents.length);
@@ -57,7 +59,9 @@ export const DocumentsList = ({
         </Fragment>
       );
     } else {
-      return `Documents ${startIndex + 1}-${endIndex} of ${documents.length}`;
+      return `Documents ${startIndex + 1}-${endIndex} of ${
+        filteredDocuments.length
+      }`;
     }
   };
 
@@ -74,6 +78,16 @@ export const DocumentsList = ({
   const handleLabelMenuClose = () => {
     setMenuOpenRowIndex(null);
   };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  let filteredDocuments = documents.filter((document) =>
+    document.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  let displayedDocuments = filteredDocuments.slice(startIndex, endIndex);
 
   return (
     <TableContainer
@@ -107,98 +121,90 @@ export const DocumentsList = ({
               >
                 <span>{displayDocumentsText()}</span>
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <SearchBar />
+                  <SearchBar onChange={handleSearchChange} />
                   <AddDocumentsButton onClick={handleOpenModal} />
                 </div>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {documents
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((document, index) => {
-                const isChecked = document.hasOwnProperty("checked")
-                  ? document.checked
-                  : false;
-                return (
-                  <TableRow
-                    key={document.id}
-                    className={
-                      document.checked
-                        ? "table-row checked"
-                        : index === menuOpenRowIndex
-                        ? "table-row menu-open"
-                        : "table-row"
-                    }
-                    onDoubleClick={() => handleDocumentDoubleClick(document.id)}
-                  >
-                    <TableCell className="table-cell" padding="checkbox">
-                      <div className="checkbox-container">
-                        <Checkbox
-                          color="primary"
-                          checked={isChecked}
-                          onChange={(event) =>
-                            handleCheckboxChange(event, index)
-                          }
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell
-                      className="table-cell"
-                      component="th"
-                      scope="row"
+            {displayedDocuments.map((document, index) => {
+              const isChecked = document.hasOwnProperty("checked")
+                ? document.checked
+                : false;
+              return (
+                <TableRow
+                  key={document.id}
+                  className={
+                    document.checked
+                      ? "table-row checked"
+                      : index === menuOpenRowIndex
+                      ? "table-row menu-open"
+                      : "table-row"
+                  }
+                  onDoubleClick={() => handleDocumentDoubleClick(document.id)}
+                >
+                  <TableCell className="table-cell" padding="checkbox">
+                    <div className="checkbox-container">
+                      <Checkbox
+                        color="primary"
+                        checked={isChecked}
+                        onChange={(event) => handleCheckboxChange(event, index)}
+                      />
+                    </div>
+                  </TableCell>
+                  <TableCell className="table-cell" component="th" scope="row">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        width: "100%",
+                      }}
                     >
                       <div
                         style={{
                           display: "flex",
-                          justifyContent: "flex-start",
                           alignItems: "center",
-                          width: "100%",
+                          marginRight: "8px",
                         }}
                       >
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginRight: "8px",
-                          }}
-                        >
-                          <div style={{ flexGrow: 1, marginRight: "8px" }}>
-                            {document.name}
-                          </div>
-                          {Array.isArray(document.labels) &&
-                            document.labels.map((label) => (
-                              <Chip
-                                key={`${document.id}-${label.id}`}
-                                label={label.text}
-                                size="small"
-                                style={{
-                                  backgroundColor: label.color,
-                                  marginRight: "8px",
-                                }}
-                              />
-                            ))}
+                        <div style={{ flexGrow: 1, marginRight: "8px" }}>
+                          {document.name}
                         </div>
-                        <div className="button-container">
-                          <LabelsMenu
-                            style={{ marginRight: "8px" }}
-                            onClick={() => handleLabelButtonClick(index)}
-                            onClose={handleLabelMenuClose}
-                            labels={labels}
-                            setLabels={setLabels}
-                            setDocumentLabels={setDocumentLabels}
-                            documentId={document.id}
-                            collection={collection}
-                          />
-                          <DeleteButton
-                            onClick={() => handleDeleteDocument(document.id)}
-                          />
-                        </div>
+                        {Array.isArray(document.labels) &&
+                          document.labels.map((label) => (
+                            <Chip
+                              key={`${document.id}-${label.id}`}
+                              label={label.text}
+                              size="small"
+                              style={{
+                                backgroundColor: label.color,
+                                marginRight: "8px",
+                              }}
+                            />
+                          ))}
                       </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      <div className="button-container">
+                        <LabelsMenu
+                          style={{ marginRight: "8px" }}
+                          onClick={() => handleLabelButtonClick(index)}
+                          onClose={handleLabelMenuClose}
+                          labels={labels}
+                          setLabels={setLabels}
+                          setDocumentLabels={setDocumentLabels}
+                          documentId={document.id}
+                          collection={collection}
+                        />
+                        <DeleteButton
+                          onClick={() => handleDeleteDocument(document.id)}
+                        />
+                      </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
         <div
@@ -209,7 +215,7 @@ export const DocumentsList = ({
           }}
         >
           <Pagination
-            count={Math.ceil(documents.length / rowsPerPage)}
+            count={Math.ceil(filteredDocuments.length / rowsPerPage)}
             page={page + 1}
             onChange={handleChangePage}
           />

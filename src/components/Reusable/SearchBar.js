@@ -1,7 +1,7 @@
 import { TextField, InputAdornment } from "@mui/material";
 import { SearchRounded } from "@mui/icons-material";
 
-export const SearchBar = () => {
+export const SearchBar = ({ onChange }) => {
   return (
     <TextField
       id="searchBar"
@@ -16,6 +16,7 @@ export const SearchBar = () => {
           </InputAdornment>
         ),
       }}
+      onChange={onChange}
     />
   );
 };

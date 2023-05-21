@@ -1,6 +1,8 @@
-import { Box, Chip, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
 import { Label } from "@mui/icons-material";
+import { LabelsMenu } from "./LabelsMenu";
 import "./Collection.styles.css";
+import { useState } from "react";
 
 export const FilterCollection = ({
   collection,
@@ -8,7 +10,11 @@ export const FilterCollection = ({
   onFilter,
   selectedFilters,
   clearSelectedFilter,
+  setLabels,
+  setDocumentLabels,
+  documentId,
 }) => {
+  const [isLabelsMenuOpen, setIsLabelsMenuOpen] = useState(false);
   const allLabels = documents.flatMap((doc) => doc.labels || []);
 
   const labelsMap = new Map();
@@ -49,6 +55,10 @@ export const FilterCollection = ({
     onFilter(updatedFilters);
   };
 
+  const handleEditLabels = () => {
+    setIsLabelsMenuOpen(!isLabelsMenuOpen);
+  };
+
   return (
     <div>
       <Typography
@@ -86,15 +96,33 @@ export const FilterCollection = ({
           })}
         </Box>
       )}
-      <Typography
-        key="label"
-        variant="subtitle1"
-        fontWeight="normal"
-        gutterBottom
-        sx={{ paddingLeft: "16px", paddingTop: "16px" }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingLeft: "16px",
+          paddingRight: "16px",
+          paddingTop: "16px",
+        }}
       >
-        By labels
-      </Typography>
+        <Typography key="label" variant="subtitle1" fontWeight="normal">
+          By labels
+        </Typography>
+        {/* <Button onClick={handleEditLabels} color="primary" variant="text">
+          Edit
+        </Button> */}
+      </Box>
+      {isLabelsMenuOpen && (
+        <LabelsMenu
+          onClose={() => setIsLabelsMenuOpen(false)}
+          labels={uniqueLabels}
+          setLabels={setLabels}
+          setDocumentLabels={setDocumentLabels}
+          documentId={documentId}
+          collection={collection}
+        />
+      )}
       <Box
         sx={{
           display: "flex",
